@@ -1,0 +1,25 @@
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "supabase_project_ref",
+      "description": "Supabase project reference ID",
+      "password": false
+    },
+    {
+      "type": "promptString",
+      "id": "supabase_access_token",
+      "description": "Scoped Supabase access token",
+      "password": true
+    }
+  ],
+  "servers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp?project_ref=${input:supabase_project_ref}&features=docs%2Cdatabase%2Cdebugging%2Cdevelopment%2Cfunctions%2Cbranching",
+      "headers": {
+        "Authorization": "Bearer ${input:supabase_access_token}"
+      }
+    }
+  }
+}

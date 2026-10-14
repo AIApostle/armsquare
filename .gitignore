@@ -1,0 +1,51 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.venv/
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.npm/
+.yarn/
+.pnpm-store/
+.vite/
+coverage/
+frontend/dist/
+frontend/.cache/
+
+# Tool and operating-system files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+
+# Local VS Code state
+.vscode/*
+!.vscode/mcp.json
+!.vscode/extensions.json
