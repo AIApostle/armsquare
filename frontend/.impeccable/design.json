@@ -1,0 +1,682 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-15T10:47:47.100Z",
+  "title": "Design System: armsquare",
+  "extensions": {
+    "colorMeta": {
+      "panel": {
+        "role": "neutral",
+        "displayName": "Switchboard Panel",
+        "canonical": "oklch(95.2% 0.003 264.5)",
+        "dark": "#0f1012",
+        "usage": "Page and top bar; the field cords are drawn on; the socket well.",
+        "tonalRamp": [
+          "#0a0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5f",
+          "#7f8082",
+          "#a0a1a3",
+          "#c6c7c9",
+          "#edeef0"
+        ]
+      },
+      "panel-raised": {
+        "role": "neutral",
+        "displayName": "Raised Panel",
+        "canonical": "oklch(93.0% 0.005 258.3)",
+        "dark": "#141518",
+        "usage": "Hover fill for quiet controls; neutral marks.",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#232426",
+          "#3e4042",
+          "#5c5e60",
+          "#7e8083",
+          "#a0a2a4",
+          "#c5c7ca",
+          "#edeff2"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Listen-in White",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "dark": "#17181b",
+        "usage": "Plates, listen-in panel, ledger and policy surfaces, secondary buttons.",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a1a1a1",
+          "#c7c7c7",
+          "#eeeeee"
+        ]
+      },
+      "surface-sunk": {
+        "role": "neutral",
+        "displayName": "Sunk Strip",
+        "canonical": "oklch(97.6% 0.002 247.8)",
+        "dark": "#131417",
+        "usage": "Summary and decision strips in the listen-in panel; disabled fields.",
+        "tonalRamp": [
+          "#0b0b0c",
+          "#232425",
+          "#3f4041",
+          "#5d5e5e",
+          "#7f8081",
+          "#a1a1a2",
+          "#c6c7c8",
+          "#edeeef"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(20.9% 0.009 264.4)",
+        "dark": "#ecedef",
+        "usage": "Headings, names, amounts, the waiting status line. Never pure black.",
+        "tonalRamp": [
+          "#090b0f",
+          "#222428",
+          "#3d4044",
+          "#5b5e63",
+          "#7e8085",
+          "#9fa1a7",
+          "#c4c7cd",
+          "#eceef4"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink 2",
+        "canonical": "oklch(44.1% 0.020 262.7)",
+        "dark": "#b5b9c1",
+        "usage": "Secondary text, plate topics, talking lamps.",
+        "tonalRamp": [
+          "#070b14",
+          "#1f242e",
+          "#3a404a",
+          "#585e69",
+          "#7a808c",
+          "#9ba2ae",
+          "#c1c8d5",
+          "#e7effc"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink 3",
+        "canonical": "oklch(50.8% 0.021 261.3)",
+        "dark": "#8d929c",
+        "usage": "Metadata, principal lines, jack numbers, plate status lines, labels.",
+        "tonalRamp": [
+          "#070b14",
+          "#1e242e",
+          "#3a404b",
+          "#575e6a",
+          "#79818d",
+          "#9aa2af",
+          "#c0c8d5",
+          "#e7effd"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "oklch(89.4% 0.007 268.5)",
+        "dark": "#2a2d33",
+        "usage": "Hairlines and plate edges.",
+        "tonalRamp": [
+          "#0a0b0e",
+          "#222428",
+          "#3e4044",
+          "#5c5d62",
+          "#7e8085",
+          "#9fa1a6",
+          "#c5c7cc",
+          "#eceef3"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Rule Strong",
+        "canonical": "oklch(78.2% 0.012 264.5)",
+        "dark": "#42464e",
+        "usage": "Control borders, centre rail, idle socket rings.",
+        "tonalRamp": [
+          "#090b10",
+          "#21242a",
+          "#3c4046",
+          "#5a5e65",
+          "#7d8088",
+          "#9ea2a9",
+          "#c3c7cf",
+          "#eaeff7"
+        ]
+      },
+      "cord": {
+        "role": "neutral",
+        "displayName": "Graphite Cord",
+        "canonical": "oklch(60.9% 0.018 262.7)",
+        "dark": "#5e636c",
+        "usage": "Every line the agent handles on its own.",
+        "tonalRamp": [
+          "#070b13",
+          "#1f242d",
+          "#3b404a",
+          "#585e68",
+          "#7a808b",
+          "#9ba2ad",
+          "#c1c8d3",
+          "#e8effb"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Switchboard Orange",
+        "canonical": "oklch(57.6% 0.173 40.6)",
+        "dark": "#ff7a30",
+        "usage": "Primary action, active tab underline, focus ring, slider and meter fill.",
+        "tonalRamp": [
+          "#1d0200",
+          "#431100",
+          "#6f2300",
+          "#9f3600",
+          "#d1521a",
+          "#f87543",
+          "#feb297",
+          "#ffe9e2"
+        ]
+      },
+      "primary-hover": {
+        "role": "primary",
+        "displayName": "Switchboard Orange Hover",
+        "canonical": "oklch(52.1% 0.158 40.5)",
+        "dark": "#ff8c4d",
+        "usage": "Primary hover.",
+        "tonalRamp": [
+          "#1d0100",
+          "#431000",
+          "#6f2300",
+          "#9f3600",
+          "#cb582b",
+          "#f27b4f",
+          "#ffb297",
+          "#ffe9e2"
+        ]
+      },
+      "primary-press": {
+        "role": "primary",
+        "displayName": "Switchboard Orange Press",
+        "canonical": "oklch(46.5% 0.141 40.5)",
+        "dark": "#e86a22",
+        "usage": "Primary press.",
+        "tonalRamp": [
+          "#1d0200",
+          "#431100",
+          "#6f2300",
+          "#9c3a0e",
+          "#c45e38",
+          "#ea805a",
+          "#feb297",
+          "#fee9e2"
+        ]
+      },
+      "primary-ink": {
+        "role": "primary",
+        "displayName": "Flag Ink",
+        "canonical": "oklch(51.7% 0.154 41.1)",
+        "dark": "#ff8a47",
+        "usage": "Orange text for flagged meaning only.",
+        "tonalRamp": [
+          "#1d0200",
+          "#431100",
+          "#6e2400",
+          "#9e3700",
+          "#c95a2d",
+          "#ef7c50",
+          "#feb296",
+          "#ffe9e2"
+        ]
+      },
+      "on-primary": {
+        "role": "primary",
+        "displayName": "On Orange",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "dark": "#1a1006",
+        "usage": "Text on the primary fill.",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a1a1a1",
+          "#c7c7c7",
+          "#eeeeee"
+        ]
+      },
+      "primary-wash": {
+        "role": "primary",
+        "displayName": "Flag Wash",
+        "canonical": "oklch(94.3% 0.026 52.2)",
+        "dark": "#3a2214",
+        "usage": "Background of flag marks.",
+        "tonalRamp": [
+          "#140803",
+          "#2e2119",
+          "#4b3c33",
+          "#6a5a51",
+          "#8d7c72",
+          "#af9d93",
+          "#d6c3b9",
+          "#fdeadf"
+        ]
+      },
+      "live": {
+        "role": "primary",
+        "displayName": "Call Lamp",
+        "canonical": "oklch(64.4% 0.192 41.7)",
+        "dark": "#ff7a30",
+        "usage": "Waiting cords, sockets and lamps; selected waiting plate border; logo lamp; selection tint.",
+        "tonalRamp": [
+          "#1d0200",
+          "#421200",
+          "#6e2400",
+          "#9d3800",
+          "#d44f01",
+          "#ff7031",
+          "#feb296",
+          "#ffe9e1"
+        ]
+      },
+      "success": {
+        "role": "tertiary",
+        "displayName": "Closed Green",
+        "canonical": "oklch(52.1% 0.101 155.2)",
+        "dark": "#5cc08a",
+        "usage": "Closed lamps, closing packet, executed, verified, passed checks.",
+        "tonalRamp": [
+          "#001004",
+          "#002d15",
+          "#004d29",
+          "#216e44",
+          "#489265",
+          "#6bb486",
+          "#90dbab",
+          "#c5ffd8"
+        ]
+      },
+      "success-wash": {
+        "role": "tertiary",
+        "displayName": "Closed Green Wash",
+        "canonical": "oklch(94.1% 0.020 159.7)",
+        "dark": "#15291c",
+        "usage": "Pass marks.",
+        "tonalRamp": [
+          "#040e08",
+          "#1c2721",
+          "#37433c",
+          "#54615a",
+          "#77847c",
+          "#97a69d",
+          "#bdcbc3",
+          "#e4f3ea"
+        ]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Void Red",
+        "canonical": "oklch(53.8% 0.189 26.4)",
+        "dark": "#ff6b6b",
+        "usage": "Outlined destructive actions, blocked outcomes, field errors.",
+        "tonalRamp": [
+          "#200000",
+          "#4c0003",
+          "#7d000a",
+          "#b00d18",
+          "#da433e",
+          "#ff6c62",
+          "#feb0a7",
+          "#fee9e6"
+        ]
+      },
+      "danger-wash": {
+        "role": "tertiary",
+        "displayName": "Void Red Wash",
+        "canonical": "oklch(92.9% 0.026 17.6)",
+        "dark": "#351b1c",
+        "usage": "Danger hover and marks.",
+        "tonalRamp": [
+          "#150707",
+          "#301f1f",
+          "#4d3a3a",
+          "#6c5858",
+          "#907a7a",
+          "#b29b9b",
+          "#d8c1c1",
+          "#ffe8e8"
+        ]
+      },
+      "info": {
+        "role": "tertiary",
+        "displayName": "Owner Blue",
+        "canonical": "oklch(43.7% 0.135 264.4)",
+        "dark": "#8fa8f0",
+        "usage": "Owner actions in the ledger.",
+        "tonalRamp": [
+          "#000038",
+          "#031763",
+          "#1a3886",
+          "#3659a9",
+          "#577dd0",
+          "#779ff6",
+          "#adc7fe",
+          "#e7effe"
+        ]
+      },
+      "info-wash": {
+        "role": "tertiary",
+        "displayName": "Owner Blue Wash",
+        "canonical": "oklch(93.4% 0.020 267.3)",
+        "dark": "#1b2338",
+        "usage": "Owner action marks.",
+        "tonalRamp": [
+          "#080b14",
+          "#20242e",
+          "#3b404b",
+          "#585e69",
+          "#7b808d",
+          "#9ca1ae",
+          "#c1c7d5",
+          "#e8eefc"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page headings."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The listen-in task heading."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Wordmark and reference-sheet section heads."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text; intros cap at 62ch."
+      },
+      "body-sm": {
+        "displayName": "Body small",
+        "purpose": "Plate topics, listen-in meta, check details, tabs, section heads."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Principal lines, plate status lines, notes, hints, marks."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase column heads and figure labels only. Never an eyebrow above a heading."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Geist Mono, tabular: amounts, times, jack numbers, IDs, round keys."
+      },
+      "figure-total": {
+        "displayName": "Figure total",
+        "purpose": "The decision total."
+      }
+    },
+    "themes": {
+      "default": "Light; dark follows prefers-color-scheme unless [data-theme] is set; a saved theme is applied before first paint.",
+      "note": "Frontmatter colors are the light values; colorMeta.<token>.dark carries the dark value. Both themes are equals."
+    },
+    "shadows": [
+      {
+        "name": "plate-shadow",
+        "value": "0 1px 2px rgb(22 24 28 / 0.06), 0 6px 18px -10px rgb(22 24 28 / 0.18)",
+        "dark": "0 1px 2px rgb(0 0 0 / 0.5), 0 8px 20px -12px rgb(0 0 0 / 0.8)",
+        "purpose": "The home plate only."
+      },
+      {
+        "name": "socket-well",
+        "value": "inset 0 0 0 1.5px var(--rule-strong)",
+        "purpose": "Every socket; the ring turns live when waiting or set."
+      },
+      {
+        "name": "packet-knockout",
+        "value": "0 0 0 3px var(--panel)",
+        "purpose": "Signal packets read as cut out of the cord, not glowing."
+      },
+      {
+        "name": "slider-thumb",
+        "value": "inset 0 0 0 2px var(--primary), 0 1px 3px rgb(0 0 0 / 0.2)",
+        "purpose": "Limit slider thumb lift."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-signal",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "All state transitions, packets and round landings."
+      },
+      {
+        "name": "control",
+        "value": "150ms",
+        "purpose": "Button, tab, field color changes."
+      },
+      {
+        "name": "state",
+        "value": "200ms",
+        "purpose": "Cord stroke and width, lamp color, plate border."
+      },
+      {
+        "name": "round-land",
+        "value": "260ms, 4px rise from opacity 0",
+        "purpose": "A new round arriving on the centre rail."
+      },
+      {
+        "name": "lamp-call",
+        "value": "1.6s ease-in-out, 3 iterations",
+        "purpose": "Only the selected waiting socket calls, three times, then holds."
+      },
+      {
+        "name": "packet-run",
+        "value": "650ms",
+        "purpose": "A signal travelling a cord; inbound runs reversed. One at a time."
+      },
+      {
+        "name": "decide",
+        "value": "450ms",
+        "purpose": "Terms revalidate before patch through."
+      },
+      {
+        "name": "settle",
+        "value": "1500ms",
+        "purpose": "A closed line holds before the next waiting line is selected."
+      },
+      {
+        "name": "undo",
+        "value": "8000ms",
+        "purpose": "Undo window after a decision."
+      },
+      {
+        "name": "ambient",
+        "value": "4200ms",
+        "purpose": "Interval between simulated moves on handled lines."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "No packets, no lamp call, no round-land; cord transitions off.",
+        "purpose": "State changes only."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      },
+      {
+        "name": "container",
+        "value": "1440px"
+      },
+      {
+        "name": "reading-column",
+        "value": "56rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Your action. One per decision, placed last.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Approve</button>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:6px;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif;font-size:0.9375rem;font-weight:600;border:1px solid transparent;cursor:pointer;transition:background-color 150ms cubic-bezier(0.22,1,0.36,1),border-color 150ms cubic-bezier(0.22,1,0.36,1),color 150ms cubic-bezier(0.22,1,0.36,1)}.ds-btn:focus-visible{outline:2px solid var(--primary,#c94a0c);outline-offset:2px}.ds-btn-primary{background:var(--primary,#c94a0c);color:var(--on-primary,#fff)}.ds-btn-primary:hover{background:var(--primary-hover,#b03f08)}.ds-btn-primary:active{background:var(--primary-press,#973506)}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Neutral actions such as Return for edits.",
+      "html": "<button class=\"ds-btn2\">Return for edits</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:6px;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif;font-size:0.9375rem;font-weight:600;background:var(--surface,#fff);color:var(--ink,#16181c);border:1px solid var(--rule-strong,#b4b8c0);cursor:pointer;transition:background-color 150ms,border-color 150ms}.ds-btn2:hover{border-color:var(--ink-3,#5f6672);background:var(--surface-sunk,#f6f7f8)}.ds-btn2:focus-visible{outline:2px solid var(--primary,#c94a0c);outline-offset:2px}"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive actions (Void, Pause agent), always outlined.",
+      "html": "<button class=\"ds-btn-danger\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"m4.9 4.9 14.2 14.2\"/></svg>Void</button>",
+      "css": ".ds-btn-danger{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:6px;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif;font-size:0.9375rem;font-weight:600;background:var(--surface,#fff);color:var(--danger,#c42b2b);border:1px solid var(--rule-strong,#b4b8c0);cursor:pointer;transition:background-color 150ms,border-color 150ms}.ds-btn-danger:hover{border-color:var(--danger,#c42b2b);background:var(--danger-wash,#f9e1e1)}.ds-btn-danger:focus-visible{outline:2px solid var(--primary,#c94a0c);outline-offset:2px}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "text-field",
+      "description": "Label above, hint or error below.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-f\">Weekly spend limit</label><input id=\"ds-f\" class=\"ds-input\" value=\"2,500\"/><p>Your agent asks before going over.</p></div>",
+      "css": ".ds-field{display:flex;flex-direction:column;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif}.ds-field label{font-size:0.8125rem;font-weight:600;color:var(--ink,#16181c)}.ds-input{margin-top:6px;height:40px;padding:0 12px;border-radius:6px;border:1px solid var(--rule-strong,#b4b8c0);background:var(--surface,#fff);color:var(--ink,#16181c);font:inherit;font-size:0.9375rem;transition:border-color 150ms}.ds-input:hover{border-color:var(--ink-3,#5f6672)}.ds-input:focus-visible{border-color:var(--primary,#c94a0c);outline:2px solid var(--primary,#c94a0c);outline-offset:0}.ds-field p{margin:6px 0 0;font-size:0.75rem;color:var(--ink-3,#5f6672)}"
+    },
+    {
+      "name": "Owner Tabs",
+      "kind": "nav",
+      "refersTo": "nav-tab-active",
+      "description": "Lines / Ledger / Policy; the current tab carries a 2px orange underline.",
+      "html": "<nav class=\"ds-tabs\"><a href=\"#\" aria-current=\"page\">Lines</a><a href=\"#\">Ledger</a><a href=\"#\">Policy</a></nav>",
+      "css": ".ds-tabs{display:flex;gap:4px;height:56px;border-bottom:1px solid var(--rule,#dadce1);background:var(--panel,#eeeff1);padding:0 12px;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif}.ds-tabs a{display:inline-flex;align-items:center;padding:0 10px;margin-bottom:-1px;border-bottom:2px solid transparent;font-size:0.8125rem;font-weight:600;color:var(--ink-3,#5f6672);text-decoration:none;transition:color 150ms}.ds-tabs a:hover{color:var(--ink,#16181c)}.ds-tabs a[aria-current=page]{color:var(--ink,#16181c);border-bottom-color:var(--primary,#c94a0c)}.ds-tabs a:focus-visible{outline:2px solid var(--primary,#c94a0c);outline-offset:2px}"
+    },
+    {
+      "name": "Marks and Honest Tag",
+      "kind": "chip",
+      "refersTo": "mark-flag",
+      "description": "Word-plus-color status pills and the dashed honest-state tag.",
+      "html": "<div class=\"ds-marks\"><span class=\"ds-mark ds-pass\">Within policy</span><span class=\"ds-mark ds-flag\">Over limit</span><span class=\"ds-mark ds-neutral\">Private</span><span class=\"ds-tag\">Demo data</span></div>",
+      "css": ".ds-marks{display:flex;gap:8px;align-items:center;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif}.ds-mark{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:999px;font-size:0.75rem;font-weight:600}.ds-pass{color:var(--success,#2f7a4f);background:var(--success-wash,#e1f0e7)}.ds-flag{color:var(--primary-ink,#ad400a);background:var(--primary-wash,#fbe8dd)}.ds-neutral{color:var(--ink-2,#4d535e);background:var(--panel-raised,#e6e8eb)}.ds-tag{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:999px;border:1px dashed var(--ink-3,#5f6672);font-size:0.6875rem;font-weight:600;letter-spacing:0.04em;color:var(--ink-2,#4d535e)}"
+    },
+    {
+      "name": "Line Plate",
+      "kind": "card",
+      "refersTo": "line-plate",
+      "description": "A counterparty jack: other agent, for principal, task, status; socket on the cord side. Shown selected and waiting.",
+      "html": "<button class=\"ds-plate\" data-selected data-waiting><span class=\"ds-socket\"></span><span class=\"ds-row\"><b>Northfield Sales Agent</b><span class=\"ds-jack\">01</span></span><span class=\"ds-for\">for Northfield Dairy Co-op</span><span class=\"ds-task\">Restock oat milk, 40 cases</span><span class=\"ds-status\">Purchase order · needs your signature</span></button>",
+      "css": ".ds-plate{position:relative;display:flex;flex-direction:column;align-items:flex-start;width:312px;padding:10px 12px 10px 20px;border-radius:10px;border:1px solid var(--rule,#dadce1);background:var(--surface,#fff);text-align:left;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif;cursor:pointer;transition:border-color 200ms cubic-bezier(0.22,1,0.36,1)}.ds-plate:hover{border-color:var(--rule-strong,#b4b8c0)}.ds-plate[data-selected][data-waiting]{border-color:var(--live,#e8590c)}.ds-plate:focus-visible{outline:2px solid var(--primary,#c94a0c);outline-offset:2px}.ds-socket{position:absolute;left:-9px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:18px;height:18px;border-radius:999px;background:var(--panel,#eeeff1);box-shadow:inset 0 0 0 1.5px var(--live,#e8590c)}.ds-socket::after{content:'';width:8px;height:8px;border-radius:999px;background:var(--live,#e8590c);animation:ds-call 1.6s ease-in-out 3}@keyframes ds-call{50%{opacity:.35}}.ds-row{display:flex;width:100%;justify-content:space-between;gap:12px;font-size:0.8125rem;color:var(--ink,#16181c)}.ds-jack{font-family:var(--font-geist-mono),'Geist Mono',monospace;font-size:0.75rem;color:var(--ink-3,#5f6672)}.ds-for{font-size:0.75rem;color:var(--ink-3,#5f6672)}.ds-task{margin-top:4px;font-size:0.8125rem;color:var(--ink-2,#4d535e)}.ds-status{font-size:0.75rem;font-weight:600;color:var(--ink,#16181c)}"
+    },
+    {
+      "name": "Centre Rail",
+      "kind": "custom",
+      "refersTo": "round-key",
+      "description": "Rounds in twin columns around a rail of mono round keys; the latest key is ink.",
+      "html": "<ol class=\"ds-rail\"><li><span></span><span class=\"ds-key\">R1</span><span class=\"ds-cell\"><small>Quote</small><b>$23.10 / case</b></span></li><li><span class=\"ds-cell ds-us\"><small>Counter</small><b>$20.50 / case</b></span><span class=\"ds-key\">R2</span><span></span></li><li><span></span><span class=\"ds-key ds-last\">R3</span><span class=\"ds-cell\"><small>Counter</small><b>$21.60 / case</b></span></li></ol>",
+      "css": ".ds-rail{position:relative;list-style:none;margin:0;padding:0;width:420px;font-family:var(--font-hanken),'Hanken Grotesk',sans-serif}.ds-rail::before{content:'';position:absolute;top:0;bottom:0;left:50%;width:1px;background:var(--rule-strong,#b4b8c0)}.ds-rail li{position:relative;display:grid;grid-template-columns:1fr 40px 1fr;align-items:center;padding:6px 0}.ds-key{justify-self:center;display:grid;place-items:center;height:20px;min-width:28px;padding:0 4px;border-radius:999px;border:1px solid var(--rule-strong,#b4b8c0);background:var(--surface,#fff);font-family:var(--font-geist-mono),'Geist Mono',monospace;font-size:0.6875rem;color:var(--ink-3,#5f6672)}.ds-key.ds-last{border-color:var(--ink-3,#5f6672);color:var(--ink,#16181c)}.ds-cell{display:flex;flex-direction:column;padding-left:12px}.ds-cell.ds-us{align-items:flex-end;text-align:right;padding:0 12px 0 0}.ds-cell small{font-size:0.75rem;font-weight:600;color:var(--ink-3,#5f6672)}.ds-cell b{font-family:var(--font-geist-mono),'Geist Mono',monospace;font-size:0.8125rem;font-weight:400;color:var(--ink,#16181c)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Switchboard",
+    "overview": "Your agent is a live line on a switchboard. Every negotiation is a cord patched from its home jack to another agent's jack. Most cords run quietly on their own in graphite; the one line that needs the owner glows orange. The system exists so an owner can read, in one glance, how many agents theirs is talking to, which lines are handled, and which single line is waiting for them, then listen in and decide.\n\nThe world is quiet on purpose. A cool neutral panel (light grey; near-black graphite in dark) carries plain white or graphite working surfaces. Jacks are round sockets mounted on small name plates; cords are drawn bezier curves measured between real sockets; lamps are small dots; signal packets travel a cord when agents exchange a move. One humanist grotesque sets everything, and every figure, ID, jack number and amount is set in a tabular mono. Light and dark are equals: every token has both values, the OS preference wins by default, and a saved choice is applied before first paint.\n\nThis world replaced a dense paperwork metaphor that \"didn't feel agentic\" and had \"so much going on\". The patch field owns the screen and everything else recedes. Motion is a signal, not decoration: one packet travels at a time, state changes take 150 to 250ms, and reduced motion keeps the state changes and drops the packets.",
+    "keyCharacteristics": [
+      "Neutral panel, white or graphite surfaces, one orange that means \"waiting for you\".",
+      "Cords, sockets, lamps and packets are the only illustrative vocabulary; they are drawn from live layout, never decorative.",
+      "Hanken Grotesk for words, Geist Mono for every figure and identifier.",
+      "Flat surfaces with hairline rules; the home plate alone carries a soft lift.",
+      "Light and dark themes built as equals from one token set.",
+      "One travelling signal at a time."
+    ],
+    "rules": [
+      {
+        "name": "The One Orange Rule",
+        "body": "Orange as fill or stroke appears only on waiting cords and sockets, the selected waiting plate's border, the primary action, the active tab underline, and control affordances (focus ring, slider and meter fill). Status text, headings and round keys stay ink. Orange text (primary-ink) is reserved for flagged meaning.",
+        "section": "colors"
+      },
+      {
+        "name": "The Lamp Carries State Rule",
+        "body": "Plate status lines are ink-3 (waiting: ink, semibold); the lamp alone carries the state color. Words plus lamp, never color alone.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Primary Rule",
+        "body": "Each decision has exactly one primary button, and it is placed last.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Eyebrow Rule",
+        "body": "Nothing sits above a heading as a kicker or eyebrow. Uppercase label type is for column heads and figure labels only; section heads are sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono Means Figure Rule",
+        "body": "Every number, ID, time and jack number is set in Geist Mono with tabular figures; words never are.",
+        "section": "typography"
+      },
+      {
+        "name": "The Field Owns The Screen Rule",
+        "body": "The patch field is the largest region of the first viewport; everything else recedes into the bar, the panel or a footer line.",
+        "section": "layout"
+      },
+      {
+        "name": "The No Glow Rule",
+        "body": "No blurred colored halos, no smooth decorative gradients. The only gradient in the build is the hard-stop fill of a slider track.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** keep orange to waiting cords and sockets, the selected waiting plate border, the primary action, the active tab underline, and control affordances (focus, slider and meter fill).",
+      "**Do** keep plate status lines ink-3 (waiting: ink, semibold) and let the lamp alone carry state color.",
+      "**Do** order plate content as the other agent first, then \"for <principal>\", then the task, then the status.",
+      "**Do** run one travelling signal at a time, with state changes at 150 to 250ms on the signal ease (cubic-bezier(0.22, 1, 0.36, 1)).",
+      "**Do** order decision actions Void, Return for edits, Approve, with the single primary last and destructive actions outlined.",
+      "**Do** set every figure, ID, time and jack number in Geist Mono with tabular figures.",
+      "**Do** build every screen in light and dark together from the same tokens.",
+      "**Do** label demo data, sandbox payments and simulated activity with the dashed honest-state tag."
+    ],
+    "donts": [
+      "**Don't** put eyebrow labels or kickers above headings; uppercase label type is for column heads and figure labels only.",
+      "**Don't** color status text, headings or round keys orange.",
+      "**Don't** add glows, blurred colored halos or decorative gradients.",
+      "**Don't** nest cards inside cards; divide a working panel into bands with rules instead.",
+      "**Don't** run two packets on the board at once, or animate a cord that is not exchanging a move.",
+      "**Don't** draw meters as rings; limits are thin pill bars with figures.",
+      "**Don't** use pure black for text or the dark panel."
+    ]
+  }
+}

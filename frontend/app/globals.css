@@ -1,26 +1,509 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ------------------------------------------------------------------
+   armsquare tokens: the switchboard
+   panel    = the quiet field the jacks are mounted in
+   surface  = listen-in panels and plates
+   ink      = text; never pure black
+   cord     = a line your agent is handling on its own
+   primary  = live orange: the one line waiting for you, and your actions
+   ------------------------------------------------------------------ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+:root {
+  color-scheme: light;
+
+  --panel: #eeeff1;
+  --panel-raised: #e6e8eb;
+  --surface: #ffffff;
+  --surface-sunk: #f6f7f8;
+
+  --ink: #16181c;
+  --ink-2: #4d535e;
+  --ink-3: #5f6672;
+
+  --rule: #dadce1;
+  --rule-strong: #b4b8c0;
+  --cord: #7d838e;
+
+  --primary: #c94a0c;
+  --primary-hover: #b03f08;
+  --primary-press: #973506;
+  --primary-ink: #ad400a;
+  --on-primary: #ffffff;
+  --primary-wash: #fbe8dd;
+  --live: #e8590c;
+
+  --success: #2f7a4f;
+  --success-wash: #e1f0e7;
+  --danger: #c42b2b;
+  --danger-wash: #f9e1e1;
+  --info: #2b4c9b;
+  --info-wash: #e3e9f7;
+
+  --plate-shadow: 0 1px 2px rgb(22 24 28 / 0.06), 0 6px 18px -10px rgb(22 24 28 / 0.18);
+  --raised-shadow: 0 1px 2px rgb(22 24 28 / 0.08), 0 14px 32px -14px rgb(22 24 28 / 0.3);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --panel: #0f1012;
+    --panel-raised: #141518;
+    --surface: #17181b;
+    --surface-sunk: #131417;
+
+    --ink: #ecedef;
+    --ink-2: #b5b9c1;
+    --ink-3: #8d929c;
+
+    --rule: #2a2d33;
+    --rule-strong: #42464e;
+    --cord: #5e636c;
+
+    --primary: #ff7a30;
+    --primary-hover: #ff8c4d;
+    --primary-press: #e86a22;
+    --primary-ink: #ff8a47;
+    --on-primary: #1a1006;
+    --primary-wash: #3a2214;
+    --live: #ff7a30;
+
+    --success: #5cc08a;
+    --success-wash: #15291c;
+    --danger: #ff6b6b;
+    --danger-wash: #351b1c;
+    --info: #8fa8f0;
+    --info-wash: #1b2338;
+
+    --plate-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 8px 20px -12px rgb(0 0 0 / 0.8);
+    --raised-shadow: 0 1px 2px rgb(0 0 0 / 0.55), 0 16px 36px -14px rgb(0 0 0 / 0.85);
   }
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --panel: #0f1012;
+  --panel-raised: #141518;
+  --surface: #17181b;
+  --surface-sunk: #131417;
+
+  --ink: #ecedef;
+  --ink-2: #b5b9c1;
+  --ink-3: #8d929c;
+
+  --rule: #2a2d33;
+  --rule-strong: #42464e;
+  --cord: #5e636c;
+
+  --primary: #ff7a30;
+  --primary-hover: #ff8c4d;
+  --primary-press: #e86a22;
+  --primary-ink: #ff8a47;
+  --on-primary: #1a1006;
+  --primary-wash: #3a2214;
+  --live: #ff7a30;
+
+  --success: #5cc08a;
+  --success-wash: #15291c;
+  --danger: #ff6b6b;
+  --danger-wash: #351b1c;
+  --info: #8fa8f0;
+  --info-wash: #1b2338;
+
+  --plate-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 8px 20px -12px rgb(0 0 0 / 0.8);
+  --raised-shadow: 0 1px 2px rgb(0 0 0 / 0.55), 0 16px 36px -14px rgb(0 0 0 / 0.85);
+}
+
+@theme inline {
+  --color-panel: var(--panel);
+  --color-panel-raised: var(--panel-raised);
+  --color-surface: var(--surface);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+  --color-cord: var(--cord);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-press: var(--primary-press);
+  --color-primary-ink: var(--primary-ink);
+  --color-on-primary: var(--on-primary);
+  --color-primary-wash: var(--primary-wash);
+  --color-live: var(--live);
+  --color-success: var(--success);
+  --color-success-wash: var(--success-wash);
+  --color-danger: var(--danger);
+  --color-danger-wash: var(--danger-wash);
+  --color-info: var(--info);
+  --color-info-wash: var(--info-wash);
+
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Fixed product scale, ratio ~1.2 */
+  --text-label: 0.6875rem;
+  --text-label--line-height: 1rem;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.9375rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.625rem;
+  --text-xl: 1.375rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 2.125rem;
+
+  --radius-control: 6px;
+  --radius-plate: 10px;
+  --radius-panel: 14px;
+
+  --shadow-plate: var(--plate-shadow);
+  --shadow-raised: var(--raised-shadow);
+
+  --ease-signal: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------
+   Base: browser surfaces carry the system too
+   ------------------------------------------------------------------ */
+
+html {
+  background: var(--panel);
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  caret-color: var(--primary);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--live) 26%, transparent);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+a {
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule-strong) transparent;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* ------------------------------------------------------------------
+   Switchboard primitives
+   ------------------------------------------------------------------ */
+
+@layer components {
+  /* Small engraved label on a plate or panel */
+  .label-caps {
+    font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* Figures, IDs, jack numbers */
+  .figure {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* A name plate a jack is mounted on */
+  .plate {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-plate);
+    box-shadow: var(--plate-shadow);
+  }
+
+  /* Listen-in and other working surfaces */
+  .surface {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-panel);
+  }
+
+  /* The socket a cord plugs into, with its lamp */
+  .socket {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    flex: none;
+    border-radius: 999px;
+    background: var(--panel);
+    box-shadow: inset 0 0 0 1.5px var(--rule-strong);
+  }
+  .socket::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--lamp, var(--rule-strong));
+    transition: background-color 200ms var(--ease-signal);
+  }
+  .socket[data-lamp="talking"] {
+    --lamp: var(--ink-2);
+  }
+  .socket[data-lamp="waiting"] {
+    --lamp: var(--live);
+    box-shadow: inset 0 0 0 1.5px var(--live);
+  }
+  /* The selected waiting line calls three times, then holds steady. */
+  .socket[data-lamp="waiting"][data-selected]::after {
+    animation: lamp-call 1.6s ease-in-out 3;
+  }
+  .socket[data-lamp="closed"] {
+    --lamp: var(--success);
+  }
+  .socket[data-lamp="set"] {
+    --lamp: var(--live);
+    box-shadow: inset 0 0 0 1.5px var(--live);
+  }
+  .socket[data-lamp="off"] {
+    --lamp: transparent;
+  }
+
+  /* Small inline lamp dot for text rows */
+  .lamp {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 999px;
+    background: var(--lamp, var(--rule-strong));
+  }
+  .lamp[data-lamp="talking"] {
+    --lamp: var(--ink-2);
+  }
+  .lamp[data-lamp="waiting"] {
+    --lamp: var(--live);
+  }
+  .lamp[data-lamp="closed"] {
+    --lamp: var(--success);
+  }
+
+  /* Cords */
+  .cord {
+    fill: none;
+    stroke: var(--cord);
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    transition:
+      stroke 200ms var(--ease-signal),
+      stroke-width 200ms var(--ease-signal),
+      opacity 200ms var(--ease-signal);
+  }
+  .cord[data-state="waiting"] {
+    stroke: var(--live);
+    stroke-width: 2.5;
+  }
+  .cord[data-state="closed"] {
+    stroke-dasharray: 2 5;
+    opacity: 0.7;
+  }
+  .cord[data-selected="true"] {
+    stroke-width: 3.5;
+  }
+  .cord-dim {
+    opacity: 0.35;
+  }
+
+  /* A signal packet travelling along a cord */
+  .packet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 8px;
+    margin: -4px 0 0 -4px;
+    border-radius: 999px;
+    background: var(--ink);
+    box-shadow: 0 0 0 3px var(--panel);
+    offset-rotate: 0deg;
+    animation: packet-run var(--run, 650ms) var(--ease-signal) both;
+    pointer-events: none;
+  }
+  /* Their move travels back along the cord to your agent */
+  .packet[data-dir="in"] {
+    animation-direction: reverse;
+  }
+  .packet[data-tone="closed"] {
+    background: var(--success);
+  }
+
+  /* Errand log: the signal that runs down to a new step */
+  .signal-drop {
+    position: absolute;
+    left: -0.5px;
+    top: 0.3125rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--ink);
+    box-shadow: 0 0 0 3px var(--panel);
+    animation: signal-drop 420ms var(--ease-signal) both;
+    pointer-events: none;
+  }
+
+  /* Ledger rows */
+  .ledger {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+  }
+  .ledger th {
+    text-align: left;
+    padding: 0.5rem 0.875rem;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  .ledger td {
+    padding: 0.625rem 0.875rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .ledger tr:last-child td {
+    border-bottom: 0;
+  }
+  .ledger .num {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* Live readout range input */
+  .limit-range {
+    appearance: none;
+    width: 100%;
+    height: 22px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .limit-range::-webkit-slider-runnable-track {
+    height: 4px;
+    background: linear-gradient(
+      to right,
+      var(--primary) 0 var(--fill, 50%),
+      var(--rule-strong) var(--fill, 50%) 100%
+    );
+    border-radius: 999px;
+  }
+  .limit-range::-moz-range-track {
+    height: 4px;
+    background: var(--rule-strong);
+    border-radius: 999px;
+  }
+  .limit-range::-moz-range-progress {
+    height: 4px;
+    background: var(--primary);
+    border-radius: 999px;
+  }
+  .limit-range::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-top: -7px;
+    border-radius: 999px;
+    background: var(--surface);
+    box-shadow: inset 0 0 0 2px var(--primary), 0 1px 3px rgb(0 0 0 / 0.2);
+  }
+  .limit-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--primary);
+    border-radius: 999px;
+    background: var(--surface);
+  }
+}
+
+@keyframes lamp-call {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+/* A signal runs down the errand log's cord to the step that just landed */
+@keyframes signal-drop {
+  from {
+    translate: 0 -2.5rem;
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  to {
+    translate: 0 0;
+    opacity: 0;
+  }
+}
+
+@keyframes round-land {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
+}
+
+@keyframes packet-run {
+  from {
+    offset-distance: 0%;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  to {
+    offset-distance: 100%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .socket[data-lamp="waiting"][data-selected]::after,
+  [class*="round-land"] {
+    animation: none;
+  }
+  .packet,
+  .signal-drop {
+    display: none;
+  }
+  .cord {
+    transition: none;
+  }
 }
