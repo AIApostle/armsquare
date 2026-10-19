@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRight, Check, CircleAlert, CircleX, Send } from "lucide-react";
+import { ArrowRight, Check, ChevronDown, CircleCheck, CircleX, Send } from "lucide-react";
 import {
   api,
   type Business,
@@ -15,22 +15,13 @@ import {
 } from "@/lib/api";
 import { cx, formatDay, formatTime, money, moneyWhole } from "@/lib/format";
 import { Button } from "@/components/ui/button";
-import { LampLabel, Verified } from "@/components/ui/mark";
+import { Status, Verified } from "@/components/ui/mark";
+import { ErrorNotice } from "@/components/ui/notice";
+import { PictoRow, signUnit } from "@/components/ui/picto";
 import { constraintText, roundText } from "./text";
 
-const plan = [
-  "Read your request and your rules",
-  "Search the market for businesses that can do it",
-  "Ask their agents for quotes",
-  "Negotiate inside your limits",
-  "Bring back offers, and ask you before buying",
-];
-
-/** Steps shown before "Show all" on narrow screens. */
-const LOG_PEEK = 3;
-
-export function Errand({ businesses, suggestions }: { businesses: Business[]; suggestions: string[] }) {
-  // A business page can hand over a starting request (?ask=...); the shopper still sends it.
+export function Errand({ businesses }: { businesses: Business[] }) {
+  // A shop page can hand over a starting request (?ask=...); the shopper still sends it.
   const handedOver = useSearchParams().get("ask") ?? "";
   const [request, setRequest] = useState(handedOver);
   const [settings, setSettings] = useState<CustomerAgentSettings | null>(null);
@@ -44,7 +35,6 @@ export function Errand({ businesses, suggestions }: { businesses: Business[]; su
   const [approving, setApproving] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showAll, setShowAll] = useState(false);
   const unsubscribe = useRef<(() => void) | null>(null);
 
   // The shopper's own rules are read in the browser, where their session lives.
@@ -53,7 +43,7 @@ export function Errand({ businesses, suggestions }: { businesses: Business[]; su
     api
       .getAgentSettings()
       .then((s) => live && setSettings(s))
-      .catch(() => live && setError("Couldn't load your agent's rules. Errands still use them on the server."));
+      .catch(() => live && setError("We couldn't load your assistant's rules. It still follows them when it shops."));
     return () => {
       live = false;
       unsubscribe.current?.();
@@ -72,7 +62,6 @@ export function Errand({ businesses, suggestions }: { businesses: Business[]; su
     setOffers({});
     setOrder(null);
     setApprovedId(null);
-    setShowAll(false);
     setSentRequest(value);
     try {
       const errand = await api.startErrand(value);
@@ -89,13 +78,13 @@ export function Errand({ businesses, suggestions }: { businesses: Business[]; su
         },
         () => {
           setStatus("failed");
-          setError("Lost the connection to your agent. Its work continues; reload to catch up.");
+          setError("We lost touch with your assistant. It keeps working; reload the page to catch up.");
         },
       );
     } catch {
       setErrandId(null);
       setStatus(null);
-      setError("Your agent couldn't start this errand. Check your connection and send it again.");
+      setError("Your assistant couldn't start. Check your internet connection and try again.");
     } finally {
       setStarting(false);
     }
@@ -110,7 +99,7 @@ export function Errand({ businesses, suggestions }: { businesses: Business[]; su
       setApprovedId(offer.id);
       setOrder(placed);
     } catch {
-      setError("The approval didn't go through, so nothing was bought. Try Approve again.");
+      setError("That didn't go through, so nothing was bought. Please try again.");
     } finally {
       setApproving(null);
     }
@@ -126,31 +115,29 @@ export function Errand({ businesses, suggestions }: { businesses: Business[]; su
     events.flatMap((e) => e.constraints ?? []).find((c) => c.kind === "budget")?.max.amount ??
     settings?.errandBudget.amount ??
     Infinity;
-  const last = events[events.length - 1];
-  const hiddenOnMobile = !showAll && events.length > LOG_PEEK ? events.length - LOG_PEEK : 0;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-10">
       {/* Ask */}
-      <section aria-labelledby="ask-heading">
-        <h1 id="ask-heading" className="text-2xl font-bold tracking-[-0.02em] text-ink">
-          What should your agent get?
+      <section aria-labelledby="ask-heading" className="mx-auto w-full max-w-3xl text-center">
+        <h1 id="ask-heading" className="text-2xl font-bold text-ink sm:text-[2.5rem] sm:leading-tight">
+          What do you need?
         </h1>
-        <p className="mt-1 min-h-5 text-sm text-ink-2">
+        <p className="mx-auto mt-2 min-h-6 max-w-[52ch] text-lg text-ink-2">
           {settings ? (
             <>
-              {settings.agentName} shops for you, up to {moneyWhole(settings.errandBudget.amount)} an errand, and asks
-              before buying anything over {moneyWhole(settings.autoApproveUnder.amount)}.{" "}
-              <Link href="/market/agent" className="font-semibold text-ink underline decoration-rule-strong hover:decoration-ink">
-                Change its rules
+              {settings.agentName} shops for you, spends up to {moneyWhole(settings.errandBudget.amount)} at a
+              time, and asks before buying anything over {moneyWhole(settings.autoApproveUnder.amount)}.{" "}
+              <Link href="/market/agent" className="font-medium text-info underline">
+                Change this
               </Link>
             </>
-          ) : (
-            <span className="inline-block h-4 w-96 max-w-full animate-pulse rounded bg-panel-raised" aria-hidden />
+          ) : error ? null : (
+            <span className="inline-block h-5 w-96 max-w-full animate-pulse rounded-full bg-panel-raised" aria-hidden />
           )}
         </p>
         <form
-          className="surface mt-4 flex flex-col gap-3 p-3 sm:flex-row sm:items-center"
+          className="card mt-6 flex flex-col gap-2 p-2 sm:flex-row sm:items-center"
           onSubmit={(e) => {
             e.preventDefault();
             send(request);
@@ -163,180 +150,219 @@ export function Errand({ businesses, suggestions }: { businesses: Business[]; su
             id="errand-input"
             value={request}
             onChange={(e) => setRequest(e.target.value)}
-            placeholder="e.g. 6 gift hampers for clients, under $480, delivered by Friday"
+            placeholder="e.g. 2 loaves, under $15, by Saturday"
             autoComplete="off"
-            className="h-11 min-w-0 flex-1 rounded-control bg-transparent px-2 text-base text-ink placeholder:text-ink-3 focus-visible:outline-offset-0"
+            className="h-14 min-w-0 flex-1 rounded-control bg-transparent px-4 text-lg text-ink placeholder:text-ink-3 focus-visible:outline-offset-0"
           />
           <Button
             type="submit"
-            variant="secondary"
+            variant="primary"
+            size="lg"
             loading={starting}
             disabled={!request.trim()}
-            icon={<Send aria-hidden className="size-4" strokeWidth={2} />}
+            icon={<Send aria-hidden className="size-5" strokeWidth={2.25} />}
           >
-            Send my agent
+            Ask my assistant
           </Button>
         </form>
-        <div className="mt-3 flex flex-wrap items-center gap-2">
-          <span className="text-xs text-ink-3">Try:</span>
-          {suggestions.map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => {
-                setRequest(s);
-                send(s);
-              }}
-              className="rounded-full border border-rule bg-surface px-3 py-1 text-left text-sm text-ink-2 transition-colors duration-150 hover:border-rule-strong hover:text-ink"
-            >
-              {s}
-            </button>
-          ))}
-        </div>
-        {error && (
-          <p role="alert" className="mt-4 flex items-start gap-2 rounded-control border border-danger bg-danger-wash px-3 py-2 text-sm text-ink">
-            <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-danger" strokeWidth={2} />
-            {error}
-          </p>
-        )}
+        {error && <ErrorNotice className="mt-4 text-left">{error}</ErrorNotice>}
       </section>
 
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)]">
-        {/* Errand log */}
-        <section aria-labelledby="log-heading" className="order-2 min-w-0 lg:order-0">
-          <div className="flex items-baseline justify-between gap-3">
-            <h2 id="log-heading" className="text-lg font-bold text-ink">
-              {errandId ? "Your agent's errand" : "What your agent will do"}
-            </h2>
-            {errandId && status && (
-              <LampLabel state={running ? "talking" : status === "awaiting_approval" ? "waiting" : "closed"}>
-                {running
-                  ? "Working"
-                  : status === "awaiting_approval"
-                    ? "Back with offers"
-                    : status === "ordered"
-                      ? "Ordered"
-                      : status === "failed"
-                        ? "Connection lost"
-                        : "Finished"}
-              </LampLabel>
-            )}
-          </div>
-          {sentRequest && <p className="mt-1 text-sm text-ink-3">&ldquo;{sentRequest}&rdquo;</p>}
+      {errandId ? (
+        <>
+          <Progress
+            request={sentRequest}
+            events={events}
+            status={status}
+            offers={sorted.length}
+          />
 
-          <ol className="relative mt-4" aria-live="polite">
-            <span aria-hidden className="absolute top-2 bottom-2 left-[2.5px] w-[1.75px] rounded-full bg-cord" />
-            {errandId
-              ? events.map((e, i) => {
-                  const waitingHere = e.kind === "recommend" && status === "awaiting_approval";
-                  return (
-                    <li
-                      key={e.id}
-                      className={cx(
-                        "relative animate-[round-land_260ms_var(--ease-signal)_both] pb-4 pl-6",
-                        i < hiddenOnMobile && "max-lg:hidden",
-                      )}
-                    >
-                      {e === last && <span className="signal-drop" aria-hidden />}
-                      <span
-                        aria-hidden
-                        className="socket absolute top-0.5 -left-1.5 scale-[0.6]"
-                        data-lamp={
-                          waitingHere
-                            ? "set"
-                            : e === last && running
-                              ? "talking"
-                              : e.kind === "payment" || e.kind === "approved" || e.kind === "accept"
-                                ? "closed"
-                                : "off"
-                        }
-                      />
-                      <div className="flex gap-3">
-                        <span className="figure w-11 shrink-0 pt-px text-xs text-ink-3">{formatTime(e.at)}</span>
-                        <div className="min-w-0">
-                          <p className={cx("text-sm", e.kind === "decline" ? "text-ink-2" : "text-ink", waitingHere && "font-semibold")}>
-                            {e.text}
-                          </p>
-                          {e.constraints && (
-                            <ul className="mt-2 flex flex-wrap gap-1.5">
-                              {e.constraints.map((c, j) => {
-                                const t = constraintText(c);
-                                return (
-                                  <li key={j} className="rounded-full border border-rule bg-surface px-2.5 py-0.5 text-xs text-ink-2">
-                                    <span className="text-ink-3">{t.label}:</span>{" "}
-                                    <span className="font-semibold text-ink">{t.value}</span>
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          )}
-                        </div>
-                      </div>
-                    </li>
-                  );
-                })
-              : plan.map((p, i) => (
-                  <li key={p} className="relative pb-4 pl-6">
-                    <span aria-hidden className="socket absolute top-0.5 -left-1.5 scale-[0.6]" data-lamp="off" />
-                    <div className="flex gap-3">
-                      <span className="figure w-11 shrink-0 pt-px text-xs text-ink-3">{i + 1}</span>
-                      <p className="text-sm text-ink-2">{p}</p>
-                    </div>
+          <section aria-labelledby="offers-heading">
+            <h2 id="offers-heading" className="text-xl font-bold text-ink">
+              {sorted.length === 0 ? "Offers will show up here" : sorted.length === 1 ? "1 offer" : `${sorted.length} offers`}
+            </h2>
+            {sorted.length === 0 ? (
+              <p className="mt-2 text-base text-ink-2">As shops send prices, your assistant lines them up here, best first.</p>
+            ) : (
+              <ul className="mt-4 grid gap-4 lg:grid-cols-2">
+                {sorted.map((o) => (
+                  <li key={o.id} className={cx(o.recommended && "lg:col-span-2")}>
+                    <OfferCard
+                      offer={o}
+                      business={byId[o.businessId]}
+                      budget={budget}
+                      order={order && approvedId === o.id ? order : null}
+                      ordered={ordered}
+                      running={running}
+                      approving={approving === o.id}
+                      onApprove={() => approve(o)}
+                    />
                   </li>
                 ))}
-            {running && (
-              <li className="relative pl-6 text-sm text-ink-3">
-                <span aria-hidden className="socket absolute top-0.5 -left-1.5 scale-[0.6] animate-pulse" data-lamp="talking" />
-                <span className="ml-14">Working…</span>
-              </li>
+              </ul>
             )}
-          </ol>
-          {hiddenOnMobile > 0 && (
-            <button
-              type="button"
-              onClick={() => setShowAll(true)}
-              className="mt-1 text-sm font-semibold text-ink-2 underline decoration-rule-strong hover:text-ink lg:hidden"
-            >
-              Show all {events.length} steps
-            </button>
-          )}
-        </section>
-
-        {/* Offers: first on narrow screens, where the decision has to be reachable */}
-        <section aria-labelledby="offers-heading" className="order-1 min-w-0 lg:order-0">
-          <div className="flex items-baseline justify-between gap-3">
-            <h2 id="offers-heading" className="text-lg font-bold text-ink">
-              Offers
-            </h2>
-            <span className="figure text-xs text-ink-3">{sorted.length}</span>
-          </div>
-          {sorted.length === 0 ? (
-            <div className="mt-4 rounded-panel border border-dashed border-rule-strong px-5 py-8 text-sm text-ink-3">
-              {errandId
-                ? "Quotes from business agents land here as they arrive."
-                : "Send your agent on an errand and the offers it gathers will line up here, best fit first."}
-            </div>
-          ) : (
-            <ul className="mt-4 flex flex-col gap-3">
-              {sorted.map((o) => (
-                <li key={o.id}>
-                  <OfferCard
-                    offer={o}
-                    business={byId[o.businessId]}
-                    budget={budget}
-                    order={order && approvedId === o.id ? order : null}
-                    ordered={ordered}
-                    running={running}
-                    approving={approving === o.id}
-                    onApprove={() => approve(o)}
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-      </div>
+          </section>
+        </>
+      ) : (
+        <HowItGoes />
+      )}
     </div>
+  );
+}
+
+/** Before the first request: the same picture strip the errand fills in, still empty. */
+function HowItGoes() {
+  return (
+    <section aria-labelledby="how-heading">
+      <h2 id="how-heading" className="text-xl font-bold text-ink">
+        What your assistant will do
+      </h2>
+      <p className="mt-1 text-base text-ink-2">These fill in as it works, and it asks you before buying anything big.</p>
+      <CountStrip shops={0} quotes={0} offers={0} onGround />
+    </section>
+  );
+}
+
+/** Shops asked, prices back and offers ready, counted on one baseline. */
+function CountStrip({
+  shops,
+  quotes,
+  offers,
+  haggles = 0,
+  offerTone = "assistant",
+  onGround = false,
+}: {
+  shops: number;
+  quotes: number;
+  offers: number;
+  haggles?: number;
+  offerTone?: "assistant" | "waiting" | "done";
+  /** On the page ground the tiles are cards; inside a card they are sunk bands. */
+  onGround?: boolean;
+}) {
+  return (
+    <ol className="mt-6 grid gap-3 sm:grid-cols-3" aria-live="polite">
+      <Count onGround={onGround} label={shops === 1 ? "shop asked" : "shops asked"} value={shops}>
+        <PictoRow name="shop" total={Math.max(shops, 1)} filled={shops} tone="assistant" label={`${shops} shops asked`} animate />
+      </Count>
+      <Count
+        onGround={onGround}
+        label={quotes === 1 ? "price back" : "prices back"}
+        value={quotes}
+        note={haggles > 0 ? `after ${haggles} ${haggles === 1 ? "round" : "rounds"} of haggling` : undefined}
+      >
+        <PictoRow name="tag" total={Math.max(quotes, 1)} filled={quotes} tone="assistant" label={`${quotes} prices back`} animate />
+      </Count>
+      <Count onGround={onGround} label={offers === 1 ? "offer for you" : "offers for you"} value={offers}>
+        <PictoRow name="box" total={Math.max(offers, 1)} filled={offers} tone={offerTone} label={`${offers} offers for you`} animate />
+      </Count>
+    </ol>
+  );
+}
+
+/** The errand so far, counted in pictures, with every step one tap away. */
+function Progress({
+  request,
+  events,
+  status,
+  offers,
+}: {
+  request: string;
+  events: ErrandEvent[];
+  status: ErrandStatus | null;
+  offers: number;
+}) {
+  const running = status === "running";
+  const constraints = events.flatMap((e) => e.constraints ?? []);
+  const shops = new Set(events.filter((e) => e.businessId && e.kind !== "decline").map((e) => e.businessId)).size;
+  const quotes = new Set(events.filter((e) => e.kind === "quote").map((e) => e.businessId)).size;
+  const haggles = events.filter((e) => e.kind === "counter").length;
+
+  const statusText = running
+    ? "Working on it…"
+    : status === "awaiting_approval"
+      ? "Back with offers for you"
+      : status === "ordered"
+        ? "Ordered"
+        : status === "failed"
+          ? "Lost connection"
+          : "Finished";
+
+  return (
+    <section aria-labelledby="progress-heading" className="card p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 id="progress-heading" className="text-xl font-bold text-ink">
+          &ldquo;{request}&rdquo;
+        </h2>
+        <Status
+          tone={running ? "assistant" : status === "awaiting_approval" ? "waiting" : status === "failed" ? "stopped" : "done"}
+        >
+          {statusText}
+        </Status>
+      </div>
+
+      {constraints.length > 0 && (
+        <ul className="mt-4 flex flex-wrap gap-2">
+          {constraints.map((c, i) => {
+            const t = constraintText(c);
+            return (
+              <li key={i} className="rounded-full bg-info-wash px-3 py-1 text-sm text-ink">
+                <span className="text-ink-2">{t.label}:</span> <span className="font-medium">{t.value}</span>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      <CountStrip
+        shops={shops}
+        quotes={quotes}
+        offers={offers}
+        haggles={haggles}
+        offerTone={status === "ordered" ? "done" : status === "awaiting_approval" ? "waiting" : "assistant"}
+      />
+
+      {events.length > 0 && (
+        <details className="group mt-6">
+          <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-base font-medium text-info [&::-webkit-details-marker]:hidden">
+            See every step ({events.length})
+            <ChevronDown aria-hidden className="size-4 transition-transform group-open:rotate-180" strokeWidth={2.25} />
+          </summary>
+          <ol className="mt-3 flex flex-col gap-2">
+            {events.map((e) => (
+              <li key={e.id} className="flex gap-4 text-base">
+                <span className="figure w-12 shrink-0 text-ink-3">{formatTime(e.at)}</span>
+                <span className={e.kind === "decline" ? "text-ink-2" : "text-ink"}>{e.text}</span>
+              </li>
+            ))}
+          </ol>
+        </details>
+      )}
+    </section>
+  );
+}
+
+function Count({
+  label,
+  value,
+  note,
+  onGround = false,
+  children,
+}: {
+  label: string;
+  value: number;
+  note?: string;
+  onGround?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <li className={cx("flex flex-col justify-end gap-2 p-4", onGround ? "card" : "rounded-[14px] bg-surface-sunk")}>
+      <div className="flex min-h-7 items-end">{children}</div>
+      <p className="text-base text-ink-2">
+        <span className="figure text-xl font-bold text-ink">{value}</span> {label}
+        {note && <span className="block text-sm text-ink-3">{note}</span>}
+      </p>
+    </li>
   );
 }
 
@@ -355,7 +381,7 @@ function OfferCard({
   budget: number;
   order: Order | null;
   ordered: boolean;
-  /** Offers can't be approved until the agent is back with all of them. */
+  /** Offers can't be bought until the assistant is back with all of them. */
   running: boolean;
   approving: boolean;
   onApprove: () => void;
@@ -363,106 +389,122 @@ function OfferCard({
   const waiting = !!offer.recommended && !ordered && !running;
   const overBudget = offer.total.amount > budget;
   const canApprove = !running && !ordered && !overBudget && offer.status !== "negotiating";
+  const name = business?.name ?? "A shop";
+  const items = offer.lines.reduce((n, l) => n + l.qty, 0);
+  const itemUnit = items <= 24 ? 1 : signUnit(items, 24);
+
   return (
     <article
       className={cx(
-        "surface animate-[round-land_260ms_var(--ease-signal)_both] overflow-hidden",
-        waiting && "border-live",
-        order && "border-success",
+        "card animate-[land_260ms_var(--ease-signal)_both] overflow-hidden",
+        waiting && "ring-3 ring-live",
+        order && "ring-3 ring-success",
       )}
-      aria-label={`Offer from ${business?.name ?? offer.businessId}`}
+      aria-label={`Offer from ${name}`}
     >
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-2 px-4 pt-3.5 pb-3">
+      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 p-6">
         <div className="min-w-0">
-          <h3 className="text-base font-bold text-ink">
-            {business ? (
-              <Link href={`/market/business/${business.id}`} className="hover:underline">
-                {business.name}
-              </Link>
-            ) : (
-              offer.businessId
-            )}
-          </h3>
-          <p className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs text-ink-3">
-            <span>via {business?.agent.name}</span>
-            {business && <Verified verified={business.verification === "verified"} />}
-          </p>
-          {(waiting || order || (offer.recommended && ordered)) && (
-            <p className="mt-1.5">
-              <LampLabel state={order ? "closed" : waiting ? "waiting" : "talking"}>
-                {order ? "Ordered" : waiting ? "Your agent's pick · waiting for you" : "Your agent's pick"}
-              </LampLabel>
+          {offer.recommended && (
+            <p className="mb-2">
+              <Status tone={order ? "done" : waiting ? "waiting" : "assistant"}>
+                {order ? "You bought this" : "Your assistant's pick"}
+              </Status>
             </p>
           )}
+          <h3 className="text-xl font-bold text-ink">
+            {business ? (
+              <Link href={`/market/business/${business.id}`} className="hover:underline">
+                {name}
+              </Link>
+            ) : (
+              name
+            )}
+          </h3>
+          <p className="mt-1 text-base text-ink-2">{offer.summary}</p>
+          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+            {business && <Verified verified={business.verification === "verified"} />}
+          </div>
         </div>
         <div className="text-right">
-          <div className="figure text-xl font-semibold tracking-[-0.02em] text-ink">{money(offer.total.amount)}</div>
-          <div className="text-xs text-ink-3">Delivered {formatDay(offer.deliveryBy)}</div>
+          <div className="figure text-[2rem] leading-tight font-bold text-ink">{money(offer.total.amount)}</div>
+          <div className="text-base text-ink-2">Arrives {formatDay(offer.deliveryBy)}</div>
         </div>
       </div>
 
-      <div className="flex flex-col gap-3 border-t border-rule px-4 py-3 sm:flex-row sm:items-start sm:justify-between">
-        <ul className="flex flex-col gap-1">
+      {items > 0 && (
+        <div className="px-6">
+          <PictoRow
+            name="box"
+            total={Math.ceil(items / itemUnit)}
+            filled={Math.ceil(items / itemUnit)}
+            tone="ink"
+            size="size-5"
+            label={`${items} items`}
+          />
+          {itemUnit > 1 && <p className="mt-1 text-sm text-ink-3">Each box = {itemUnit} items</p>}
+        </div>
+      )}
+
+      <div className="flex flex-col gap-4 px-6 py-5 sm:flex-row sm:items-start sm:justify-between">
+        <ul className="flex flex-col gap-1.5">
           {offer.fit.map((f) => (
-            <li key={f.label} className="flex items-center gap-2 text-sm">
+            <li key={f.label} className="flex items-center gap-2 text-base">
               {f.ok ? (
-                <Check aria-hidden className="size-4 text-success" strokeWidth={2.5} />
+                <Check aria-hidden className="size-5 text-success" strokeWidth={2.5} />
               ) : (
-                <CircleX aria-hidden className="size-4 text-ink-3" strokeWidth={2} />
+                <CircleX aria-hidden className="size-5 text-ink-3" strokeWidth={2} />
               )}
               <span className={f.ok ? "text-ink" : "text-ink-2"}>
-                <span className="sr-only">{f.ok ? "Meets: " : "Misses: "}</span>
+                <span className="sr-only">{f.ok ? "Good: " : "Not quite: "}</span>
                 {f.label}
               </span>
             </li>
           ))}
         </ul>
-        <details className="text-sm sm:max-w-68">
-          <summary className="cursor-pointer list-none text-ink-2 hover:text-ink [&::-webkit-details-marker]:hidden">
-            <span className="figure">{offer.rounds.length}</span> round{offer.rounds.length === 1 ? "" : "s"} ·{" "}
-            {offer.status === "negotiating" ? "still negotiating" : "final terms"}
-          </summary>
-          <ol className="mt-2 flex flex-col gap-1">
-            {offer.rounds.map((r, i) => (
-              <li key={i} className="flex gap-2 text-xs">
-                <span className="figure w-6 text-ink-3">R{i + 1}</span>
-                <span className="w-20 shrink-0 text-ink-3">{r.from === "us" ? "Your agent" : "Their agent"}</span>
-                <span className="text-ink">{roundText(r)}</span>
-              </li>
-            ))}
-          </ol>
-        </details>
+        {offer.rounds.length > 0 && (
+          <details className="group text-base sm:max-w-80">
+            <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 font-medium text-info [&::-webkit-details-marker]:hidden">
+              How the haggling went
+              <ChevronDown aria-hidden className="size-4 transition-transform group-open:rotate-180" strokeWidth={2.25} />
+            </summary>
+            <ol className="mt-2 flex flex-col gap-1">
+              {offer.rounds.map((r, i) => (
+                <li key={i} className="text-ink-2">
+                  {roundText(r)}
+                </li>
+              ))}
+            </ol>
+          </details>
+        )}
       </div>
 
-      {(order || canApprove) && (
-        <div className="flex flex-col gap-3 border-t border-rule bg-surface-sunk px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+      {(order || canApprove || (overBudget && !ordered && !running)) && (
+        <div className="flex flex-col gap-3 bg-surface-sunk px-6 py-4 sm:flex-row sm:items-center sm:justify-between">
           {order ? (
-            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink-2" aria-live="polite">
-              <span aria-hidden className="lamp" data-lamp={order.payment === "confirmed" ? "closed" : "talking"} />
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-base text-ink" aria-live="polite">
+              <CircleCheck aria-hidden className="size-5 text-success" strokeWidth={2.25} />
               {order.payment === "confirmed"
-                ? `Order ${order.id} · payment confirmed by provider (sandbox)`
-                : `Order ${order.id} placed · payment pending with provider`}
-              <Link href="/market/orders" className="inline-flex items-center gap-0.5 font-semibold text-ink hover:underline">
-                Orders <ArrowRight aria-hidden className="size-3.5" strokeWidth={2} />
+                ? `Ordered and paid${order.sandbox ? " (test payment)" : ""}.`
+                : "Ordered. We'll show it as paid once the payment goes through."}
+              <Link href="/market/orders" className="inline-flex items-center gap-1 font-medium text-info hover:underline">
+                See your orders <ArrowRight aria-hidden className="size-4" strokeWidth={2.25} />
               </Link>
             </p>
-          ) : (
+          ) : canApprove ? (
             <>
-              <p className="text-xs text-ink-2">
-                Approving buys exactly these terms for{" "}
-                <span className="figure font-semibold text-ink">{money(offer.total.amount)}</span>. Payment runs in sandbox.
-              </p>
+              <p className="text-base text-ink-2">You&apos;ll pay exactly {money(offer.total.amount)}.</p>
               <Button
                 variant={offer.recommended ? "primary" : "secondary"}
-                size="sm"
                 loading={approving}
                 onClick={onApprove}
-                icon={<Check aria-hidden className="size-4" strokeWidth={2.5} />}
+                icon={<Check aria-hidden className="size-5" strokeWidth={2.5} />}
                 className="shrink-0"
               >
-                {offer.recommended ? "Approve" : "Approve this instead"}
+                Buy for {money(offer.total.amount)}
               </Button>
             </>
+          ) : (
+            <p className="text-base text-ink-2">This is over your budget, so your assistant won&apos;t buy it.</p>
           )}
         </div>
       )}

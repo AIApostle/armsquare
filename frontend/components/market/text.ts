@@ -1,32 +1,41 @@
 import type { ErrandConstraint, OfferRound } from "@/lib/api";
 import { formatDay, money, moneyWhole } from "@/lib/format";
 
-const roundVerb: Record<OfferRound["kind"], string> = {
-  quote: "Quote",
-  ask: "Asked",
-  offer: "Offered",
-  counter: "Counter",
-  accept: "Accepted",
-};
-
-/** "Quote $79.00 × 6", "Asked 18% off", "Quote $85.00 × 6 + $25.00" */
+/** One haggling move in plain words, from your assistant's side or the shop's. */
 export function roundText(r: OfferRound) {
-  const parts = [roundVerb[r.kind]];
-  if (r.unitPrice) parts.push(r.quantity ? `${money(r.unitPrice.amount)} × ${r.quantity}` : money(r.unitPrice.amount));
-  if (r.percentOff !== undefined) parts.push(`${r.percentOff}% off`);
-  if (r.fee) parts.push(`+ ${money(r.fee.amount)}`);
-  return parts.join(" ");
+  const who = r.from === "us" ? "Your assistant" : "The shop";
+  const price = r.unitPrice
+    ? r.quantity
+      ? `${money(r.unitPrice.amount)} each for ${r.quantity}`
+      : money(r.unitPrice.amount)
+    : null;
+  const off = r.percentOff !== undefined ? `${r.percentOff}% off` : null;
+  const fee = r.fee ? `plus ${money(r.fee.amount)} delivery` : null;
+  const what = [price, off, fee].filter(Boolean).join(", ");
+  switch (r.kind) {
+    case "quote":
+      return `${who} quoted ${what}`;
+    case "ask":
+      return `${who} asked for ${what || "a better price"}`;
+    case "offer":
+      return `${who} offered ${what}`;
+    case "counter":
+      return `${who} suggested ${what}`;
+    case "accept":
+      return `${who} agreed${what ? ` to ${what}` : ""}`;
+  }
 }
 
+/** What the assistant understood from the request, as a short chip. */
 export function constraintText(c: ErrandConstraint): { label: string; value: string } {
   switch (c.kind) {
     case "item":
-      return { label: "Item", value: c.quantity > 1 ? `${c.quantity} ${c.text}` : c.text };
+      return { label: "What", value: c.quantity > 1 ? `${c.quantity} ${c.text}` : c.text };
     case "budget":
-      return { label: "Budget", value: `Under ${moneyWhole(c.max.amount)}` };
+      return { label: "Budget", value: `up to ${moneyWhole(c.max.amount)}` };
     case "deadline":
-      return { label: "Deliver by", value: formatDay(c.by) };
+      return { label: "By", value: formatDay(c.by) };
     case "sellers":
-      return { label: "Sellers", value: c.verifiedOnly ? "Verified only" : "Any" };
+      return { label: "Shops", value: c.verifiedOnly ? "checked shops only" : "any shop" };
   }
 }

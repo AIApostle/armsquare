@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Check, CircleAlert, Plus, X } from "lucide-react";
+import { Check, Plus, X } from "lucide-react";
 import { api, type CustomerAgentSettings } from "@/lib/api";
 import { cx, moneyWhole } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@/components/ui/field";
-import { LimitControl, LimitMeter } from "@/components/ui/limit";
+import { CoinMeter, LimitControl } from "@/components/ui/limit";
+import { ErrorNotice } from "@/components/ui/notice";
+import { Picto } from "@/components/ui/picto";
 
 const usd = (amount: number) => ({ amount, currency: "USD" as const });
 
@@ -28,24 +30,23 @@ export function AgentSettingsPanel() {
 
   if (failed) {
     return (
-      <p role="alert" className="mt-6 flex items-start gap-2 rounded-control border border-danger bg-danger-wash px-3 py-2 text-sm text-ink">
-        <CircleAlert aria-hidden className="mt-0.5 size-4 shrink-0 text-danger" strokeWidth={2} />
-        Couldn&apos;t load your agent&apos;s rules. Reload to try again; your agent keeps following the saved ones.
-      </p>
+      <ErrorNotice className="mt-6">
+        We couldn&apos;t load your assistant&apos;s rules. Please reload; your assistant keeps following the saved ones.
+      </ErrorNotice>
     );
   }
   if (!settings) {
-    return <div className="mt-6 h-96 animate-pulse rounded-panel bg-panel-raised" aria-busy="true" aria-label="Loading your agent" />;
+    return <div className="mt-8 h-96 animate-pulse rounded-card bg-panel-raised" aria-busy="true" aria-label="Loading your assistant" />;
   }
   return (
     <>
-      <div className="plate mt-6 flex items-center gap-3 px-4 py-3.5">
-        <span aria-hidden className="socket" data-lamp="closed" />
+      <div className="card mt-8 flex items-center gap-4 p-5">
+        <span className="grid size-12 shrink-0 place-items-center rounded-full bg-info-wash">
+          <Picto name="person" tone="assistant" className="size-7" />
+        </span>
         <div className="min-w-0">
-          <p className="text-base font-bold text-ink">{settings.agentName}</p>
-          <p className="text-sm text-ink-2">
-            Acting for {settings.ownerName} <span className="figure text-xs text-ink-3">· {settings.agentId}</span>
-          </p>
+          <p className="text-lg font-bold text-ink">{settings.agentName}</p>
+          <p className="text-base text-ink-2">Shopping for {settings.ownerName}</p>
         </div>
       </div>
       <div className="mt-8">
@@ -87,19 +88,19 @@ function AgentSettingsForm({ initial }: { initial: CustomerAgentSettings }) {
       className="flex flex-col gap-8"
     >
       <section aria-labelledby="money-heading">
-        <h2 id="money-heading" className="text-sm font-semibold text-ink-2">
+        <h2 id="money-heading" className="text-xl font-bold text-ink">
           Money
         </h2>
-        <div className="surface mt-2 grid gap-x-10 gap-y-8 p-5 md:grid-cols-2">
+        <div className="card mt-4 grid gap-x-12 gap-y-10 p-6 md:grid-cols-2">
           <LimitControl
-            label="Most it may spend on one errand"
+            label="Most it can spend on one thing"
             min={50}
             max={1000}
             step={10}
             unit="usd"
             defaultValue={s.errandBudget.amount}
             onChange={(v) => set({ errandBudget: usd(v) })}
-            note="Your agent won't bring back offers above this."
+            note="It won't show you offers that cost more than this."
           />
           <LimitControl
             label="Buy without asking me, up to"
@@ -111,52 +112,51 @@ function AgentSettingsForm({ initial }: { initial: CustomerAgentSettings }) {
             onChange={(v) => set({ autoApproveUnder: usd(v) })}
             note={
               s.autoApproveUnder.amount === 0
-                ? "Your agent will ask you before every purchase."
-                : `Above ${moneyWhole(s.autoApproveUnder.amount)}, it waits for your approval.`
+                ? "It will ask you before every purchase."
+                : `Anything over ${moneyWhole(s.autoApproveUnder.amount)} waits for your yes.`
             }
           />
           <LimitControl
-            label="Most it may ask a seller to come down"
+            label="Biggest discount it asks for"
             min={0}
             max={40}
             step={1}
             unit="pct"
             defaultValue={s.maxDiscountAsk}
             onChange={(v) => set({ maxDiscountAsk: v })}
-            note="It never accepts worse than list price."
+            note="It never pays more than the shop's usual price."
           />
-          <LimitMeter
-            label="Monthly spending limit"
+          <CoinMeter
+            label="Spent this month"
             used={s.spentThisMonth.amount}
             limit={s.monthlyLimit.amount}
-            unit="usd"
-            note="The platform blocks purchases past this, whatever the agent decides."
+            note="armsquare stops purchases past your monthly limit."
           />
         </div>
         {autoTooHigh && (
-          <p className="mt-2 text-sm text-danger" role="alert">
-            &ldquo;Buy without asking&rdquo; is higher than the errand limit. Lower it to{" "}
+          <p className="mt-3 text-base text-danger" role="alert">
+            &ldquo;Buy without asking&rdquo; is more than the most it can spend on one thing. Lower it to{" "}
             {moneyWhole(s.errandBudget.amount)} or less.
           </p>
         )}
       </section>
 
       <section aria-labelledby="who-heading">
-        <h2 id="who-heading" className="text-sm font-semibold text-ink-2">
-          Who it buys from
+        <h2 id="who-heading" className="text-xl font-bold text-ink">
+          Where it shops
         </h2>
-        <div className="surface mt-2 flex flex-col gap-6 p-5">
+        <div className="card mt-4 flex flex-col gap-8 p-6">
           <label className="flex items-start gap-3">
             <input
               type="checkbox"
               checked={s.verifiedSellersOnly}
               onChange={(e) => set({ verifiedSellersOnly: e.target.checked })}
-              className="mt-0.5 size-4 accent-[var(--primary)]"
+              className="mt-1 size-5 accent-[var(--info)]"
             />
             <span>
-              <span className="block text-sm font-semibold text-ink">Verified sellers only</span>
-              <span className="block text-xs text-ink-3">
-                Skip businesses armsquare hasn&apos;t verified, even if they&apos;re cheaper.
+              <span className="block text-base font-medium text-ink">Only shops checked by armsquare</span>
+              <span className="block text-sm text-ink-3">
+                Skip shops we haven&apos;t checked yet, even if they&apos;re cheaper.
               </span>
             </span>
           </label>
@@ -165,20 +165,20 @@ function AgentSettingsForm({ initial }: { initial: CustomerAgentSettings }) {
             label="Delivery area"
             value={s.deliveryArea}
             onChange={(e) => set({ deliveryArea: e.target.value })}
-            hint="Your agent only asks businesses that deliver here."
+            hint="It only asks shops that deliver here."
           />
           <div className="grid gap-6 md:grid-cols-2">
             <TagEditor
               id="prefer"
-              label="Prefer"
-              hint="Your agent ranks these higher when offers are close."
+              label="Things you like"
+              hint="When offers are close, it picks ones with these."
               values={s.preferences}
               onChange={(preferences) => set({ preferences })}
             />
             <TagEditor
               id="avoid"
               label="Never buy"
-              hint="Hard rule: offers containing these are declined."
+              hint="It always says no to offers with these."
               values={s.avoid}
               onChange={(avoid) => set({ avoid })}
             />
@@ -188,23 +188,23 @@ function AgentSettingsForm({ initial }: { initial: CustomerAgentSettings }) {
 
       <div
         className={cx(
-          "-mx-4 flex flex-wrap items-center justify-between gap-3 border-t border-rule bg-panel px-4 py-3 sm:mx-0 sm:rounded-control sm:border sm:px-4",
+          "card -mx-4 flex flex-wrap items-center justify-between gap-3 rounded-none px-4 py-4 sm:mx-0 sm:rounded-card sm:px-6",
           dirty && "sticky bottom-0 shadow-raised",
         )}
       >
-        <p className="text-sm text-ink-2" aria-live="polite">
+        <p className="text-base text-ink-2" aria-live="polite">
           {saving ? "Saving…" : saveError ? (
-            <span className="text-danger">Didn&apos;t save. Your agent is still on the old rules; try again.</span>
-          ) : dirty ? "Unsaved changes. They apply to new errands." : (
+            <span className="text-danger">That didn&apos;t save. Your assistant is still using the old rules; please try again.</span>
+          ) : dirty ? "You have changes. They apply to new requests once saved." : (
             <span className="inline-flex items-center gap-1.5">
-              <Check aria-hidden className="size-4 text-success" strokeWidth={2.5} />
-              Saved. In this demo, settings last until you reload.
+              <Check aria-hidden className="size-5 text-success" strokeWidth={2.5} />
+              Saved. Your assistant is using these rules.
             </span>
           )}
         </p>
         <div className="flex gap-2">
           <Button variant="quiet" disabled={!dirty || saving} onClick={() => setS(saved)}>
-            Discard
+            Undo changes
           </Button>
           <Button type="submit" variant="primary" loading={saving} disabled={!dirty || autoTooHigh}>
             Save rules
@@ -236,21 +236,21 @@ function TagEditor({
   };
   return (
     <div>
-      <label htmlFor={id} className="text-sm font-semibold text-ink">
+      <label htmlFor={id} className="text-base font-medium text-ink">
         {label}
       </label>
-      <ul className="mt-1.5 flex min-h-8 flex-wrap gap-1.5">
-        {values.length === 0 && <li className="text-sm text-ink-3">Nothing yet</li>}
+      <ul className="mt-2 flex min-h-9 flex-wrap gap-2">
+        {values.length === 0 && <li className="text-base text-ink-3">Nothing yet</li>}
         {values.map((v) => (
-          <li key={v} className="inline-flex items-center gap-1 rounded-full bg-panel-raised py-0.5 pr-1 pl-2.5 text-sm text-ink">
+          <li key={v} className="inline-flex items-center gap-1 rounded-full bg-info-wash py-1 pr-1 pl-3 text-base text-ink">
             {v}
             <button
               type="button"
               aria-label={`Remove ${v}`}
               onClick={() => onChange(values.filter((x) => x !== v))}
-              className="grid size-5 place-items-center rounded-full text-ink-3 hover:bg-rule hover:text-ink"
+              className="grid size-7 place-items-center rounded-full text-ink-2 hover:bg-surface hover:text-ink"
             >
-              <X aria-hidden className="size-3.5" strokeWidth={2.25} />
+              <X aria-hidden className="size-4" strokeWidth={2.25} />
             </button>
           </li>
         ))}
@@ -266,17 +266,17 @@ function TagEditor({
               add();
             }
           }}
-          placeholder="Add one"
+          placeholder="Type and press Add"
           className={cx(
-            "h-9 min-w-0 flex-1 rounded-control border border-rule-strong bg-surface px-3 text-sm text-ink",
-            "placeholder:text-ink-3 hover:border-ink-3 focus-visible:border-primary focus-visible:outline-offset-0",
+            "h-11 min-w-0 flex-1 rounded-control border border-rule-strong bg-surface px-4 text-base text-ink",
+            "placeholder:text-ink-3 hover:border-ink-3 focus-visible:border-info focus-visible:outline-offset-0",
           )}
         />
-        <Button size="sm" variant="secondary" onClick={add} disabled={!draft.trim()} icon={<Plus aria-hidden className="size-4" strokeWidth={2} />}>
+        <Button variant="secondary" onClick={add} disabled={!draft.trim()} icon={<Plus aria-hidden className="size-4" strokeWidth={2.25} />}>
           Add
         </Button>
       </div>
-      <p className="mt-1.5 text-xs text-ink-3">{hint}</p>
+      <p className="mt-2 text-sm text-ink-3">{hint}</p>
     </div>
   );
 }

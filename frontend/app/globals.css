@@ -1,65 +1,66 @@
 @import "tailwindcss";
 
 /* ------------------------------------------------------------------
-   armsquare tokens: the switchboard
-   panel    = the quiet field the jacks are mounted in
-   surface  = listen-in panels and plates
+   armsquare tokens: Picture Signs
+   panel    = the soft page ground
+   surface  = white rounded cards
    ink      = text; never pure black
-   cord     = a line your agent is handling on its own
-   primary  = live orange: the one line waiting for you, and your actions
+   info     = the assistant's blue
+   primary  = orange: the one thing waiting for you, and your main action
+   success  = done, bought, paid
    ------------------------------------------------------------------ */
 
 :root {
   color-scheme: light;
 
-  --panel: #eeeff1;
-  --panel-raised: #e6e8eb;
+  --panel: #f5f7fa;
+  --panel-raised: #eaeef3;
   --surface: #ffffff;
-  --surface-sunk: #f6f7f8;
+  --surface-sunk: #f2f4f8;
 
-  --ink: #16181c;
-  --ink-2: #4d535e;
-  --ink-3: #5f6672;
+  --ink: #1c2230;
+  --ink-2: #444d5f;
+  --ink-3: #5f687a;
 
-  --rule: #dadce1;
-  --rule-strong: #b4b8c0;
-  --cord: #7d838e;
+  --rule: #e2e6ec;
+  --rule-strong: #c6ccd6;
+  --picto-empty: #d5dae2;
 
   --primary: #c94a0c;
   --primary-hover: #b03f08;
   --primary-press: #973506;
   --primary-ink: #ad400a;
   --on-primary: #ffffff;
-  --primary-wash: #fbe8dd;
+  --primary-wash: #fff0e6;
   --live: #e8590c;
 
-  --success: #2f7a4f;
-  --success-wash: #e1f0e7;
+  --success: #1f7a4a;
+  --success-wash: #e4f4ea;
   --danger: #c42b2b;
-  --danger-wash: #f9e1e1;
-  --info: #2b4c9b;
-  --info-wash: #e3e9f7;
+  --danger-wash: #fbe7e7;
+  --info: #2459c2;
+  --info-wash: #e8effc;
 
-  --plate-shadow: 0 1px 2px rgb(22 24 28 / 0.06), 0 6px 18px -10px rgb(22 24 28 / 0.18);
-  --raised-shadow: 0 1px 2px rgb(22 24 28 / 0.08), 0 14px 32px -14px rgb(22 24 28 / 0.3);
+  --card-shadow: 0 1px 2px rgb(28 34 48 / 0.05), 0 8px 24px -14px rgb(28 34 48 / 0.18);
+  --raised-shadow: 0 2px 4px rgb(28 34 48 / 0.06), 0 18px 40px -18px rgb(28 34 48 / 0.32);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     color-scheme: dark;
 
-    --panel: #0f1012;
-    --panel-raised: #141518;
-    --surface: #17181b;
-    --surface-sunk: #131417;
+    --panel: #1a2230;
+    --panel-raised: #26303f;
+    --surface: #222c3b;
+    --surface-sunk: #1e2735;
 
-    --ink: #ecedef;
-    --ink-2: #b5b9c1;
-    --ink-3: #8d929c;
+    --ink: #eef2f7;
+    --ink-2: #c3ccd9;
+    --ink-3: #9eaabb;
 
-    --rule: #2a2d33;
-    --rule-strong: #42464e;
-    --cord: #5e636c;
+    --rule: #313d4f;
+    --rule-strong: #4a586d;
+    --picto-empty: #3d4a5e;
 
     --primary: #ff7a30;
     --primary-hover: #ff8c4d;
@@ -73,29 +74,29 @@
     --success-wash: #15291c;
     --danger: #ff6b6b;
     --danger-wash: #351b1c;
-    --info: #8fa8f0;
-    --info-wash: #1b2338;
+    --info: #8fb3ff;
+    --info-wash: #18233a;
 
-    --plate-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 8px 20px -12px rgb(0 0 0 / 0.8);
-    --raised-shadow: 0 1px 2px rgb(0 0 0 / 0.55), 0 16px 36px -14px rgb(0 0 0 / 0.85);
+    --card-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 26px -14px rgb(0 0 0 / 0.7);
+    --raised-shadow: 0 2px 4px rgb(0 0 0 / 0.45), 0 20px 44px -18px rgb(0 0 0 / 0.85);
   }
 }
 
 :root[data-theme="dark"] {
   color-scheme: dark;
 
-  --panel: #0f1012;
-  --panel-raised: #141518;
-  --surface: #17181b;
-  --surface-sunk: #131417;
+  --panel: #1a2230;
+  --panel-raised: #26303f;
+  --surface: #222c3b;
+  --surface-sunk: #1e2735;
 
-  --ink: #ecedef;
-  --ink-2: #b5b9c1;
-  --ink-3: #8d929c;
+  --ink: #eef2f7;
+  --ink-2: #c3ccd9;
+  --ink-3: #9eaabb;
 
-  --rule: #2a2d33;
-  --rule-strong: #42464e;
-  --cord: #5e636c;
+  --rule: #313d4f;
+  --rule-strong: #4a586d;
+  --picto-empty: #3d4a5e;
 
   --primary: #ff7a30;
   --primary-hover: #ff8c4d;
@@ -109,11 +110,11 @@
   --success-wash: #15291c;
   --danger: #ff6b6b;
   --danger-wash: #351b1c;
-  --info: #8fa8f0;
-  --info-wash: #1b2338;
+  --info: #8fb3ff;
+  --info-wash: #18233a;
 
-  --plate-shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 8px 20px -12px rgb(0 0 0 / 0.8);
-  --raised-shadow: 0 1px 2px rgb(0 0 0 / 0.55), 0 16px 36px -14px rgb(0 0 0 / 0.85);
+  --card-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 26px -14px rgb(0 0 0 / 0.7);
+  --raised-shadow: 0 2px 4px rgb(0 0 0 / 0.45), 0 20px 44px -18px rgb(0 0 0 / 0.85);
 }
 
 @theme inline {
@@ -126,7 +127,7 @@
   --color-ink-3: var(--ink-3);
   --color-rule: var(--rule);
   --color-rule-strong: var(--rule-strong);
-  --color-cord: var(--cord);
+  --color-picto-empty: var(--picto-empty);
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-primary-press: var(--primary-press);
@@ -141,30 +142,35 @@
   --color-info: var(--info);
   --color-info-wash: var(--info-wash);
 
-  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  /* One family for everything, numbers included. */
+  --font-sans: var(--font-roboto), ui-sans-serif, system-ui, sans-serif;
 
-  /* Fixed product scale, ratio ~1.2 */
-  --text-label: 0.6875rem;
-  --text-label--line-height: 1rem;
-  --text-xs: 0.75rem;
-  --text-xs--line-height: 1.125rem;
-  --text-sm: 0.8125rem;
-  --text-sm--line-height: 1.25rem;
-  --text-base: 0.9375rem;
-  --text-base--line-height: 1.5rem;
-  --text-lg: 1.125rem;
-  --text-lg--line-height: 1.625rem;
-  --text-xl: 1.375rem;
-  --text-xl--line-height: 1.75rem;
-  --text-2xl: 1.75rem;
-  --text-2xl--line-height: 2.125rem;
+  /* A reading scale: 16px body, generous lines */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.375rem;
+  --text-base: 1rem;
+  --text-base--line-height: 1.625rem;
+  --text-lg: 1.1875rem;
+  --text-lg--line-height: 1.75rem;
+  --text-xl: 1.5rem;
+  --text-xl--line-height: 2rem;
+  --text-2xl: 2rem;
+  --text-2xl--line-height: 2.5rem;
+  /* Landing only: fluid display steps */
+  --text-3xl: clamp(2rem, 1.4rem + 2.2vw, 2.75rem);
+  --text-3xl--line-height: 1.12;
+  --text-5xl: clamp(2.5rem, 1.3rem + 4.6vw, 4.25rem);
+  --text-5xl--line-height: 1.05;
 
-  --radius-control: 6px;
-  --radius-plate: 10px;
-  --radius-panel: 14px;
+  --radius-control: 12px;
+  --radius-card: 20px;
+  /* Back-compat names used by older class lists */
+  --radius-plate: 16px;
+  --radius-panel: 20px;
 
-  --shadow-plate: var(--plate-shadow);
+  --shadow-card: var(--card-shadow);
   --shadow-raised: var(--raised-shadow);
 
   --ease-signal: cubic-bezier(0.22, 1, 0.36, 1);
@@ -184,24 +190,24 @@ body {
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: var(--text-base);
-  line-height: 1.5;
+  line-height: 1.6;
   caret-color: var(--primary);
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--live) 26%, transparent);
+  background: color-mix(in srgb, var(--info) 24%, transparent);
   color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 3px solid color-mix(in srgb, var(--info) 55%, transparent);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 a {
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1.5px;
 }
 
 * {
@@ -215,295 +221,114 @@ h3 {
   text-wrap: balance;
 }
 
+p {
+  text-wrap: pretty;
+}
+
 /* ------------------------------------------------------------------
-   Switchboard primitives
+   Picture Signs primitives
    ------------------------------------------------------------------ */
 
 @layer components {
-  /* Small engraved label on a plate or panel */
-  .label-caps {
-    font-size: var(--text-label);
-    line-height: var(--text-label--line-height);
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-3);
-  }
-
-  /* Figures, IDs, jack numbers */
+  /* Numbers: Roboto with figures that line up */
   .figure {
-    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.01em;
   }
 
-  /* A name plate a jack is mounted on */
-  .plate {
+  /* The white rounded card everything sits on */
+  .card {
     background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-plate);
-    box-shadow: var(--plate-shadow);
+    border-radius: var(--radius-card);
+    box-shadow: var(--card-shadow);
   }
 
-  /* Listen-in and other working surfaces */
-  .surface {
-    background: var(--surface);
-    border: 1px solid var(--rule);
-    border-radius: var(--radius-panel);
-  }
-
-  /* The socket a cord plugs into, with its lamp */
-  .socket {
-    position: relative;
-    display: inline-grid;
-    place-items: center;
-    width: 18px;
-    height: 18px;
-    flex: none;
-    border-radius: 999px;
-    background: var(--panel);
-    box-shadow: inset 0 0 0 1.5px var(--rule-strong);
-  }
-  .socket::after {
-    content: "";
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: var(--lamp, var(--rule-strong));
-    transition: background-color 200ms var(--ease-signal);
-  }
-  .socket[data-lamp="talking"] {
-    --lamp: var(--ink-2);
-  }
-  .socket[data-lamp="waiting"] {
-    --lamp: var(--live);
-    box-shadow: inset 0 0 0 1.5px var(--live);
-  }
-  /* The selected waiting line calls three times, then holds steady. */
-  .socket[data-lamp="waiting"][data-selected]::after {
-    animation: lamp-call 1.6s ease-in-out 3;
-  }
-  .socket[data-lamp="closed"] {
-    --lamp: var(--success);
-  }
-  .socket[data-lamp="set"] {
-    --lamp: var(--live);
-    box-shadow: inset 0 0 0 1.5px var(--live);
-  }
-  .socket[data-lamp="off"] {
-    --lamp: transparent;
-  }
-
-  /* Small inline lamp dot for text rows */
-  .lamp {
+  /* A small status dot, always paired with words */
+  .dot {
     display: inline-block;
-    width: 7px;
-    height: 7px;
+    width: 10px;
+    height: 10px;
     flex: none;
     border-radius: 999px;
-    background: var(--lamp, var(--rule-strong));
+    background: var(--dot, var(--rule-strong));
   }
-  .lamp[data-lamp="talking"] {
-    --lamp: var(--ink-2);
+  .dot[data-tone="assistant"] {
+    --dot: var(--info);
   }
-  .lamp[data-lamp="waiting"] {
-    --lamp: var(--live);
+  .dot[data-tone="waiting"] {
+    --dot: var(--live);
   }
-  .lamp[data-lamp="closed"] {
-    --lamp: var(--success);
+  .dot[data-tone="done"] {
+    --dot: var(--success);
   }
-
-  /* Cords */
-  .cord {
-    fill: none;
-    stroke: var(--cord);
-    stroke-width: 1.75;
-    stroke-linecap: round;
-    transition:
-      stroke 200ms var(--ease-signal),
-      stroke-width 200ms var(--ease-signal),
-      opacity 200ms var(--ease-signal);
-  }
-  .cord[data-state="waiting"] {
-    stroke: var(--live);
-    stroke-width: 2.5;
-  }
-  .cord[data-state="closed"] {
-    stroke-dasharray: 2 5;
-    opacity: 0.7;
-  }
-  .cord[data-selected="true"] {
-    stroke-width: 3.5;
-  }
-  .cord-dim {
-    opacity: 0.35;
+  .dot[data-tone="stopped"] {
+    --dot: var(--danger);
   }
 
-  /* A signal packet travelling along a cord */
-  .packet {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 8px;
-    height: 8px;
-    margin: -4px 0 0 -4px;
-    border-radius: 999px;
-    background: var(--ink);
-    box-shadow: 0 0 0 3px var(--panel);
-    offset-rotate: 0deg;
-    animation: packet-run var(--run, 650ms) var(--ease-signal) both;
-    pointer-events: none;
-  }
-  /* Their move travels back along the cord to your agent */
-  .packet[data-dir="in"] {
-    animation-direction: reverse;
-  }
-  .packet[data-tone="closed"] {
-    background: var(--success);
-  }
-
-  /* Errand log: the signal that runs down to a new step */
-  .signal-drop {
-    position: absolute;
-    left: -0.5px;
-    top: 0.3125rem;
-    width: 8px;
-    height: 8px;
-    border-radius: 999px;
-    background: var(--ink);
-    box-shadow: 0 0 0 3px var(--panel);
-    animation: signal-drop 420ms var(--ease-signal) both;
-    pointer-events: none;
-  }
-
-  /* Ledger rows */
-  .ledger {
-    width: 100%;
-    border-collapse: collapse;
-    font-variant-numeric: tabular-nums;
-  }
-  .ledger th {
-    text-align: left;
-    padding: 0.5rem 0.875rem;
-    border-bottom: 1px solid var(--rule-strong);
-  }
-  .ledger td {
-    padding: 0.625rem 0.875rem;
-    border-bottom: 1px solid var(--rule);
-    vertical-align: top;
-  }
-  .ledger tr:last-child td {
-    border-bottom: 0;
-  }
-  .ledger .num {
-    text-align: right;
-    white-space: nowrap;
-  }
-
-  /* Live readout range input */
+  /* Slider used for money and percentage rules */
   .limit-range {
     appearance: none;
     width: 100%;
-    height: 22px;
+    height: 28px;
     background: transparent;
     cursor: pointer;
   }
   .limit-range::-webkit-slider-runnable-track {
-    height: 4px;
+    height: 8px;
     background: linear-gradient(
       to right,
-      var(--primary) 0 var(--fill, 50%),
-      var(--rule-strong) var(--fill, 50%) 100%
+      var(--info) 0 var(--fill, 50%),
+      var(--picto-empty) var(--fill, 50%) 100%
     );
     border-radius: 999px;
   }
   .limit-range::-moz-range-track {
-    height: 4px;
-    background: var(--rule-strong);
+    height: 8px;
+    background: var(--picto-empty);
     border-radius: 999px;
   }
   .limit-range::-moz-range-progress {
-    height: 4px;
-    background: var(--primary);
+    height: 8px;
+    background: var(--info);
     border-radius: 999px;
   }
   .limit-range::-webkit-slider-thumb {
     appearance: none;
-    width: 18px;
-    height: 18px;
-    margin-top: -7px;
+    width: 26px;
+    height: 26px;
+    margin-top: -9px;
     border-radius: 999px;
     background: var(--surface);
-    box-shadow: inset 0 0 0 2px var(--primary), 0 1px 3px rgb(0 0 0 / 0.2);
+    box-shadow: inset 0 0 0 3px var(--info), 0 2px 6px rgb(0 0 0 / 0.2);
   }
   .limit-range::-moz-range-thumb {
-    width: 16px;
-    height: 16px;
-    border: 2px solid var(--primary);
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--info);
     border-radius: 999px;
     background: var(--surface);
   }
 }
 
-@keyframes lamp-call {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.35;
+/* New items settle in with a short rise */
+@keyframes land {
+  from {
+    opacity: 0;
+    translate: 0 6px;
   }
 }
 
-/* A signal runs down the errand log's cord to the step that just landed */
-@keyframes signal-drop {
+/* A pictogram filling in */
+@keyframes picto-fill {
   from {
-    translate: 0 -2.5rem;
-    opacity: 0;
-  }
-  25% {
-    opacity: 1;
-  }
-  to {
-    translate: 0 0;
-    opacity: 0;
-  }
-}
-
-@keyframes round-land {
-  from {
-    opacity: 0;
-    translate: 0 4px;
-  }
-}
-
-@keyframes packet-run {
-  from {
-    offset-distance: 0%;
-    opacity: 0;
-  }
-  12% {
-    opacity: 1;
-  }
-  88% {
-    opacity: 1;
-  }
-  to {
-    offset-distance: 100%;
-    opacity: 0;
+    scale: 0.6;
+    opacity: 0.4;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .socket[data-lamp="waiting"][data-selected]::after,
-  [class*="round-land"] {
-    animation: none;
-  }
-  .packet,
-  .signal-drop {
-    display: none;
-  }
-  .cord {
-    transition: none;
+  /* Entrances and fills settle instantly; loading spinners keep turning. */
+  [class*="animate-["],
+  .animate-pulse {
+    animation: none !important;
   }
 }

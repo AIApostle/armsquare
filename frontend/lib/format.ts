@@ -50,7 +50,7 @@ export const count = (n: number) => n.toLocaleString("en-US");
 
 /** Platform-measured reply time, in words. */
 export function replyTime(seconds: number | null) {
-  if (seconds === null) return "Reply time not yet measured";
+  if (seconds === null) return "Too new to say how fast it replies";
   if (seconds < 60) return "Replies in under a minute";
   if (seconds < 3600) return `Replies in about ${Math.round(seconds / 60)} minutes`;
   return "Replies within the day";

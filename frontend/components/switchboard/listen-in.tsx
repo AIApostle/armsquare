@@ -1,148 +1,111 @@
 "use client";
 
-import { Ban, Check, EyeOff, PenLine, ScrollText } from "lucide-react";
-import type { ApprovalRequest, NegotiationRound } from "@/lib/demo-data";
-import type { Line, LineState } from "@/lib/lines";
-import { cx, money, remaining } from "@/lib/format";
+import { Check, ChevronDown, CircleCheck, PenLine, X } from "lucide-react";
+import type { ApprovalRequest, Line, OwnerDecision } from "@/lib/api/business";
+import { cx, formatStamp, formatTime, money, remaining } from "@/lib/format";
 import { Button } from "@/components/ui/button";
-import { CheckIcon, LampLabel, Verified } from "@/components/ui/mark";
+import { CheckIcon, Status, Tag, Verified } from "@/components/ui/mark";
+import { ErrorNotice } from "@/components/ui/notice";
+import { CoinRow, Picto, PictoRow, signUnit } from "@/components/ui/picto";
 
-export type Decision = { tone: "approve" | "void" | "return"; at: string };
-
-export type LineView = {
-  state: LineState;
-  status: string;
-  rounds: NegotiationRound[];
-  /** Index of the next scripted move (demo simulation). */
-  step: number;
-  decision?: Decision;
-  closedByAgent?: boolean;
-  /** Keeps a line in its group while the signal is still running. */
-  group?: LineState;
+const decided: Record<OwnerDecision, string> = {
+  approve: "You approved this",
+  void: "You declined this",
+  return: "You asked for changes",
 };
 
-function totals(r: ApprovalRequest) {
-  const items = r.items.reduce((sum, i) => sum + i.qty * i.unitPrice, 0);
-  const fees = r.fees.reduce((sum, f) => sum + f.amount, 0);
-  return { items, total: items + fees + (r.discount?.amount ?? 0) };
-}
-
-export function ListenIn({
+/** One deal, in plain sentences: who, what was said, and what needs your answer. */
+export function DealDetail({
   line,
-  view,
-  elapsed,
+  now,
   busy,
+  error,
   paused,
-  ownerInitials,
+  spendLimit,
   onDecide,
 }: {
   line: Line;
-  view: LineView;
-  elapsed: number;
-  busy: Decision["tone"] | null;
+  /** Most the assistant may spend without asking, when known; drawn against a purchase's total. */
+  spendLimit?: number;
+  /** Current time in ms, ticking each second for the countdown. */
+  now: number;
+  busy: OwnerDecision | null;
+  error: string | null;
   paused: boolean;
-  ownerInitials: string;
-  onDecide: (tone: Decision["tone"]) => void;
+  onDecide: (decision: OwnerDecision) => void;
 }) {
   const cp = line.counterparty;
-  const them = cp.kind === "customer" ? "Shopper's agent" : cp.name.replace(/ Agent$/, "");
+  const them = cp.kind === "customer" ? "The customer" : cp.principal;
   const a = line.approval;
-  const pending = view.state === "waiting" && !view.decision;
 
   return (
-    <article
-      aria-labelledby="listen-heading"
-      className="surface overflow-hidden border-rule-strong"
-    >
-      <header className="px-5 pt-4 pb-3">
-        <h2 id="listen-heading" className="text-xl font-bold tracking-[-0.015em] text-ink">
+    <article aria-labelledby="deal-heading" className="card overflow-hidden">
+      <header className="p-6">
+        <h2 id="deal-heading" className="text-xl font-bold text-ink">
           {line.topic}
         </h2>
-        <p className="mt-1 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-ink-2">
-          <span className="font-semibold text-ink">{cp.name}</span>
-          <span>for {cp.principal}</span>
+        <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-base text-ink-2">
+          with {cp.principal}
           <Verified verified={cp.verified} />
         </p>
-        <p className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-ink-3">
-          <LampLabel state={view.state}>{view.status}</LampLabel>
-          <span className="figure">Line {line.jack}</span>
-          <span className="figure">{cp.id}</span>
-          {cp.history && <span>{cp.history}</span>}
+        {cp.history && <p className="mt-1 text-sm text-ink-3">{cp.history}</p>}
+        <p className="mt-3">
+          <Status tone={line.state === "waiting" ? "waiting" : line.state === "closed" ? "done" : "assistant"}>{line.status}</Status>
         </p>
       </header>
 
-      {/* Centre rail: us and them, twinned around the rounds */}
-      <div className="border-t border-rule px-5 py-3">
-        <div className="grid grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)] items-end pb-1.5">
-          <span className="label-caps text-right">Your agent</span>
-          <span />
-          <span className="label-caps truncate">{them}</span>
-        </div>
-        <ol aria-label="Rounds" className="relative">
-          <span aria-hidden className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-rule-strong" />
-          {view.rounds.map((r, i) => {
-            const last = i === view.rounds.length - 1;
-            const cell = (
-              <span className={cx("flex flex-col", r.from === "us" ? "items-end text-right" : "items-start")}>
-                <span className="text-xs font-semibold text-ink-3">{r.label}</span>
-                <span
-                  className={cx(
-                    "figure text-sm",
-                    last && pending ? "font-bold text-ink" : "text-ink",
-                  )}
+      {line.rounds.length > 0 && (
+        <div className="border-t border-rule px-6 py-5">
+          <h3 className="text-base font-bold text-ink">How the price moved</h3>
+          {/* One row per offer, oldest first: a price tag, who put it forward, and the price. */}
+          <ol className="mt-3 flex flex-col">
+            {line.rounds.map((r, i) => {
+              const ours = r.from === "us";
+              const latest = i === line.rounds.length - 1;
+              return (
+                <li
+                  key={i}
+                  className="grid animate-[land_220ms_var(--ease-signal)_both] grid-cols-[1.75rem_minmax(0,1fr)_auto] items-start gap-x-3 border-b border-rule py-2.5 last:border-b-0"
                 >
-                  {r.amount}
-                </span>
-                {r.note && <span className="text-xs text-ink-3">{r.note}</span>}
-              </span>
-            );
-            return (
-              <li
-                key={i}
-                className="animate-[round-land_260ms_var(--ease-signal)_both] relative grid grid-cols-[minmax(0,1fr)_2.5rem_minmax(0,1fr)] items-center py-1.5"
-              >
-                <span className="pr-3">{r.from === "us" ? cell : null}</span>
-                <span className="relative flex justify-center">
-                  <span
-                    className={cx(
-                      "figure grid h-5 min-w-7 place-items-center rounded-full border bg-surface px-1 text-[0.6875rem]",
-                      last ? "border-ink-3 text-ink" : "border-rule-strong text-ink-3",
-                    )}
-                  >
-                    R{i + 1}
+                  <Picto name="tag" tone={ours ? "assistant" : "ink"} className="mt-0.5 size-6" />
+                  <span className="min-w-0">
+                    <span className="block text-base text-ink">
+                      <span className={ours ? "font-medium text-info" : "font-medium"}>{ours ? "Your assistant" : them}</span>{" "}
+                      {r.label.toLowerCase()}
+                    </span>
+                    {r.note && <span className="block text-sm text-ink-3">{r.note}</span>}
                   </span>
-                </span>
-                <span className="pl-3">{r.from === "them" ? cell : null}</span>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
+                  <span className={cx("figure text-right text-lg", latest ? "font-bold text-ink" : "text-ink-2")}>{r.amount}</span>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      )}
 
       {a ? (
-        <DecisionBlock
+        <Decision
           request={a}
-          view={view}
-          elapsed={elapsed}
+          line={line}
+          now={now}
           busy={busy}
+          error={error}
           paused={paused}
-          ownerInitials={ownerInitials}
+          spendLimit={spendLimit}
           onDecide={onDecide}
         />
       ) : (
-        <div className="border-t border-rule bg-surface-sunk px-5 py-4">
-          <p className="text-sm font-semibold text-ink">
-            {view.state === "closed"
-              ? view.closedByAgent
-                ? "Your agent closed this on its own."
-                : "Closed."
-              : "Your agent is handling this on its own."}
+        <div className="border-t border-rule bg-surface-sunk px-6 py-5">
+          <p className="text-base font-bold text-ink">
+            {line.state === "closed"
+              ? line.closedByAgent
+                ? "Your assistant finished this on its own."
+                : "This deal is finished."
+              : "Your assistant is handling this on its own."}
           </p>
-          {line.within && <p className="mt-1 text-sm text-ink-2">{line.within}.</p>}
-          {view.state !== "closed" && (
-            <p className="mt-1 text-sm text-ink-3">
-              It will put this line through to you if anything goes past your limits.
-            </p>
+          {line.within && <p className="mt-1 text-base text-ink-2">{line.within}.</p>}
+          {line.state !== "closed" && (
+            <p className="mt-1 text-base text-ink-3">If it needs to go past one of your rules, it will ask you first.</p>
           )}
         </div>
       )}
@@ -150,209 +113,236 @@ export function ListenIn({
   );
 }
 
-function DecisionBlock({
+function Decision({
   request: r,
-  view,
-  elapsed,
+  line,
+  now,
   busy,
+  error,
   paused,
-  ownerInitials,
+  spendLimit,
   onDecide,
 }: {
   request: ApprovalRequest;
-  view: LineView;
-  elapsed: number;
-  busy: Decision["tone"] | null;
+  line: Line;
+  now: number;
+  busy: OwnerDecision | null;
+  error: string | null;
   paused: boolean;
-  ownerInitials: string;
-  onDecide: (tone: Decision["tone"]) => void;
+  spendLimit?: number;
+  onDecide: (decision: OwnerDecision) => void;
 }) {
-  const { items, total } = totals(r);
-  const left = r.validForSeconds - elapsed;
+  const left = Math.floor((Date.parse(r.validUntil) - now) / 1000);
   const flagged = r.checks.filter((c) => c.result === "flag");
   const passed = r.checks.filter((c) => c.result === "pass");
-  const d = view.decision;
+  const d = line.decision;
+  const answerBy = formatStamp(r.validUntil);
+  const sell = r.direction === "sell";
 
   return (
     <div className="border-t border-rule">
-      {/* Terms */}
-      <div className="px-5 pt-3.5 pb-3">
-        <ul className="flex flex-col gap-1 text-sm">
+      {/* What, and how much */}
+      <div className="px-6 py-5">
+        <h3 className="text-base font-bold text-ink">{sell ? "You'd be selling" : "You'd be buying"}</h3>
+        <ul className="mt-3 flex flex-col gap-3">
           {r.items.map((i) => (
-            <li key={i.sku} className="flex items-baseline justify-between gap-4">
-              <span className="flex min-w-0 flex-col text-ink">
-                {i.description}
-                <span className="figure text-xs text-ink-3">
-                  {i.qty} {i.unit} × {money(i.unitPrice)}
+            <li key={i.sku} className="flex items-start justify-between gap-4">
+              <span className="min-w-0">
+                <span className="block text-base text-ink">{i.description}</span>
+                <span className="figure block text-sm text-ink-2">
+                  {i.qty} × {money(i.unitPrice.amount)}
                 </span>
+                <ItemSigns qty={i.qty} unit={i.unit} />
               </span>
-              <span className="figure text-ink">{money(i.qty * i.unitPrice)}</span>
+              <span className="figure text-base text-ink">{money(i.qty * i.unitPrice.amount)}</span>
             </li>
           ))}
           {r.fees.map((f) => (
-            <li key={f.label} className="flex items-baseline justify-between gap-4 text-ink-2">
+            <li key={f.label} className="flex justify-between gap-4 text-base text-ink-2">
               <span>{f.label}</span>
-              <span className="figure">{money(f.amount)}</span>
+              <span className="figure">{money(f.amount.amount)}</span>
             </li>
           ))}
           {r.discount && (
-            <li className="flex items-baseline justify-between gap-4 text-ink-2">
-              <span>
-                {r.discount.label} on {money(items)}
-              </span>
-              <span className="figure">{money(r.discount.amount)}</span>
+            <li className="flex justify-between gap-4 text-base text-ink-2">
+              <span>{r.discount.label}</span>
+              <span className="figure">{money(r.discount.amount.amount)}</span>
             </li>
           )}
         </ul>
-        <div className="mt-2.5 flex items-end justify-between gap-4 border-t border-rule pt-2.5">
-          <div className="text-xs text-ink-3" suppressHydrationWarning>
-            Valid until {r.validUntilLabel}
-            <span className={cx("block", left < 3600 && !d ? "font-semibold text-primary-ink" : "")}>
-              {d ? "Decision recorded" : left > 0 ? `${remaining(left)} left` : "Expired. Agent must re-quote."}
-            </span>
-          </div>
+        <div className="mt-4 flex items-end justify-between gap-4 border-t border-rule pt-4">
+          <p className="text-sm text-ink-2" suppressHydrationWarning>
+            {d ? (
+              "Answered"
+            ) : left > 0 ? (
+              <>
+                Answer by {answerBy}
+                <span className={cx("block", left < 3600 ? "font-medium text-primary-ink" : "text-ink-3")}>
+                  {remaining(left)} left
+                </span>
+              </>
+            ) : (
+              "This offer has run out. Your assistant will ask for a new one."
+            )}
+          </p>
           <div className="text-right">
-            <div className="label-caps">Total, USD</div>
-            <div className="figure text-2xl font-semibold tracking-[-0.03em] text-ink">{money(total)}</div>
+            <div className="text-sm text-ink-2">Total</div>
+            <div className="figure text-[2rem] leading-tight font-bold text-ink">{money(r.total.amount)}</div>
           </div>
         </div>
       </div>
 
-      {/* Why it's asking */}
-      <div className="border-t border-rule px-5 py-3">
-        <p className="text-sm text-ink-2">
-          <span className="font-semibold text-ink">Why it&apos;s asking: </span>
-          {r.rationale}
-        </p>
-        <ul className="mt-2 flex flex-col gap-1">
-          {flagged.map((c) => (
-            <li key={c.rule} className="flex items-start gap-2 text-sm">
-              <CheckIcon result="flag" />
-              <span>
-                <span className="font-semibold text-ink">{c.rule}:</span>{" "}
-                <span className="text-ink-2">{c.detail}</span>
-              </span>
-            </li>
-          ))}
-        </ul>
-        <div className="mt-2 flex flex-wrap gap-x-5 gap-y-1">
+      {/* Why */}
+      <div className="border-t border-rule px-6 py-5">
+        <h3 className="text-base font-bold text-ink">Why it&apos;s asking you</h3>
+        <p className="mt-1 text-base text-ink-2">{r.rationale}</p>
+        {flagged.length > 0 && (
+          <ul className="mt-3 flex flex-col gap-2">
+            {flagged.map((c) => (
+              <li key={c.rule} className="flex items-start gap-2.5 rounded-[14px] bg-primary-wash/60 px-4 py-3 text-base">
+                <CheckIcon result="flag" />
+                <span>
+                  <span className="font-medium text-ink">{c.rule}:</span> <span className="text-ink-2">{c.detail}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+        {!sell && spendLimit !== undefined && (
+          <div className="mt-4">
+            <CoinRow amount={r.total.amount} limit={spendLimit} mode="price" />
+            <p className="mt-1 text-sm text-ink-3">
+              Blue coins fit inside your limit{r.total.amount > spendLimit ? "; orange coins are the part over it." : "."}
+            </p>
+          </div>
+        )}
+        <div className="mt-3 flex flex-col gap-2">
           {passed.length > 0 && (
-            <details className="group text-sm">
-              <summary className="cursor-pointer list-none font-semibold text-ink-2 hover:text-ink [&::-webkit-details-marker]:hidden">
-                <Check aria-hidden className="mr-1 inline size-3.5 text-success" strokeWidth={2.5} />
-                {passed.length} other checks passed
-              </summary>
-              <ul className="mt-1.5 flex flex-col gap-1">
+            <Disclosure title={`${passed.length} other ${passed.length === 1 ? "check" : "checks"} passed`} icon={<CircleCheck aria-hidden className="size-4 text-success" strokeWidth={2.25} />}>
+              <ul className="flex flex-col gap-2">
                 {passed.map((c) => (
-                  <li key={c.rule} className="flex items-start gap-2">
+                  <li key={c.rule} className="flex items-start gap-2.5 text-base">
                     <CheckIcon result="pass" />
                     <span>
-                      <span className="font-semibold text-ink">{c.rule}:</span>{" "}
-                      <span className="text-ink-2">{c.detail}</span>
+                      <span className="font-medium text-ink">{c.rule}:</span> <span className="text-ink-2">{c.detail}</span>
                     </span>
                   </li>
                 ))}
               </ul>
-            </details>
+            </Disclosure>
           )}
-          <details className="text-sm">
-            <summary className="cursor-pointer list-none font-semibold text-ink-2 hover:text-ink [&::-webkit-details-marker]:hidden">
-              <EyeOff aria-hidden className="mr-1 inline size-3.5" strokeWidth={2} />
-              What they see
-            </summary>
-            <p className="mt-1.5 text-ink-2">{r.counterpartyNote}</p>
-          </details>
-          <details className="text-sm">
-            <summary className="cursor-pointer list-none font-semibold text-ink-2 hover:text-ink [&::-webkit-details-marker]:hidden">
-              <ScrollText aria-hidden className="mr-1 inline size-3.5" strokeWidth={2} />
-              Line log
-            </summary>
-            <ol className="mt-1.5 flex flex-col gap-0.5">
-              {[
-                ...r.audit,
-                ...(d
-                  ? [
-                      {
-                        time: d.at,
-                        entry:
-                          d.tone === "approve"
-                            ? `Approved by ${ownerInitials}, bound to these exact terms`
-                            : d.tone === "void"
-                              ? `Voided by ${ownerInitials}`
-                              : `Returned for edits by ${ownerInitials}`,
-                      },
-                    ]
-                  : []),
-              ].map((e, i) => (
-                <li key={i} className="grid grid-cols-[4.5rem_1fr] gap-2">
-                  <span className="figure text-xs text-ink-3">{e.time}</span>
-                  <span className="text-ink-2">{e.entry}</span>
-                </li>
-              ))}
-            </ol>
-          </details>
+          <Disclosure title="What the other side can see">
+            <p className="text-base text-ink-2">{r.counterpartyNote}</p>
+          </Disclosure>
+          {r.audit.length > 0 && (
+            <Disclosure title="Everything that happened">
+              <ol className="flex flex-col gap-1">
+                {r.audit.map((e, i) => (
+                  <li key={i} className="flex gap-4 text-base">
+                    <span className="figure w-12 shrink-0 text-ink-3">{formatTime(e.at)}</span>
+                    <span className="text-ink-2">{e.entry}</span>
+                  </li>
+                ))}
+              </ol>
+            </Disclosure>
+          )}
         </div>
       </div>
 
-      {/* Your move */}
-      <div className="border-t border-rule bg-surface-sunk px-5 py-3.5">
+      {/* Your answer */}
+      <div className="border-t border-rule bg-surface-sunk px-6 py-5">
         {d ? (
-          <p className="text-sm text-ink-2" aria-live="polite">
-            <span className="font-semibold text-ink">
-              {d.tone === "approve" ? "Approved" : d.tone === "void" ? "Voided" : "Returned"} by {ownerInitials} at{" "}
-              {d.at}.
+          <p className="text-base text-ink-2" aria-live="polite">
+            <span className="font-bold text-ink">
+              {decided[d.decision]} at {formatTime(d.at)}.
             </span>{" "}
-            {d.tone === "approve"
-              ? "Your agent is executing exactly these terms. Payment runs in sandbox."
-              : d.tone === "void"
-                ? "Your agent will decline and won't reopen this offer."
-                : "Your agent will renegotiate and put the line back through to you."}
+            {d.decision === "approve"
+              ? "Your assistant is going ahead with exactly these terms."
+              : d.decision === "void"
+                ? "Your assistant will say no and won't reopen this offer."
+                : "Your assistant will try again and come back to you."}
+            {d.decision === "approve" && r.sandbox && (
+              <>
+                {" "}
+                <Tag>Test payment</Tag>
+              </>
+            )}
           </p>
         ) : (
           <>
-            <p className="text-sm text-ink-2">
+            <p className="text-base text-ink-2">
               {paused ? (
-                <span className="font-semibold text-ink">Resume your agent to execute anything you approve.</span>
+                <span className="font-medium text-ink">Turn your assistant back on to go ahead with anything you approve.</span>
               ) : (
                 <>
-                  Approving binds you to <span className="figure font-semibold text-ink">{money(total)}</span> until{" "}
-                  {r.validUntilLabel}. If the terms change, your agent must ask again.
+                  If you approve, you agree to exactly <span className="figure font-medium text-ink">{money(r.total.amount)}</span>. If
+                  anything changes, your assistant has to ask again.
                 </>
               )}
             </p>
-            <div className="mt-3 flex flex-wrap justify-end gap-2">
+            {error && <ErrorNotice className="mt-4">{error}</ErrorNotice>}
+            {/* Phones: full-width buttons with Approve on top; wider: Approve last, on the right */}
+            <div className="mt-4 flex flex-col-reverse gap-2 sm:flex-row sm:flex-wrap sm:justify-end [&>button]:w-full sm:[&>button]:w-auto">
               <Button
                 variant="danger"
-                icon={<Ban aria-hidden className="size-4" strokeWidth={2} />}
+                icon={<X aria-hidden className="size-4.5" strokeWidth={2.5} />}
                 loading={busy === "void"}
                 disabled={!!busy && busy !== "void"}
                 onClick={() => onDecide("void")}
               >
-                Void
+                Decline
               </Button>
               <Button
                 variant="secondary"
-                icon={<PenLine aria-hidden className="size-4" strokeWidth={2} />}
+                icon={<PenLine aria-hidden className="size-4.5" strokeWidth={2.25} />}
                 loading={busy === "return"}
                 disabled={!!busy && busy !== "return"}
                 onClick={() => onDecide("return")}
               >
-                Return for edits
+                Ask for changes
               </Button>
               <Button
                 variant="primary"
-                className="grow sm:grow-0"
-                icon={<Check aria-hidden className="size-4" strokeWidth={2.5} />}
+                icon={<Check aria-hidden className="size-5" strokeWidth={2.5} />}
                 loading={busy === "approve"}
-                disabled={paused || (!!busy && busy !== "approve")}
+                disabled={paused || left <= 0 || (!!busy && busy !== "approve")}
                 onClick={() => onDecide("approve")}
               >
-                {busy === "approve" ? "Checking terms" : "Approve"}
+                {busy === "approve" ? "Checking…" : "Approve"}
               </Button>
             </div>
           </>
         )}
       </div>
     </div>
+  );
+}
+
+function Disclosure({ title, icon, children }: { title: string; icon?: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <details className="group">
+      <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 text-base font-medium text-info [&::-webkit-details-marker]:hidden">
+        {icon}
+        {title}
+        <ChevronDown aria-hidden className="size-4 transition-transform group-open:rotate-180" strokeWidth={2.25} />
+      </summary>
+      <div className="mt-2">{children}</div>
+    </details>
+  );
+}
+
+/** Items as boxes; large quantities scale so one box stands for several, with the key printed. */
+function ItemSigns({ qty, unit }: { qty: number; unit: string }) {
+  const per = qty <= 24 ? 1 : signUnit(qty, 24);
+  const boxes = Math.ceil(qty / per);
+  return (
+    <span className="mt-1.5 flex flex-col gap-1">
+      <PictoRow name="box" total={boxes} filled={boxes} tone="ink" size="size-4" label={`${qty} ${unit}`} className="gap-0.5" />
+      {per > 1 && (
+        <span className="text-sm text-ink-3">
+          Each box = {per} {unit}
+        </span>
+      )}
+    </span>
   );
 }

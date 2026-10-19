@@ -1,6 +1,6 @@
 import { cx } from "@/lib/format";
 
-/** A square jack plate with its socket and a cord leaving it. */
+/** The armsquare mark: a rounded square with a lit point and a line reaching out. */
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" aria-hidden className={cx("size-6 shrink-0", className)}>
@@ -16,7 +16,7 @@ export function Wordmark({ className }: { className?: string }) {
   return (
     <span className={cx("inline-flex items-center gap-2", className)}>
       <LogoMark />
-      <span className="text-lg font-bold tracking-[-0.025em] text-ink">armsquare</span>
+      <span className="text-xl font-bold tracking-[-0.02em] text-ink">armsquare</span>
     </span>
   );
 }

@@ -2,31 +2,29 @@
 version: 1
 slug: "app-market-page-tsx"
 primary_target: "app/market/page.tsx"
-related_targets: ["app/page.tsx","app/market/orders/page.tsx","app/market/agent/page.tsx","app/market/business/[id]/page.tsx"]
+related_targets: ["app/market/browse/page.tsx","app/market/orders/page.tsx","app/market/agent/page.tsx","app/market/business/[id]/page.tsx"]
 ---
 
-# Market: the shopper side (switchboard world)
+# Market: the shopper side (Picture Signs world)
 
-Scope: `/` (role chooser), `/market` (ask my agent, the errand log, and browse), `/market/business/[id]`, `/market/orders`, `/market/agent`. Visitor mode: **Operate**. It inherits the Switchboard world from DESIGN.md: same tokens, type, plates, lamps and cords, and the One Orange rule.
+Scope: `/market` (ask your assistant), `/market/browse`, `/market/business/[id]`, `/market/orders`, `/market/agent` (shown as "My assistant"). Visitor mode: **Operate**. It inherits the Picture Signs world defined in the landing brief (`.impeccable/surfaces/app-page-tsx.md`) and DESIGN.md.
 
-Audience and job: a shopper with a Customer Agent. They hand the agent an errand ("6 gift hampers under $480 by Friday"), watch it search the market, ask business agents for quotes and negotiate within their budget, then approve one offer. They can also browse businesses directly, review orders, and set the agent's budget and rules. Seen in the same investor demo as the owner desk, from the other side of the same deal.
+Audience and job: a non-technical shopper. They tell their shopping assistant what they need in a sentence, watch it ask shops for prices and haggle, then say yes to one offer. They can browse shops, see their orders, and set their assistant's money rules.
 
-Backend: endpoints arrive later. Every read and write goes through a typed `MarketApi` interface (`lib/api`) with a mock implementation now and an HTTP implementation stubbed against the expected REST/SSE endpoints.
+Backend: every read and write goes through `lib/api` (HTTP only, no seeded data). Payments show as paid only when the provider confirms; test payments are labeled "Test payment".
 
-Content truth: seeded demo shopper and businesses, labeled as demo. Payments are sandbox and confirmed only by a provider event, never by optimistic state.
+Words: "assistant", not "agent"; "shops", not "businesses" in headings; "Say yes" or "Buy this", not "Approve this instead"; no IDs.
 
 ## Direction contract
 
-THESIS: You don't shop, you send your agent on an errand and watch it work. The errand runs as a live log of real events (read your request, searched the market, asked four agents, countered), and it ends in offers side by side, one of which waits for your approval. It refuses the category default of a product grid with a chat bubble bolted on.
+THESIS: Your shopping assistant runs an errand and shows its progress as pictures, not a log. It refuses a product grid with a chat bubble bolted on, and the old dense event log.
 
-OWN-WORLD: The Switchboard world unchanged: cool neutral panel and graphite in dark, white surfaces, Hanken Grotesk with Geist Mono figures, plates naming the agent first, lamps carrying state, flat with hairlines. The errand log is a vertical cord. Each step is a lamp on that line with a mono timestamp, and a signal travels down it as each step lands. Orange belongs only to the offer waiting for your approval and to Approve.
+OWN-WORLD: Picture Signs. White rounded surfaces on a soft cool-white ground, solid pictograms that count real things (items, shops, coins), Roboto throughout, blue for the assistant, orange only for the offer waiting for you and its button, green for bought and paid.
 
-STORY: The shopper types a need. Their agent reads it back as constraint chips, searches, asks the right business agents, haggles, and recommends the best fit with plain reasons (within budget, arrives Thursday, verified). The shopper approves once, and payment is confirmed by the provider.
+STORY: The shopper types a need, sees it read back as simple picture chips (6 items, up to $480, by Friday), watches steps fill a picture strip (asked shops, got prices, haggled), and says yes to the recommended offer.
 
-FIRST VIEWPORT: A slim top bar holds the wordmark, Ask / Browse / Orders / My agent, the agent's budget readout, Demo data, and the theme toggle. Below it, an ask box spans the page with suggestions. Then two columns: the errand log on the left (about 40%) as a vertical cord of lamps, and offers gathered on the right (about 60%), best fit first. The recommended offer is outlined in orange with its terms, fit reasons, and Approve. The browsable market starts below the fold.
+FIRST VIEWPORT: A friendly top bar (logo, Ask / Shops / Orders / My assistant, the coin-row budget readout, theme). A big question "What do you need?" with one large input and button. Below: progress as a same-size picture strip, and offers as large cards, the recommended one outlined in orange with a big "Buy for $X" button.
 
-FORM: Errand log (surface round, dealt lead, seed key 1757ddf2). Inherited world: Switchboard, seed key 3f7359c1.
+FORM: Picture Signs, inherited. Seed key ebe3ebfb.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
-
-Signature interaction: "errand running". After Ask, steps land one at a time down the log cord (a signal runs to each new lamp, 150–650ms). Quotes drop into the offers column as they arrive, counters update an offer's figure in place, and the recommendation settles last. On Approve, the offer's lamp turns green and the log adds "Order placed · payment pending" and then "Payment confirmed by provider (sandbox)". Reduced motion: steps appear without travel.

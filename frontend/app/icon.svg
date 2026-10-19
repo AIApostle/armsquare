@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+  <style>
+    .plate { fill: #16181c; }
+    .well { fill: #eeeff1; }
+    .lamp { fill: #e8590c; }
+    .cord { fill: none; stroke: #e8590c; }
+    @media (prefers-color-scheme: dark) {
+      .plate { fill: #ecedef; }
+      .well { fill: #0f1012; }
+      .lamp { fill: #ff7a30; }
+      .cord { stroke: #ff7a30; }
+    }
+  </style>
+  <rect class="plate" x="2" y="2" width="20" height="20" rx="5"/>
+  <circle class="well" cx="10" cy="12" r="4.25"/>
+  <circle class="lamp" cx="10" cy="12" r="2"/>
+  <path class="cord" d="M14.25 12 C 17.5 12, 18.5 8, 22 8" stroke-width="2" stroke-linecap="round"/>
+</svg>

@@ -8,10 +8,7 @@ import type {
   Order,
 } from "./types";
 
-/**
- * Everything the shopper UI reads or writes. The mock implementation backs the
- * demo today; the HTTP implementation targets the backend once it exists.
- */
+/** Everything the shopper UI reads or writes. `httpApi` implements it against the backend. */
 export interface MarketApi {
   getCategories(): Promise<Category[]>;
   getBusinesses(): Promise<Business[]>;

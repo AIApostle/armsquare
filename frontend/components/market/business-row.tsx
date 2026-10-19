@@ -1,49 +1,42 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { Business } from "@/lib/api";
-import { count, replyTime } from "@/lib/format";
+import { count } from "@/lib/format";
 import { Verified } from "@/components/ui/mark";
+import { Picto } from "@/components/ui/picto";
 
-/** One business in the market directory: who it is, its agent, and its record. */
+/** One shop: who it is, whether armsquare has checked it, and how it's done so far. */
 export function BusinessRow({ business: b }: { business: Business }) {
   const verified = b.verification === "verified";
   return (
     <Link
       href={`/market/business/${b.id}`}
-      className="group grid gap-x-6 gap-y-1 px-4 py-3.5 transition-colors duration-150 hover:bg-surface-sunk md:grid-cols-[minmax(0,1fr)_15rem_13rem]"
+      className="card group flex h-full items-start gap-4 p-5 transition-[box-shadow,translate] duration-150 hover:-translate-y-0.5 hover:shadow-raised"
     >
-      <span className="min-w-0">
-        <span className="flex items-center gap-2">
-          <span className="truncate text-base font-bold text-ink">{b.name}</span>
+      <span className="grid size-12 shrink-0 place-items-center rounded-[14px] bg-info-wash">
+        <Picto name="shop" tone="assistant" className="size-7" />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span className="block text-lg font-bold text-ink">{b.name}</span>
+        <span className="mt-0.5 block text-base text-ink-2">{b.tagline}</span>
+        <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
           <Verified verified={verified} />
+          <span className="text-sm text-ink-3">
+            {verified && b.trust.ordersFulfilled > 0 ? (
+              <>
+                <span className="figure">{count(b.trust.ordersFulfilled)}</span> orders delivered
+              </>
+            ) : (
+              "No orders yet"
+            )}
+          </span>
         </span>
-        <span className="mt-0.5 block truncate text-sm text-ink-2">{b.tagline}</span>
       </span>
-      <span className="flex min-w-0 items-center gap-2 text-sm text-ink-2">
-        {/* Unlit: nobody's agent is on this line until you ask. */}
-        <span aria-hidden className="socket scale-75" data-lamp="off" />
-        <span className="min-w-0">
-          <span className="block truncate font-semibold text-ink">{b.agent.name}</span>
-          <span className="block truncate text-xs text-ink-3">{replyTime(b.agent.medianReplySeconds)}</span>
-        </span>
-      </span>
-      <span className="flex items-center justify-between gap-4 md:justify-end">
-        <span className="text-xs text-ink-3">
-          {verified && b.trust.ordersFulfilled > 0 ? (
-            <>
-              <span className="tabular-nums">{count(b.trust.ordersFulfilled)}</span> orders ·{" "}
-              <span className="tabular-nums">{b.trust.onTimeRate}%</span> on time
-            </>
-          ) : (
-            "No order history yet"
-          )}
-        </span>
-        <ArrowRight
-          aria-hidden
-          className="size-4 shrink-0 text-ink-3 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-ink"
-          strokeWidth={2}
-        />
-      </span>
+      <ArrowRight
+        aria-hidden
+        className="mt-1 size-5 shrink-0 text-ink-3 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-ink"
+        strokeWidth={2.25}
+      />
     </Link>
   );
 }

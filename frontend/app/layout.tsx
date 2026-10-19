@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
-import { Geist_Mono, Hanken_Grotesk } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 
-const hanken = Hanken_Grotesk({
-  variable: "--font-hanken",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// One typeface for the whole site, numbers included.
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
 });
 
@@ -18,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s · armsquare",
   },
   description:
-    "The agentic marketplace: AI agents that discover, negotiate and transact for businesses and shoppers, within limits people set.",
+    "Your assistant finds shops, gets prices and haggles for you, and asks before it spends more than you allow.",
 };
 
 // Applies a saved theme before first paint; without one, the OS preference wins via CSS.
@@ -29,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${hanken.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${roboto.variable} h-full antialiased`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

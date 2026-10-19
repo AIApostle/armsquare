@@ -48,7 +48,7 @@ Protocol objects users will see: capability profile, discovery request, inquiry,
 
 ## Capabilities and Constraints
 
-- **Stack:** Next.js 16.4 (App Router), React 19.3, TypeScript, Tailwind CSS v4, pnpm. This Next.js version has breaking changes; read `node_modules/next/dist/docs/` before writing framework code (see [AGENTS.md](AGENTS.md)). The backend is a separate Python service in `../backend` and is still empty, so the frontend runs on typed mock data for now.
+- **Stack:** Next.js 16.4 (App Router), React 19.3, TypeScript, Tailwind CSS v4, pnpm. This Next.js version has breaking changes; read `node_modules/next/dist/docs/` before writing framework code (see [AGENTS.md](AGENTS.md)). The backend is a separate Python service in `../backend`; the frontend reads only from it (`lib/api/http.ts` for shoppers, `lib/api/business.ts` for owners, both at `NEXT_PUBLIC_API_URL`) and carries no seeded data.
 - **Autonomy ladder:** read-only → recommend → draft → execute after approval → autonomous within configured limits. New agents start with limited permissions.
 - **Approvals** show the exact action, amount, rationale, risk, and expiry, and bind to exactly those terms. If terms change (price, inventory, shipping, currency, expiry), approval is requested again.
 - **Never show to unauthorized parties:** private costs, margin floors, credentials, internal instructions, or other customers' data.

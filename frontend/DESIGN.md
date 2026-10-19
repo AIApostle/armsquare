@@ -1,87 +1,122 @@
 ---
 name: armsquare
-description: The agentic marketplace, set as a switchboard. Your agent is a live line; every negotiation is a cord patched to another agent, and only the line that needs you glows orange.
+description: Picture Signs. Every number becomes something you can see. Coins count money, boxes count items, shops count shops. Blue is your assistant, orange waits for you, green is done.
 colors:
-  panel: "#eeeff1"
-  panel-raised: "#e6e8eb"
+  panel: "#f5f7fa"
+  panel-raised: "#eaeef3"
   surface: "#ffffff"
-  surface-sunk: "#f6f7f8"
-  ink: "#16181c"
-  ink-2: "#4d535e"
-  ink-3: "#5f6672"
-  rule: "#dadce1"
-  rule-strong: "#b4b8c0"
-  cord: "#7d838e"
+  surface-sunk: "#f2f4f8"
+  ink: "#1c2230"
+  ink-2: "#444d5f"
+  ink-3: "#5f687a"
+  rule: "#e2e6ec"
+  rule-strong: "#c6ccd6"
+  picto-empty: "#d5dae2"
   primary: "#c94a0c"
   primary-hover: "#b03f08"
   primary-press: "#973506"
   primary-ink: "#ad400a"
   on-primary: "#ffffff"
-  primary-wash: "#fbe8dd"
+  primary-wash: "#fff0e6"
   live: "#e8590c"
-  success: "#2f7a4f"
-  success-wash: "#e1f0e7"
+  success: "#1f7a4a"
+  success-wash: "#e4f4ea"
   danger: "#c42b2b"
-  danger-wash: "#f9e1e1"
-  info: "#2b4c9b"
-  info-wash: "#e3e9f7"
+  danger-wash: "#fbe7e7"
+  info: "#2459c2"
+  info-wash: "#e8effc"
+  panel-dark: "#1a2230"
+  panel-raised-dark: "#26303f"
+  surface-dark: "#222c3b"
+  surface-sunk-dark: "#1e2735"
+  ink-dark: "#eef2f7"
+  ink-2-dark: "#c3ccd9"
+  ink-3-dark: "#9eaabb"
+  rule-dark: "#313d4f"
+  rule-strong-dark: "#4a586d"
+  picto-empty-dark: "#3d4a5e"
+  primary-dark: "#ff7a30"
+  primary-hover-dark: "#ff8c4d"
+  primary-press-dark: "#e86a22"
+  primary-ink-dark: "#ff8a47"
+  on-primary-dark: "#1a1006"
+  primary-wash-dark: "#3a2214"
+  live-dark: "#ff7a30"
+  success-dark: "#5cc08a"
+  success-wash-dark: "#15291c"
+  danger-dark: "#ff6b6b"
+  danger-wash-dark: "#351b1c"
+  info-dark: "#8fb3ff"
+  info-wash-dark: "#18233a"
 typography:
   display:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.75rem"
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.5rem, 1.3rem + 4.6vw, 4.25rem)"
     fontWeight: 700
-    lineHeight: "2.125rem"
+    lineHeight: 1.05
+    letterSpacing: "-0.03em"
+  headline-landing:
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2rem, 1.4rem + 2.2vw, 2.75rem)"
+    fontWeight: 700
+    lineHeight: 1.12
     letterSpacing: "-0.02em"
   headline:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.375rem"
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "2rem"
+    fontWeight: 700
+    lineHeight: "2.5rem"
+  title:
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 700
+    lineHeight: "2rem"
+  title-sm:
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.1875rem"
     fontWeight: 700
     lineHeight: "1.75rem"
-    letterSpacing: "-0.015em"
-  title:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 700
-    lineHeight: "1.625rem"
+  body-lg:
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.1875rem"
+    fontWeight: 400
+    lineHeight: "1.75rem"
   body:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.9375rem"
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1rem"
     fontWeight: 400
-    lineHeight: "1.5rem"
+    lineHeight: "1.625rem"
   body-sm:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.8125rem"
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
     fontWeight: 400
-    lineHeight: "1.25rem"
+    lineHeight: "1.375rem"
   caption:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.75rem"
-    fontWeight: 400
-    lineHeight: "1.125rem"
-  label:
-    fontFamily: "Hanken Grotesk, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.6875rem"
-    fontWeight: 600
-    lineHeight: "1rem"
-    letterSpacing: "0.08em"
-  figure:
-    fontFamily: "Geist Mono, ui-monospace, monospace"
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
     fontSize: "0.8125rem"
-    fontWeight: 400
+    fontWeight: 500
     lineHeight: "1.25rem"
-    letterSpacing: "-0.01em"
+  label:
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1rem"
+    fontWeight: 500
+    lineHeight: "1.625rem"
+  figure:
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 700
+    lineHeight: "2rem"
     fontFeature: "\"tnum\""
   figure-total:
-    fontFamily: "Geist Mono, ui-monospace, monospace"
-    fontSize: "1.75rem"
-    fontWeight: 600
-    lineHeight: "2.125rem"
-    letterSpacing: "-0.03em"
+    fontFamily: "Roboto, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "2rem"
+    fontWeight: 700
+    lineHeight: 1.25
     fontFeature: "\"tnum\""
 rounded:
-  control: "6px"
-  plate: "10px"
-  panel: "14px"
+  control: "12px"
+  inset: "14px"
+  card: "20px"
   full: "999px"
 spacing:
   "1": "4px"
@@ -90,15 +125,20 @@ spacing:
   "4": "16px"
   "5": "20px"
   "6": "24px"
+  "7": "28px"
   "8": "32px"
+  "10": "40px"
+  "16": "64px"
+  "20": "80px"
+  "24": "96px"
 components:
   button-primary:
     backgroundColor: "{colors.primary}"
     textColor: "{colors.on-primary}"
-    typography: "{typography.body}"
+    typography: "{typography.label}"
     rounded: "{rounded.control}"
-    padding: "0 16px"
-    height: "40px"
+    padding: "0 20px"
+    height: "44px"
   button-primary-hover:
     backgroundColor: "{colors.primary-hover}"
   button-primary-press:
@@ -106,260 +146,300 @@ components:
   button-secondary:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
+    typography: "{typography.label}"
     rounded: "{rounded.control}"
-    padding: "0 16px"
-    height: "40px"
+    padding: "0 20px"
+    height: "44px"
   button-secondary-hover:
     backgroundColor: "{colors.surface-sunk}"
   button-danger:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.danger}"
+    typography: "{typography.label}"
     rounded: "{rounded.control}"
-    padding: "0 16px"
-    height: "40px"
+    padding: "0 20px"
+    height: "44px"
   button-danger-hover:
     backgroundColor: "{colors.danger-wash}"
   button-quiet:
     textColor: "{colors.ink-2}"
+    typography: "{typography.label}"
     rounded: "{rounded.control}"
-    padding: "0 16px"
-    height: "40px"
+    padding: "0 20px"
+    height: "44px"
   button-quiet-hover:
     backgroundColor: "{colors.panel-raised}"
     textColor: "{colors.ink}"
+  button-sm:
+    rounded: "{rounded.control}"
+    padding: "0 14px"
+    height: "36px"
+  button-lg:
+    rounded: "{rounded.control}"
+    padding: "0 24px"
+    height: "52px"
   text-field:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     typography: "{typography.body}"
     rounded: "{rounded.control}"
-    padding: "0 12px"
-    height: "40px"
-  home-plate:
+    padding: "0 16px"
+    height: "48px"
+  card:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.plate}"
+    rounded: "{rounded.card}"
+    padding: "24px"
+  inset-band:
+    backgroundColor: "{colors.surface-sunk}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.inset}"
     padding: "16px"
-  line-plate:
-    backgroundColor: "{colors.surface}"
+  question-card:
+    backgroundColor: "{colors.primary-wash}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.plate}"
-    padding: "10px 12px 10px 20px"
-  line-plate-closed:
-    textColor: "{colors.ink}"
-    rounded: "{rounded.plate}"
-    padding: "10px 12px 10px 20px"
-  listen-in-panel:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.panel}"
+    rounded: "{rounded.inset}"
     padding: "16px 20px"
   decision-strip:
     backgroundColor: "{colors.surface-sunk}"
     textColor: "{colors.ink-2}"
-    padding: "14px 20px"
+    padding: "20px 24px"
   nav-tab:
-    textColor: "{colors.ink-3}"
-    typography: "{typography.body-sm}"
-    padding: "0 10px"
-    height: "56px"
-  nav-tab-active:
-    textColor: "{colors.ink}"
-  mark-pass:
-    backgroundColor: "{colors.success-wash}"
-    textColor: "{colors.success}"
-    typography: "{typography.caption}"
+    textColor: "{colors.ink-2}"
+    typography: "{typography.body}"
     rounded: "{rounded.full}"
-    padding: "0 8px"
-    height: "24px"
+    padding: "0 16px"
+    height: "40px"
+  nav-tab-active:
+    backgroundColor: "{colors.info-wash}"
+    textColor: "{colors.ink}"
   mark-flag:
     backgroundColor: "{colors.primary-wash}"
     textColor: "{colors.primary-ink}"
-    typography: "{typography.caption}"
+    typography: "{typography.body-sm}"
     rounded: "{rounded.full}"
-    padding: "0 8px"
-    height: "24px"
+    padding: "0 12px"
+    height: "28px"
+  mark-pass:
+    backgroundColor: "{colors.success-wash}"
+    textColor: "{colors.success}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.full}"
+    padding: "0 12px"
+    height: "28px"
+  mark-info:
+    backgroundColor: "{colors.info-wash}"
+    textColor: "{colors.info}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.full}"
+    padding: "0 12px"
+    height: "28px"
   mark-neutral:
     backgroundColor: "{colors.panel-raised}"
     textColor: "{colors.ink-2}"
-    typography: "{typography.caption}"
+    typography: "{typography.body-sm}"
     rounded: "{rounded.full}"
-    padding: "0 8px"
-    height: "24px"
+    padding: "0 12px"
+    height: "28px"
   honest-tag:
+    backgroundColor: "{colors.panel-raised}"
     textColor: "{colors.ink-2}"
     rounded: "{rounded.full}"
-    padding: "0 8px"
-    height: "20px"
-  round-key:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink-3}"
+    padding: "0 10px"
+    height: "24px"
+  ink-link-button:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.panel}"
+    typography: "{typography.label}"
     rounded: "{rounded.full}"
-    padding: "0 4px"
-    height: "20px"
-  round-key-latest:
-    textColor: "{colors.ink}"
+    padding: "0 16px"
+    height: "40px"
 ---
 
 # Design System: armsquare
 
 ## Overview
 
-**Creative North Star: "The Switchboard"**
+**Creative North Star: "Picture Signs"**
 
-Your agent is a live line on a switchboard. Every negotiation is a cord patched from its home jack to another agent's jack. Most cords run quietly on their own in graphite; the one line that needs the owner glows orange. The system exists so an owner can read, in one glance, how many agents theirs is talking to, which lines are handled, and which single line is waiting for them, then listen in and decide.
+Isotype picture statistics, translated into a friendly everyday app. Every number the person needs to judge becomes something they can see and count: a budget is a row of coins, an order is a row of little boxes, the shops asked are a row of shopfronts, a deal is a short picture story on one baseline. The pictograms are solid, flat and drawn in one style on one 24-unit grid. They are figures, not decoration. A sign appears only where it counts a real thing, and every row of signs comes with its key.
 
-The world is quiet on purpose. A cool neutral panel (light grey; near-black graphite in dark) carries plain white or graphite working surfaces. Jacks are round sockets mounted on small name plates; cords are drawn bezier curves measured between real sockets; lamps are small dots; signal packets travel a cord when agents exchange a move. One humanist grotesque sets everything, and every figure, ID, jack number and amount is set in a tabular mono. Light and dark are equals: every token has both values, the OS preference wins by default, and a saved choice is applied before first paint.
+The ground is a soft cool white. Everything sits on white cards with generous rounding (20px) and a soft, low offset shadow. Inside a card, quieter regions are flat sunk bands (14px), never cards of their own. Three colors carry meaning and nothing else. Blue is the assistant: its pictograms, its words in the price track, links, sliders and the focus ring. Orange is reserved for the one thing waiting for the person and for their main action. Green means done, bought, paid. Roboto sets everything, numbers included, with tabular figures so amounts line up without a monospace face. Dark mode is an equal: the same token keys on a deep blue-grey ground (never black), with the orange and blue stepped brighter to hold contrast.
 
-This world replaced a dense paperwork metaphor that "didn't feel agentic" and had "so much going on". The patch field owns the screen and everything else recedes. Motion is a signal, not decoration: one packet travels at a time, state changes take 150 to 250ms, and reduced motion keeps the state changes and drops the packets.
+The voice is plain and everyday for non-technical people: "assistant", never "agent"; Decline, Ask for changes, Approve; History and Rules; "Test payment"; no IDs on screen. The world refuses both the cold control-room dashboard it replaced and the default friendly SaaS of rounded cards with spot illustrations. The pictograms count, they do not illustrate.
 
 **Key Characteristics:**
-- Neutral panel, white or graphite surfaces, one orange that means "waiting for you".
-- Cords, sockets, lamps and packets are the only illustrative vocabulary; they are drawn from live layout, never decorative.
-- Hanken Grotesk for words, Geist Mono for every figure and identifier.
-- Flat surfaces with hairline rules; the home plate alone carries a soft lift.
-- Light and dark themes built as equals from one token set.
-- One travelling signal at a time.
+- Solid flat pictograms (coin, box, shop, person, tag, bag) that count real quantities, each row with a printed key.
+- Soft cool-white ground, white 20px cards with a soft offset shadow, flat 14px sunk bands inside them.
+- Three meanings: blue the assistant, orange waiting for you and your main action, green done.
+- Roboto everywhere, tabular figures for every amount; no monospace.
+- Status is always words plus color.
+- Light and dark built as equals from one set of token keys.
 
 ## Colors
 
-A cool grey neutral scale with a single live orange; semantic greens, reds and blues appear only as status words and their washes.
+A cool blue-grey neutral scale with three semantic hues, each tied to exactly one meaning. Every color has a dark twin under the same key with a `-dark` suffix. The dark ground is deep blue-grey and the hues step brighter there.
 
 ### Primary
-- **Switchboard Orange** (primary): the primary action button (Approve, Resume agent), the active tab underline, the focus ring, and the fill of limit sliders and meters. Hover and press step darker (primary-hover, primary-press); in dark mode the scale steps lighter and text on it turns near-black (on-primary).
-- **Call Lamp** (live): the waiting state of the line itself: waiting cords (2.5px stroke), waiting socket rings and lamps, the selected waiting plate's border, the logo's lamp and cord, and the text selection tint.
-- **Flag Ink** (primary-ink): orange as text, used only for flagged meaning: the flagged policy check icon and flag marks, the "Escalated" ledger decision, a validity window under one hour, and the live readout of a limit being edited.
-- **Flag Wash** (primary-wash): background of flag marks only.
+- **Signal Orange** (primary): the fill of the person's main action (Approve, Buy for $X, Save) only. Hover and press step darker in light, brighter in dark; text on it is white in light and near-black (on-primary) in dark.
+- **Waiting Lamp** (live): the thing waiting for the person. It is used for the waiting dot, the 2 to 3px ring around a waiting deal or offer card, the border of the landing question card, orange coins (the part of a price over the limit), the waiting shop pictogram, and the logo's lit point and line.
+- **Flag Ink** (primary-ink): orange as text and icon only for a rule check that needs the person ("Spending limit: $909 is $409 over") and flag marks.
+- **Flag Wash** (primary-wash): background of the question card, flagged rule checks and flag marks.
+
+### Secondary
+- **Assistant Blue** (info): the assistant's color. It covers filled pictograms the assistant counted (shops asked, prices back, coins it may spend), the assistant's name in the price track, links and disclosures, the "Start shopping" arrows on side doors, slider fill and thumb ring, slider readouts, the selected ladder rung, and the focus ring (at 55%).
+- **Assistant Wash** (info-wash): the active nav tab pill, the shop avatar tile, info marks.
 
 ### Tertiary
-- **Closed Green** (success, success-wash): closed lamps, the closing packet, executed outcomes, verified identity, passed checks.
-- **Void Red** (danger, danger-wash): destructive actions (Void, Pause agent) as outlined buttons, blocked outcomes, field errors.
-- **Owner Blue** (info, info-wash): owner actions in the ledger and their marks; nothing else.
+- **Done Green** (success, success-wash): done dots, bought and paid confirmations, "Checked by armsquare", on-time delivery boxes, the ring on an offer once ordered.
+- **Stop Red** (danger, danger-wash): Decline and Pause as outlined buttons, stopped dots, field errors and the error notice.
 
 ### Neutral
-- **Switchboard Panel** (panel): the page and top bar; the field cords are drawn on. Also the socket well.
-- **Raised Panel** (panel-raised): hover fill for quiet controls, neutral marks.
-- **Listen-in White** (surface): plates, listen-in panel, ledger and policy surfaces, secondary buttons.
-- **Sunk Strip** (surface-sunk): the summary and decision strips inside the listen-in panel; secondary button hover; disabled fields.
-- **Ink** (ink): headings, names, amounts, the waiting status line. Never pure black.
-- **Ink 2** (ink-2): secondary text, plate topics, talking lamps, section heads on Ledger and Policy.
-- **Ink 3** (ink-3): metadata, principal lines, jack numbers, plate status lines, labels.
-- **Rule** (rule) and **Rule Strong** (rule-strong): hairlines and plate edges; strong rules for control borders, the centre rail, idle socket rings.
-- **Graphite Cord** (cord): every line the agent handles on its own.
+- **Soft Ground** (panel): the page and the bars. Never pure white, never pure black in dark.
+- **Raised Ground** (panel-raised): hover fill for quiet controls, neutral marks, honest-state tags, loading skeletons.
+- **Card White** (surface): every card, secondary and danger buttons, fields.
+- **Sunk Band** (surface-sunk): bands inside a card (the picture-story tray, the decision strip, avatar tiles), alternate landing sections, disabled fields.
+- **Ink** (ink): headings, names, amounts. Never pure black. Also fills the landing ink link-button.
+- **Ink 2** (ink-2): supporting text, quiet buttons, unselected tabs.
+- **Ink 3** (ink-3): hints, times, keys under sign rows, placeholders.
+- **Rule** (rule) and **Rule Strong** (rule-strong): hairlines between bands and list rows; control borders.
+- **Empty Sign** (picto-empty): pictograms not yet filled (coins left in a limit, empty slider track).
 
 ### Named Rules
-**The One Orange Rule.** Orange as fill or stroke appears only on waiting cords and sockets, the selected waiting plate's border, the primary action, the active tab underline, and control affordances (focus ring, slider and meter fill). Status text, headings and round keys stay ink. Orange text (primary-ink) is reserved for flagged meaning.
+**The Three Meanings Rule.** Orange is reserved for what waits for the person and for their main action. Blue is the assistant. Green is done. No hue appears for decoration, and none borrows another's meaning.
 
-**The Lamp Carries State Rule.** Plate status lines are ink-3 (waiting: ink, semibold); the lamp alone carries the state color. Words plus lamp, never color alone.
-
-**The One Primary Rule.** Each decision has exactly one primary button, and it is placed last.
+**The Words Plus Color Rule.** Status is always words plus color. A status dot or tinted pictogram never stands alone; the words stay ink and the dot carries the color.
 
 ## Typography
 
-**Display Font:** Hanken Grotesk (with ui-sans-serif, system-ui)
-**Body Font:** Hanken Grotesk
-**Label/Mono Font:** Geist Mono (with ui-monospace), tabular figures
+**Display Font:** Roboto (with ui-sans-serif, system-ui)
+**Body Font:** Roboto
+**Label/Mono Font:** none. Figures are Roboto with tabular numerals (the `.figure` primitive, `font-variant-numeric: tabular-nums`).
 
-**Character:** A single humanist grotesque at a compact product scale (ratio about 1.2, 15px body), with a tabular mono for anything you might compare, copy or audit. Headings are bold with slight negative tracking; there is no separate display face.
+**Character:** One friendly, legible grotesque at a reading scale (16px body, generous 1.6 line height). Weight carries the hierarchy: bold for headings and key figures, medium for labels and buttons, regular for reading.
 
 ### Hierarchy
-- **Display** (700, 1.75rem, 2.125rem line, -0.02em): page headings ("Talking to 5 agents", "Ledger", "Policy").
-- **Headline** (700, 1.375rem, 1.75rem line, -0.015em): the listen-in task heading.
-- **Title** (700, 1.125rem): wordmark and reference-sheet section heads. Plate names are bold at body (home plate) or body-sm (line plates).
-- **Body** (400, 0.9375rem, 1.5rem line): running text; intros cap at 62ch.
-- **Body small** (400, 0.8125rem, 1.25rem line): plate topics, listen-in meta, check details, tabs, section heads on Ledger and Policy (semibold, ink-2).
-- **Caption** (400 or 600, 0.75rem): principal lines, plate status lines, notes, hints, marks.
-- **Label** (600, 0.6875rem, 0.08em, uppercase, ink-3): column heads ("Your agent" / counterparty above the rounds) and figure labels ("Total, USD") only.
-- **Figure** (Geist Mono, tabular, -0.01em): amounts, times, jack numbers, agent IDs, round keys. The decision total sets at 1.75rem semibold, -0.03em.
+- **Display** (700, fluid 2.5 to 4.25rem, 1.05, -0.03em): the landing headline only, held to about 13ch.
+- **Headline landing** (700, fluid 2 to 2.75rem, 1.12, -0.02em): landing section heads, sentence case, about 20ch.
+- **Headline** (700, 2rem, 2.5rem line): page headings in the app ("1 deal needs you").
+- **Title** (700, 1.5rem): card and deal headings, the wordmark (with -0.02em).
+- **Title small** (700, 1.1875rem): section heads inside cards and side panels.
+- **Body large** (400, 1.1875rem): intros and landing paragraphs, 44 to 56ch.
+- **Body** (400, 1rem, 1.625rem line): running text, list rows, the price track.
+- **Body small** (400, 0.875rem): keys under sign rows ("Each coin = $50"), hints, times, marks.
+- **Caption** (500, 0.8125rem): honest-state tags and step captions in picture strips.
+- **Label** (500, 1rem): field labels, button labels, slider labels.
+- **Figure** (700, 1.5rem, tabular): slider readouts and meter totals; the decision total and offer prices step up to 2rem (figure-total).
 
 ### Named Rules
-**The No Eyebrow Rule.** Nothing sits above a heading as a kicker or eyebrow. Uppercase label type is for column heads and figure labels only; section heads are sentence case.
+**The One Face Rule.** Roboto sets the whole site, numbers included. Amounts use tabular figures, never a monospace face.
 
-**The Mono Means Figure Rule.** Every number, ID, time and jack number is set in Geist Mono with tabular figures; words never are.
+**The No Eyebrow Rule.** No eyebrows or kickers above headings. A heading starts its section; a count sits beside it as a small pill, never above it.
 
 ## Layout
 
-The dashboard is a top bar plus a two-column desk inside a 1440px container (16px gutters, 24px from sm). The sticky top bar (56px, panel background, bottom rule) holds the wordmark, the business name with its honest-state tag, the Lines / Ledger / Policy tabs, agent status and the kill switch, and the theme toggle. Below sm the tabs drop to a 44px second row; below md the business, tag and agent status move to a strip at the top of main.
+The landing page sits in a 72rem container with 16px gutters (24px from sm), under a slim 64px sticky bar (panel at 90% with a light blur) holding the wordmark, section links (lg and up), "For businesses", the ink "Start shopping" pill and the theme toggle. Sections are full-width bands alternating panel and surface-sunk, 80px vertical padding (96px from lg). The hero is two equal columns at lg, 56px apart. The headline and paragraph are top left, the two side doors bottom left, and the example errand card spans both rows on the right. Below lg the errand follows the paragraph and the doors come last.
 
-On Lines, the patch field takes about 57% (1.3fr) and the listen-in panel the rest (1fr), 32px apart at lg; the listen-in panel is sticky. Inside the field, three columns: the home plate (200px), the cord gap (at least 48px), and the line plates (up to 312px), grouped as "Waiting for you" then "Handling on its own" with 20px between groups and 8px between plates. Below md the field stacks and cords are not drawn across columns. Ledger and Policy sit in a 56rem column.
-
-The listen-in panel is a stack of rule-divided bands at 20px inset: header, the centre-rail rounds (two text columns either side of a 40px rail), the terms and total, why it's asking, and the decision strip. Spacing steps are 4, 8, 12, 16, 20, 24 and 32px.
+The app (the business desk and shopping) uses the same container and gutters under a bar with the wordmark, the business name, pill tabs (Deals / History / Rules), the assistant's status and the Pause button. On Deals, a list column of deal cards grouped as "Needs you", "Your assistant is handling" and "Just finished" sits beside a sticky deal panel at lg. Below lg they stack. Rules and History are single reading columns. Spacing steps are 4, 8, 12, 16, 20, 24, 28, 32 and 40px inside surfaces, with 64 to 96px between landing sections.
 
 ### Named Rules
-**The Field Owns The Screen Rule.** The patch field is the largest region of the first viewport; everything else recedes into the bar, the panel or a footer line.
+**The Phone Decision Rule.** On wide screens the decision buttons sit in one right-aligned row with the orange primary last. On phones they stack full width with the primary on top (column-reverse).
 
 ## Elevation & Depth
 
-Flat with hairlines. Depth comes from the panel/surface value step and 1px rules. Line plates and the listen-in panel carry no shadow; the listen-in panel is set off by a strong rule. Only the home plate is lifted, because it is the fixed jack the cords leave from. Sockets are inset wells (a 1.5px inset ring on the panel color) and packets carry a 3px panel-colored ring so they read as cut out of the cord, not glowing.
+A soft, low hybrid. Cards carry one ambient offset shadow and lift to a raised shadow on hover or when they float above their section. Inside a card, depth is tonal only: sunk bands and hairline rules, no shadow. Dark mode deepens the same two shadows rather than lighting surfaces.
 
 ### Shadow Vocabulary
-- **Plate lift** (`box-shadow: var(--plate-shadow)`; light `0 1px 2px rgb(22 24 28 / 0.06), 0 6px 18px -10px rgb(22 24 28 / 0.18)`, dark `0 1px 2px rgb(0 0 0 / 0.5), 0 8px 20px -12px rgb(0 0 0 / 0.8)`): the home plate.
-- **Socket well** (`box-shadow: inset 0 0 0 1.5px var(--rule-strong)`, live when waiting or set): every socket.
-- **Packet knockout** (`box-shadow: 0 0 0 3px var(--panel)`): signal packets.
-- **Thumb lift** (`box-shadow: inset 0 0 0 2px var(--primary), 0 1px 3px rgb(0 0 0 / 0.2)`): the limit slider thumb.
+- **Card** (`box-shadow: var(--card-shadow)`): every card at rest, the primary button, unselected filter chips and the Pause button.
+- **Raised** (`box-shadow: var(--raised-shadow)`): the landing errand card, the sticky save bar while rules are changed, and hovered link cards (with a 2px rise).
+- **Slider thumb** (`box-shadow: inset 0 0 0 3px var(--info), 0 2px 6px rgb(0 0 0 / 0.2)`): the limit slider thumb.
 
 ### Named Rules
-**The No Glow Rule.** No blurred colored halos, no smooth decorative gradients. The only gradient in the build is the hard-stop fill of a slider track.
+**The No Nesting Rule.** No cards nested in cards. A region inside a card is a flat sunk band (14px, surface-sunk) or a rule-divided strip, never a second shadowed surface.
 
 ## Shapes
 
-Three nested radii and a pill. Controls are gently rounded (control, 6px), plates are a step softer (plate, 10px), working panels softer again (panel, 14px). Everything round in the world is fully round (full, 999px): sockets, lamps, packets, round keys, marks, honest-state tags, slider tracks and thumbs, meter bars. Borders are 1px; honest-state tags use a dashed border; closed cords are dashed (2 5) at 70% opacity. Cords are 1.75px graphite, 2.5px when waiting, 3.5px when selected, with round caps.
+Generous and soft. Controls are rounded at 12px, inner bands at 14px, cards at 20px, and anything small and round (status dots, marks, tags, tabs, pills, slider track and thumb) is fully round. Selection and waiting are drawn as rings outside the card (ring-2 or ring-3: live for waiting, info for selected, success for ordered), never as heavy borders. Empty states use a 2px dashed rule border. The pictograms are solid fills on a 24-unit grid with even-odd cutouts (the coin's ring, the bag's handle, the tag's hole), never outlined.
 
 ## Components
 
 ### Buttons
-Plain and certain: solid only when it is your action.
-- **Shape:** gently rounded (6px), 40px tall with 16px sides; small is 32px with 12px sides. Semibold label, optional 16px leading icon.
-- **Primary:** orange fill, white text (near-black in dark). Hover and press step the orange. One per decision, placed last.
-- **Secondary:** surface fill, strong-rule border, ink text; hover darkens the border to ink-3 and fills surface-sunk.
-- **Danger:** outlined, never filled: surface fill, strong-rule border, red text; hover turns the border red with a red wash. Used for Void and Pause agent.
-- **Quiet:** text only in ink-2; hover fills panel-raised.
+Big and plain. Solid orange only for the person's own main action.
+- **Shape:** 12px radius; medium 44px tall with 20px sides; small 36px / 14px; large 52px / 24px. Medium (500) label with an optional leading icon.
+- **Primary:** orange fill, white text (near-black in dark), card shadow. Hover and press step the orange.
+- **Secondary:** card white, strong-rule border, ink text; hover darkens the border to ink-3 over the sunk band color.
+- **Danger:** outlined, never filled: card white, strong-rule border, red text; hover turns the border red over the red wash. Used for Decline and Pause.
+- **Quiet:** ink-2 text only; hover fills raised ground.
 - **States:** 150ms color transitions on the signal ease; disabled at 45% opacity; loading swaps the icon for a spinner and keeps the label.
+- **Ink link-button (landing only):** an ink-filled pill or 12px link ("Start shopping", "Open your business desk") that sends visitors into the app without spending the orange.
 
-### Chips (marks and tags)
-- **Marks:** 24px pills, caption semibold, word plus color always (pass green, flag orange-ink, info blue, neutral ink-2 on panel-raised, danger red).
-- **Honest-state tag:** 20px pill with a dashed ink-3 border, 11px semibold, 0.04em tracking ("Demo data", "Agent activity is simulated in this demo").
+### Chips
+- **Marks:** 28px pills, body-small medium. Flag (orange ink on wash), pass (green), info (blue), neutral (ink-2 on raised ground), danger (red). Always words.
+- **Honest-state tag:** a 24px pill on raised ground, caption medium, ink-2: "Example" on every illustrative demonstration, "Test payment" on sandbox orders.
+- **Filter chips:** pills; selected is ink fill with panel text, unselected is card white with card shadow.
 
 ### Cards / Containers
-- **Line plate:** a button-plate (10px), 1px rule border, surface fill, 10px/12px padding with 20px on the socket side. Content order: the other agent's name (bold) with the jack number right (mono, ink-3), "for <principal>" (caption, ink-3), the task (body-sm, ink-2), then the status line. Selected waiting: live border. Selected other: ink-3 border. Closed: transparent fill, surface on hover.
-- **Home plate:** your agent's name, its principal note, its ID in mono; lifted with plate lift; its socket sits on the edge facing the cords.
-- **Surface:** 14px radius, 1px rule, no shadow; ledger lists and policy groups are surfaces divided by rules.
+- **Corner Style:** 20px.
+- **Background:** card white.
+- **Shadow Strategy:** card at rest, raised on hover for link cards (see Elevation & Depth).
+- **Border:** none; rules divide bands inside.
+- **Internal Padding:** 20 to 28px (24px typical).
+- **Deal card:** a link card with a 44px sunk tile holding a tinted shop pictogram, the task (bold), "with <shop>", and a status line (dot plus words). A waiting deal carries a 2px live ring; the selected deal a 3px ring.
+- **Question card:** inside the landing errand, a 14px band with a 2px live border on the orange wash asking "OK to buy for $417.12?". It turns into a green-wash "Bought for you" band when the limit covers the price.
 
 ### Inputs / Fields
-- **Style:** 40px, 6px radius, surface fill, strong-rule border, 12px sides; label above in body-sm semibold, hint or error below in caption.
-- **Focus:** border turns orange with the 2px orange focus outline flush to it. Hover darkens the border to ink-3.
-- **Error / Disabled:** red border and red caption; disabled fills surface-sunk with ink-3 text.
-
-### Limits
-Every limit shows its value as a mono readout. Meters are 4px pill bars (rule track, orange fill), never rings. The editable control pairs a pill slider with a live orange-ink readout.
+- **Style:** 48px tall, 12px radius, card white, strong-rule border, 16px sides. The label sits above in body medium; the hint or error sits below in body small.
+- **Focus:** the border turns assistant blue with the blue focus outline flush to it; hover darkens the border to ink-3.
+- **Error / Disabled:** red border and red message that says what to do next. Disabled fields fill the sunk band color with ink-3 text.
 
 ### Navigation
-Text tabs in body-sm semibold, ink-3 at rest, ink on hover. The current tab is ink with a 2px orange underline sitting on the bar's bottom rule. The kill switch sits at the right of the bar as an outlined danger button ("Pause agent"); paused, it becomes the primary "Resume agent" and the patch field drops to 60% opacity in greyscale.
+Pill tabs, 40px tall with 16px sides, body text. Unselected tabs are ink-2 and fill raised ground on hover. The current tab is ink, medium, on the assistant wash. Shopping uses the same pill tabs and scrolls horizontally on phones. The theme toggle is a 40px round quiet button with a moon or sun.
 
-### Switchboard (signature)
-- **Sockets:** 18px wells with an 8px lamp. Lamp states: talking (ink-2), waiting (live, with a live ring), closed (success), set (live, used for the current autonomy level), off. Only the selected waiting socket calls: three 1.6s pulses, then holds steady.
-- **Cords:** bezier curves measured from the home socket to each line socket and re-measured on resize. Graphite when handled, orange when waiting, dashed once closed; unselected cords can dim to 35%.
-- **Packets:** 8px ink dots that travel a cord in 650ms on the signal ease (outbound from your agent, inbound reversed); green when a line closes. One packet on the board at a time.
-- **Centre rail:** rounds sit in two columns, your agent right-aligned on the left, the counterparty on the right, either side of a 1px strong rule carrying mono round keys (R1, R2...) as 20px pills; the latest key gets an ink-3 border and ink text. New rounds land with a 260ms 4px rise.
-- **Patch through:** on a decision the terms revalidate (about 450ms), the cord cools and a packet runs to the counterparty, the lamp turns green, the line holds closed for 1.5s, then the next waiting line is selected. Undo stays available for 8s. Older closed lines roll into "closed earlier today".
-- **Ambient simulation:** one move lands on a handled line at a time (about every 4.2s), handled lines close on their own, new agents patch in to keep three handled lines, and the board carries an honest "simulated" tag.
+### Picture Signs (signature)
+- **Pictograms:** six solid shapes on a 24-unit grid: coin (money), box (an item), shop, person, tag (a price), bag (shopping). Tones are assistant (blue), waiting (orange), done (green), ink, and empty.
+- **Sign rows:** a counted row of one pictogram. Filled signs are in their tone and unfilled signs in empty grey, with an accessible label that says the count in words.
+- **Coin row:** money counted in coins in two readings. *Spent:* blue coins are spent and grey coins are what's left of the limit. *Price:* blue coins fit inside the limit and orange coins are the part over it. The unit per coin is a round value (5, 10, 25, 50, 100, 250...) chosen to keep the row to about 20 coins, and the row always prints "Each coin = $X" beneath it.
+- **Box row:** items as boxes. Above 24, one box stands for several and "Each box = N cases" is printed.
+- **Price track:** "How the price moved". One row per offer, oldest first. Each row has a tag pictogram (blue for your assistant, ink for the shop), who put the price forward ("Your assistant asked for" in blue), an optional note, and the amount right-aligned in tabular figures. The latest amount is bold ink. Rows are divided by rules and land with a short rise.
+- **Picture story:** a deal as five steps on one baseline (sign row over a rule, then the numbered step and one plain sentence), switchable between the shopping and business sides.
+- **Limit control:** a label with its value written large in blue tabular figures, a pill slider (8px track, blue fill, 26px white thumb ringed in blue), and min and max figures beneath. The landing version drives a coin row directly ("coins decide").
+- **Logo mark:** an ink rounded square holding a panel-colored well with an orange lit point and an orange line reaching out; it uses the same tokens in both themes and is also the favicon.
+
+### Named Rules
+**The Counted Sign Rule.** Every pictogram counts a real thing. A sign is a figure: if it does not stand for a countable coin, item, shop, person or price, it does not appear.
+
+**The Printed Key Rule.** Every coin or box row prints its key ("Each coin = $50", "Each box = 5 cases", "Each box is 1 in 10 orders").
+
+**The Scale The Unit Rule.** Large counts scale the unit rather than dropping the row. Pick the next round unit and print it.
+
+**The Price Track Rule.** Negotiation is shown as a structured price track (who, what, how much, in order), never as chat bubbles.
+
+**The One Orange Button Rule.** One orange primary button per decision. It goes last on wide screens and on top, full width, on phones. Destructive choices are outlined red; the rest are secondary or quiet.
+
+### Motion
+New items settle in with a short rise (land: from opacity 0 and 6px down, 220 to 260ms on the signal ease, cubic-bezier(0.22, 1, 0.36, 1)). Newly filled pictograms pop in (picto-fill: from 60% scale and 40% opacity, 200 to 220ms). Link cards rise 2px on hover over 150 to 200ms. Under reduced motion every entrance and fill settles instantly; loading spinners keep turning.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** keep orange to waiting cords and sockets, the selected waiting plate border, the primary action, the active tab underline, and control affordances (focus, slider and meter fill).
-- **Do** keep plate status lines ink-3 (waiting: ink, semibold) and let the lamp alone carry state color.
-- **Do** order plate content as the other agent first, then "for <principal>", then the task, then the status.
-- **Do** run one travelling signal at a time, with state changes at 150 to 250ms on the signal ease (cubic-bezier(0.22, 1, 0.36, 1)).
-- **Do** order decision actions Void, Return for edits, Approve, with the single primary last and destructive actions outlined.
-- **Do** set every figure, ID, time and jack number in Geist Mono with tabular figures.
-- **Do** build every screen in light and dark together from the same tokens.
-- **Do** label demo data, sandbox payments and simulated activity with the dashed honest-state tag.
+- **Do** make every number the person must judge countable: coins for money, boxes for items, shops for shops, with the key printed under the row.
+- **Do** scale the unit (5, 10, 25, 50, 100, 250...) when a count is large, and print the new key.
+- **Do** keep orange to what waits for the person (live rings, waiting dots, over-limit coins) and their single main action; blue for the assistant; green for done.
+- **Do** pair every status color with words: a dot beside ink text, a mark with its word.
+- **Do** set every amount in Roboto with tabular figures.
+- **Do** order decisions Decline, Ask for changes, Approve, with Approve last on wide screens and on top, full width, on phones.
+- **Do** divide the inside of a card into flat sunk bands (14px) and rule-divided strips.
+- **Do** build every screen in light and dark together from the same token keys; the dark ground is deep blue-grey.
+- **Do** label illustrative demonstrations "Example" and sandbox payments "Test payment" with the honest-state tag.
+- **Do** write in plain everyday words: "assistant", History, Rules, no IDs.
 
 ### Don't:
-- **Don't** put eyebrow labels or kickers above headings; uppercase label type is for column heads and figure labels only.
-- **Don't** color status text, headings or round keys orange.
-- **Don't** add glows, blurred colored halos or decorative gradients.
-- **Don't** nest cards inside cards; divide a working panel into bands with rules instead.
-- **Don't** run two packets on the board at once, or animate a cord that is not exchanging a move.
-- **Don't** draw meters as rings; limits are thin pill bars with figures.
-- **Don't** use pure black for text or the dark panel.
+- **Don't** use a pictogram as decoration or illustration; every sign counts a real thing.
+- **Don't** show a coin or box row without its key, or drop a row because the count is large.
+- **Don't** put eyebrows or kickers above headings.
+- **Don't** nest cards in cards.
+- **Don't** show negotiation as chat bubbles; use the price track.
+- **Don't** place more than one orange button in a decision, or color headings orange; orange text is for flagged checks and flag marks only.
+- **Don't** rely on color alone for status.
+- **Don't** use a monospace face for numbers, or any face but Roboto.
+- **Don't** use pure black for text or for the dark ground.
