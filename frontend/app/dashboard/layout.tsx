@@ -3,8 +3,13 @@ import { AgentStateProvider, AgentStatusLine, AgentSwitch, BusinessName } from "
 import { NavTabs } from "@/components/switchboard/nav-tabs";
 import { Wordmark } from "@/components/ui/logo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { requireAccountRole } from "@/lib/auth/server";
 
-export default function DashboardLayout({ children }: LayoutProps<"/dashboard">) {
+export const instant = false;
+
+export default async function DashboardLayout({ children }: LayoutProps<"/dashboard">) {
+  await requireAccountRole("business");
+
   return (
     <AgentStateProvider>
       <div className="flex min-h-dvh flex-col">

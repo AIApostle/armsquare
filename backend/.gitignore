@@ -1,0 +1,28 @@
+# Local secrets
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Python environments and bytecode
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+
+# Test, type-check, and lint output
+.pytest_cache/
+.mypy_cache/
+.pyright/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Build output
+build/
+dist/

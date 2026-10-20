@@ -8,6 +8,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     supabase_url: AnyHttpUrl | None = None
     supabase_anon_key: SecretStr = SecretStr("")
+    openrouter_api_key: SecretStr | None = None
+    paypal_client_id: SecretStr | None = None
+    paypal_client_secret: SecretStr | None = None
     cors_origins: list[str] = ["http://localhost:3000"]
     auth_cookie_secure: bool = True
     auth_cookie_same_site: Literal["lax", "strict", "none"] = "lax"

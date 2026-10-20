@@ -33,7 +33,7 @@ export default function AccountPage() {
           <AccountChoice
             title="I’m shopping"
             description="Find products, compare offers, and let your Customer Agent help with the search."
-            loginHref="/auth/user/login?next=/market/kloppy"
+            loginHref="/auth/user/login?next=/market"
             signupHref="/auth/user/signup"
           />
           <AccountChoice
@@ -44,12 +44,6 @@ export default function AccountPage() {
           />
         </div>
 
-        <p className="mt-8 text-sm text-ink-3">
-          You can browse the marketplace without signing in.{" "}
-          <Link href="/market" className="font-semibold text-info underline underline-offset-4">
-            Go to shops
-          </Link>
-        </p>
       </section>
     </main>
   );

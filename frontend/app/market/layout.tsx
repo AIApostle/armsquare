@@ -4,8 +4,13 @@ import { BudgetReadout } from "@/components/market/budget-readout";
 import { MarketNav, MarketTabs } from "@/components/market/market-nav";
 import { Wordmark } from "@/components/ui/logo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { requireAccountRole } from "@/lib/auth/server";
 
-export default function MarketLayout({ children }: LayoutProps<"/market">) {
+export const instant = false;
+
+export default async function MarketLayout({ children }: LayoutProps<"/market">) {
+  await requireAccountRole("user");
+
   return (
     <div className="flex min-h-dvh flex-col">
       <header className="sticky top-0 z-30 bg-panel/90 backdrop-blur-sm">

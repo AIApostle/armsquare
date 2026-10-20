@@ -10,7 +10,7 @@ dependencies = [
     "pydantic>=2.14.1",
     "pydantic-settings>=2.16.0",
     "requests>=2.34.2",
-    "strands-agents>=1.61.1",
+    "strands-agents[openai]>=1.61.1",
     "supabase>=2.33.0",
     "uvicorn[standard]>=0.54.0",
 ]

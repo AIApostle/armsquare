@@ -34,15 +34,28 @@ The initial rollout is a controlled prototype with seeded catalogs and simulated
 | HTTP API | **FastAPI** exposes the versioned API, request/response contracts, dependency injection, and generated OpenAPI schema. |
 | ASGI runtime | **Uvicorn** serves the FastAPI application. |
 | Agent orchestration | **Strands Agents SDK** coordinates Business and Customer Agent tasks and invokes explicitly registered tools. It does not own authorization, commerce state, or financial policy. |
+| Realtime conversations | **FastAPI WebSockets** carry authenticated user/business chat and streamed agent events. Each connection is bound to the role obtained from the verified Supabase profile. |
+| Temporary model provider | **OpenRouter** is connected through Strands' OpenAI-compatible model provider and the `openrouter/free` router. It selects only free models; no paid fallback is configured. **Nebius** is the intended provider after its endpoint and credentials are supplied. |
+| Payments | **PayPal REST Orders v2 sandbox** is isolated behind a backend adapter. Only trusted backend order services may create or capture provider orders; the browser never supplies authoritative payment amounts or credentials. |
 | Authentication and Supabase access | Use the **Supabase Python SDK** for Supabase Auth and supported Supabase services. Verify the caller's identity on the server and derive the principal from verified credentials, never from a request body or agent message. |
 | Data validation | **Pydantic** defines and validates API, domain-boundary, and integration data. Use **pydantic-settings** for typed configuration and **email-validator** for email fields that require validation. |
 | HTTP integrations | Prefer **HTTPX** for async outbound HTTP in FastAPI paths. Use **Requests** only where a synchronous integration or library requires it; never block an async request handler with synchronous network I/O. |
 
 This table documents the intended stack. It is not evidence that all packages or production integrations are already installed or configured.
 
+### Realtime agent conversations
+
+The `/v1/agent/ws` WebSocket endpoint authenticates the existing HTTP-only Supabase access cookie, checks the request `Origin` against `CORS_ORIGINS`, and determines whether the principal is a shopper (`user`) or business owner (`business`) from the verified profile. A client sends `{"type":"message","content":"..."}` and receives `ready`, `message.started`, one or more `message.delta`, and `message.completed` events; invalid input and provider failures use an `error` event. Never put a bearer token in the WebSocket URL or trust a client-supplied user ID or role.
+
+OpenRouter is temporary. The backend uses Strands' OpenAI-compatible provider at `https://openrouter.ai/api/v1` and model ID `openrouter/free`, with no paid fallback. Set `OPENROUTER_API_KEY` in the backend environment to enable generation. A missing key is reported as an unavailable provider, not replaced by a different model. No consequential tools are currently attached to the chat agent. Conversation history is held only for the life of a WebSocket connection; durable conversation storage requires a reviewed schema and migration before it is promised.
+
+### PayPal sandbox
+
+The PayPal adapter uses the sandbox OAuth and Orders v2 endpoints only. Set `PAYPAL_CLIENT_ID` and `PAYPAL_CLIENT_SECRET` in the backend environment when available. The adapter accepts a trusted backend order value, not a browser-supplied price. Checkout routes, order persistence, capture authorization, and webhook verification are deliberately not exposed until the marketplace order model, approval flow, return URLs, and webhook configuration are defined. PayPal sandbox success is not evidence of a live payment integration.
+
 ## Local setup
 
-From `backend/`, install the locked environment with `uv sync`, copy `.env.example` to `.env`, and fill in the Supabase project URL and anon key. Apply the SQL in `supabase/migrations/` through the project's Supabase migration workflow. Run the API with `uv run uvicorn armsquare.main:app --reload`; the frontend's default API URL is `http://localhost:8000`.
+From `backend/`, install the locked environment with `uv sync`, copy `.env.example` to `.env`, and configure the Supabase project URL and anon key. Set `OPENROUTER_API_KEY` to enable the temporary free-model agent. Set the PayPal sandbox client ID and secret only when provided. Apply reviewed migrations from `backend/supabase/migrations/` through the project's authenticated Supabase migration workflow. Store any standalone SQL queries in the repository-root `db/queries/` directory before running them. Read current provider documentation and inspect the target schema and migration history before applying database changes. Run the API with `uv run uvicorn armsquare.main:app --reload`; the frontend's default API URL is `http://localhost:8000`.
 
 Never commit `.env` or use the service-role key for browser authentication. Production cookie settings must use HTTPS; `SameSite=None` is accepted only with secure cookies enabled.
 

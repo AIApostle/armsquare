@@ -247,13 +247,6 @@ components:
     rounded: "{rounded.full}"
     padding: "0 10px"
     height: "24px"
-  ink-link-button:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.panel}"
-    typography: "{typography.label}"
-    rounded: "{rounded.full}"
-    padding: "0 16px"
-    height: "40px"
 ---
 
 # Design System: armsquare
@@ -287,7 +280,7 @@ A cool blue-grey neutral scale with three semantic hues, each tied to exactly on
 - **Flag Wash** (primary-wash): background of the question card, flagged rule checks and flag marks.
 
 ### Secondary
-- **Assistant Blue** (info): the assistant's color. It covers filled pictograms the assistant counted (shops asked, prices back, coins it may spend), the assistant's name in the price track, links and disclosures, the "Start shopping" arrows on side doors, slider fill and thumb ring, slider readouts, the selected ladder rung, and the focus ring (at 55%).
+- **Assistant Blue** (info): the assistant's color. It covers filled pictograms the assistant counted (shops asked, prices back, coins it may spend), the assistant's name in the price track, links and disclosures, slider fill and thumb ring, slider readouts, the selected ladder rung, and the focus ring (at 55%).
 - **Assistant Wash** (info-wash): the active nav tab pill, the shop avatar tile, info marks.
 
 ### Tertiary
@@ -299,7 +292,7 @@ A cool blue-grey neutral scale with three semantic hues, each tied to exactly on
 - **Raised Ground** (panel-raised): hover fill for quiet controls, neutral marks, honest-state tags, loading skeletons.
 - **Card White** (surface): every card, secondary and danger buttons, fields.
 - **Sunk Band** (surface-sunk): bands inside a card (the picture-story tray, the decision strip, avatar tiles), alternate landing sections, disabled fields.
-- **Ink** (ink): headings, names, amounts. Never pure black. Also fills the landing ink link-button.
+- **Ink** (ink): headings, names, and amounts. Never pure black.
 - **Ink 2** (ink-2): supporting text, quiet buttons, unselected tabs.
 - **Ink 3** (ink-3): hints, times, keys under sign rows, placeholders.
 - **Rule** (rule) and **Rule Strong** (rule-strong): hairlines between bands and list rows; control borders.
@@ -338,7 +331,7 @@ A cool blue-grey neutral scale with three semantic hues, each tied to exactly on
 
 ## Layout
 
-The landing page sits in a 72rem container with 16px gutters (24px from sm), under a slim 64px sticky bar (panel at 90% with a light blur) holding the wordmark, section links (lg and up), "For businesses", the ink "Start shopping" pill and the theme toggle. Sections are full-width bands alternating panel and surface-sunk, 80px vertical padding (96px from lg). The hero is two equal columns at lg, 56px apart. The headline and paragraph are top left, the two side doors bottom left, and the example errand card spans both rows on the right. Below lg the errand follows the paragraph and the doors come last.
+The landing page sits in a 72rem container with 16px gutters (24px from sm), under a slim 64px sticky bar (panel at 90% with a light blur) holding the wordmark, section links (lg and up), one visible "Sign in" link, and the theme toggle. Sections are full-width bands alternating panel and surface-sunk, 80px vertical padding (96px from lg). The hero is two equal columns at lg, 56px apart, with the headline and paragraph on the left and the example errand card on the right. Below lg the errand follows the paragraph. Audience descriptions explain the shopper and business-owner sides without linking directly into the application.
 
 The app (the business desk and shopping) uses the same container and gutters under a bar with the wordmark, the business name, pill tabs (Deals / History / Rules), the assistant's status and the Pause button. On Deals, a list column of deal cards grouped as "Needs you", "Your assistant is handling" and "Just finished" sits beside a sticky deal panel at lg. Below lg they stack. Rules and History are single reading columns. Spacing steps are 4, 8, 12, 16, 20, 24, 28, 32 and 40px inside surfaces, with 64 to 96px between landing sections.
 
@@ -371,7 +364,6 @@ Big and plain. Solid orange only for the person's own main action.
 - **Danger:** outlined, never filled: card white, strong-rule border, red text; hover turns the border red over the red wash. Used for Decline and Pause.
 - **Quiet:** ink-2 text only; hover fills raised ground.
 - **States:** 150ms color transitions on the signal ease; disabled at 45% opacity; loading swaps the icon for a spinner and keeps the label.
-- **Ink link-button (landing only):** an ink-filled pill or 12px link ("Start shopping", "Open your business desk") that sends visitors into the app without spending the orange.
 
 ### Chips
 - **Marks:** 28px pills, body-small medium. Flag (orange ink on wash), pass (green), info (blue), neutral (ink-2 on raised ground), danger (red). Always words.
