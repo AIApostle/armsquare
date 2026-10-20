@@ -97,6 +97,12 @@ export default function Home() {
           </nav>
           <div className="ml-auto flex items-center gap-1 sm:gap-2">
             <Link
+              href="/account"
+              className="hidden h-10 items-center rounded-full px-4 text-base text-ink-2 transition-colors duration-150 hover:bg-panel-raised hover:text-ink sm:inline-flex"
+            >
+              Sign in
+            </Link>
+            <Link
               href="/dashboard"
               className="hidden h-10 items-center rounded-full px-4 text-base text-ink-2 transition-colors duration-150 hover:bg-panel-raised hover:text-ink sm:inline-flex"
             >

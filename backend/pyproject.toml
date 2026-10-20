@@ -1,25 +1,32 @@
 [project]
-name = "backend"
+name = "armsquare"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
-authors = [
-    { name = "AI_Apostle", email = "achasaviourikhamate@gmail.com" }
-]
+description = "Secure API and agent orchestration service for armsquare"
 requires-python = ">=3.11"
 dependencies = [
     "email-validator>=2.3.0",
-    "fastapi>=0.143.0",
-    "memwal>=0.1.11",
+    "fastapi>=0.150.0",
+    "httpx>=0.28.1",
     "pydantic>=2.14.1",
-    "pydantic-settings>=2.15.0",
-    "strands-agents>=1.60.0",
-    "supabase>=2.32.0",
-    "uvicorn>=0.54.0",
+    "pydantic-settings>=2.16.0",
+    "requests>=2.34.2",
+    "strands-agents>=1.61.1",
+    "supabase>=2.33.0",
+    "uvicorn[standard]>=0.54.0",
 ]
 
-[project.scripts]
-backend = "backend:main"
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
