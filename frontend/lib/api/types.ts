@@ -25,6 +25,8 @@ export type Business = {
   categoryIds: string[];
   region: string;
   verification: Verification;
+  imageUrl: string | null;
+  isDemo: boolean;
   agent: {
     id: string;
     name: string;

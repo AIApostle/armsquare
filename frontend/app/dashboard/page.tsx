@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Board } from "@/components/switchboard/board";
 
 export const metadata: Metadata = {
-  title: "Lines",
+  title: "Deals",
 };
 
 export default function LinesPage() {

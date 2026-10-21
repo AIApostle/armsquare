@@ -6,7 +6,7 @@ import { api, type CustomerAgentSettings } from "@/lib/api";
 import { moneyWhole } from "@/lib/format";
 import { Picto } from "@/components/ui/picto";
 
-/** This month's spending in words, read in the browser with the session. The coin counts on the assistant page. */
+/** This month's spending in words, read in the browser with the session. */
 export function BudgetReadout() {
   const [s, setS] = useState<CustomerAgentSettings | null>(null);
   const [failed, setFailed] = useState(false);
@@ -30,7 +30,7 @@ export function BudgetReadout() {
   const limit = s.monthlyLimit.amount;
   return (
     <Link
-      href="/market/agent"
+      href="/market/account/assistant"
       className="hidden items-center gap-3 rounded-full px-3 py-1.5 hover:bg-panel-raised lg:flex"
       title="Your monthly spending limit"
     >

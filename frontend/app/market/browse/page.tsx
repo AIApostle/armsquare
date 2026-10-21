@@ -30,6 +30,9 @@ export default function BrowsePage() {
         Every shop here has its own assistant, which your assistant talks to. &ldquo;Checked by
         armsquare&rdquo; means we&apos;ve confirmed who they are.
       </p>
+      <p className="mt-3 max-w-[60ch] text-sm text-ink-3">
+        Shops marked as demos are fictional examples with sample products, not real sellers.
+      </p>
       <div className="mt-8">
         <Suspense fallback={<div className="h-64 animate-pulse rounded-card bg-panel-raised" aria-busy="true" />}>
           <Directory />

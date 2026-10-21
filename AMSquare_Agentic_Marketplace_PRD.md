@@ -18,12 +18,17 @@ AMSquare is not merely a storefront chatbot, product comparison website, or dire
 
 If businesses can delegate bounded operational and commercial tasks to a persistent AI business manager, and buyers can delegate purchasing to a customer agent, commerce can move from manual browsing and messaging toward agent-to-agent coordination—with people retaining visibility and control over consequential actions.
 
+**Controlled prototype boundary**
+
+The current storefront prototype lets a business owner create and publish a shop and product catalog, and lets shoppers browse published shops and products. The shopper experience also includes a read-only assistant that searches published Armsquare listings over an authenticated WebSocket; its conversation is temporary and does not create a persisted errand, offer, order, or payment. Each shop receives a Business Agent profile, but this storefront slice does not execute orders or payments, synchronize live inventory, or import external stores. Business owners may enable Tavily public-web search for informational vendor, product, and market research. Those results are unverified external context, not authoritative Armsquare listings, prices, inventory, seller verification, or permission to transact. Agent-created catalog changes remain drafts until an owner publishes them. Clearly labeled demo shops and products are fictional fixtures, not real merchants, verified businesses, sales, or transaction history.
+
 ## 2. Product Principles
 
 - Agents act on behalf of an identified human or business principal; they do not own the business or its money.
 - Agent-to-agent interaction is a first-class workflow, not simply a chat transcript between two bots.
 - Authority is explicit, scoped, revocable, and enforced by platform services outside the language model.
 - Agents use structured, current business data for prices, inventory, policies, offers, and order states.
+- Public-web search is supplemental context only and cannot override trusted marketplace or business records.
 - Autonomy varies by risk: observe, recommend, draft, request approval, or execute within pre-approved limits.
 - Every material action and transaction must be explainable and auditable.
 - The platform supports both customer-to-business and business-to-business commerce.
@@ -125,13 +130,13 @@ AMsquare provides agent orchestration, identity and capability records, marketpl
 Support users, owners, business team members, administrators, Business Agents, and Customer Agents. Every agent has a unique identity linked to its principal.
 
 **FR-02 — Business connection**  
-Owners can create a business profile and connect supported business data sources. Show permissions granted, connection status, last sync, and errors.
+Owners can create a shop and catalog manually in the controlled prototype. External business data connections are a later capability; show a clear coming-soon state rather than implying a connection exists. When integrations are introduced, show permissions granted, connection status, last sync, and errors.
 
 **FR-03 — Agent provisioning**  
 Provision a platform-orchestrated Business Agent with configurable identity, purpose, capabilities, business context, operating hours, and escalation behavior.
 
 **FR-04 — Agent tools**  
-Owners choose which tools are enabled: catalog access, quote responses, negotiation, order creation, supplier search, inventory reads, and notifications.
+Owners choose which tools are enabled: catalog access, product-draft creation, quote responses, negotiation, order creation, supplier search, inventory reads, and notifications. Initial catalog tools are scoped to the signed-in business membership, checked against the store's enabled-tool list, and disabled when its agent is paused. The prototype does not permit an agent to publish products, commit orders, or execute payments.
 
 **FR-05 — Permissions and budgets**  
 Support per-action permissions, per-category scopes, spend limits per transaction and time window, discount/margin floors, supplier restrictions, and approval thresholds. Enforce server-side.
@@ -147,6 +152,8 @@ Agents query discovery services using structured needs and capability filters. R
 
 **FR-09 — Product/service catalog**  
 Businesses publish listings with descriptions, variants, price, currency, availability, stock where applicable, delivery/service terms, and policies.
+
+The initial prototype schema supports skin care, arts and crafts, and cycling, with USD pricing and a basic availability state. These implementation limits do not decide the eventual launch geography, currency, or category set.
 
 **FR-10 — Agent communication**  
 Support structured requests, questions, quotes, offers, counteroffers, acceptance, rejection, expiry, cancellation, and escalation.

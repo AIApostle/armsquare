@@ -45,7 +45,6 @@ function isAuthUser(value: unknown): value is AuthUser {
   return (
     typeof user.user_id === "string" &&
     (typeof user.email === "string" || user.email === null) &&
-    (user.role === "user" || user.role === "business") &&
-    typeof user.email_confirmed === "boolean"
+    (user.role === "user" || user.role === "business")
   );
 }

@@ -6,12 +6,10 @@ export type AuthUser = {
   user_id: string;
   email: string | null;
   role: AccountRole;
-  email_confirmed: boolean;
 };
 
 export type AuthResult = AuthUser & {
   authenticated: boolean;
-  email_confirmation_required: boolean;
 };
 
 type SignupInput = {

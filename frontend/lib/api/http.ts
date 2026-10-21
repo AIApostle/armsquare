@@ -40,7 +40,35 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(`Couldn't reach the server (${(cause as Error).message})`, 0);
   }
   if (!res.ok) {
-    throw new ApiError(`${init?.method ?? "GET"} ${path} failed with ${res.status}`, res.status);
+    let message = `The server couldn't complete this request (HTTP ${res.status}). Please try again.`;
+    try {
+      const payload: unknown = await res.json();
+      if (
+        payload &&
+        typeof payload === "object" &&
+        "detail" in payload &&
+        typeof payload.detail === "string"
+      ) {
+        message = payload.detail;
+      } else if (
+        payload &&
+        typeof payload === "object" &&
+        "detail" in payload &&
+        Array.isArray(payload.detail)
+      ) {
+        const details = payload.detail
+          .map((item: unknown) =>
+            item && typeof item === "object" && "msg" in item && typeof item.msg === "string"
+              ? item.msg
+              : null,
+          )
+          .filter((item): item is string => item !== null);
+        if (details.length > 0) message = details.join(" ");
+      }
+    } catch {
+      message = `The server couldn't complete this request (HTTP ${res.status}). Please try again.`;
+    }
+    throw new ApiError(message, res.status);
   }
   return res.json() as Promise<T>;
 }

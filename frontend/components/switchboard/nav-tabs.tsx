@@ -6,6 +6,8 @@ import { cx } from "@/lib/format";
 
 const tabs = [
   { href: "/dashboard", label: "Deals" },
+  { href: "/dashboard/store", label: "Shop" },
+  { href: "/dashboard/assistant", label: "Assistant" },
   { href: "/dashboard/ledger", label: "History" },
   { href: "/dashboard/policy", label: "Rules" },
 ] as const;
@@ -13,7 +15,7 @@ const tabs = [
 export function NavTabs() {
   const pathname = usePathname();
   return (
-    <nav aria-label="Business desk" className="flex h-full items-center gap-1">
+    <nav aria-label="Business desk" className="flex h-full items-center gap-1 overflow-x-auto whitespace-nowrap">
       {tabs.map((t) => {
         const current = pathname === t.href;
         return (

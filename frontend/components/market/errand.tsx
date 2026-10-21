@@ -128,7 +128,7 @@ export function Errand({ businesses }: { businesses: Business[] }) {
             <>
               {settings.agentName} shops for you, spends up to {moneyWhole(settings.errandBudget.amount)} at a
               time, and asks before buying anything over {moneyWhole(settings.autoApproveUnder.amount)}.{" "}
-              <Link href="/market/agent" className="font-medium text-info underline">
+              <Link href="/market/account/assistant" className="font-medium text-info underline">
                 Change this
               </Link>
             </>

@@ -1,8 +1,9 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { Pause, Play } from "lucide-react";
 import { businessApi, type AutonomyLevel, type Desk } from "@/lib/api/business";
+import { ApiError } from "@/lib/api/types";
 import { cx } from "@/lib/format";
 
 /** The autonomy levels in everyday words. */
@@ -18,35 +19,58 @@ type DeskState = {
   /** null while loading or when the load failed. */
   desk: Desk | null;
   failed: boolean;
+  setupRequired: boolean;
   paused: boolean;
   /** True while a pause or resume is on its way to the server. */
   switching: boolean;
   switchFailed: boolean;
   setPaused: (paused: boolean) => void;
+  refreshDesk: () => Promise<void>;
 };
 
 const DeskContext = createContext<DeskState>({
   desk: null,
   failed: false,
+  setupRequired: false,
   paused: false,
   switching: false,
   switchFailed: false,
   setPaused: () => {},
+  refreshDesk: async () => {},
 });
+
+async function loadDeskState() {
+  try {
+    return { desk: await businessApi.getDesk(), failed: false, setupRequired: false };
+  } catch (cause) {
+    const setupRequired = cause instanceof ApiError && cause.status === 404;
+    return { desk: null, failed: !setupRequired, setupRequired };
+  }
+}
 
 /** Loads the owner's desk in the browser, where their session lives, and shares it with the bar and pages. */
 export function AgentStateProvider({ children }: { children: ReactNode }) {
   const [desk, setDesk] = useState<Desk | null>(null);
   const [failed, setFailed] = useState(false);
+  const [setupRequired, setSetupRequired] = useState(false);
   const [switching, setSwitching] = useState(false);
   const [switchFailed, setSwitchFailed] = useState(false);
 
+  const refreshDesk = useCallback(async () => {
+    const state = await loadDeskState();
+    setDesk(state.desk);
+    setFailed(state.failed);
+    setSetupRequired(state.setupRequired);
+  }, []);
+
   useEffect(() => {
     let live = true;
-    businessApi
-      .getDesk()
-      .then((d) => live && setDesk(d))
-      .catch(() => live && setFailed(true));
+    void loadDeskState().then((state) => {
+      if (!live) return;
+      setDesk(state.desk);
+      setFailed(state.failed);
+      setSetupRequired(state.setupRequired);
+    });
     return () => {
       live = false;
     };
@@ -64,7 +88,18 @@ export function AgentStateProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <DeskContext value={{ desk, failed, paused: desk?.paused ?? false, switching, switchFailed, setPaused }}>
+    <DeskContext
+      value={{
+        desk,
+        failed,
+        setupRequired,
+        paused: desk?.paused ?? false,
+        switching,
+        switchFailed,
+        setPaused,
+        refreshDesk,
+      }}
+    >
       {children}
     </DeskContext>
   );
@@ -76,15 +111,17 @@ export function useAgentState() {
 
 /** The business the desk belongs to, for the top bar. */
 export function BusinessName({ className }: { className?: string }) {
-  const { desk, failed } = useAgentState();
+  const { desk, failed, setupRequired } = useAgentState();
   if (failed) return null;
+  if (setupRequired) return null;
   if (!desk) return <span className={cx("h-5 w-36 animate-pulse rounded-full bg-panel-raised", className)} aria-hidden />;
   return <span className={cx("truncate text-base font-medium text-ink", className)}>{desk.business.name}</span>;
 }
 
 /** Compact status for narrow screens, where the top bar has no room for it. */
 export function AgentStatusLine() {
-  const { desk, paused } = useAgentState();
+  const { desk, paused, setupRequired } = useAgentState();
+  if (setupRequired) return null;
   if (!desk) return null;
   return (
     <span className="inline-flex items-center gap-2 text-sm text-ink-2" aria-live="polite">
@@ -96,7 +133,8 @@ export function AgentStatusLine() {
 
 /** Assistant status plus the pause button, always within reach in the top bar. */
 export function AgentSwitch() {
-  const { desk, paused, switching, switchFailed, setPaused } = useAgentState();
+  const { desk, setupRequired, paused, switching, switchFailed, setPaused } = useAgentState();
+  if (setupRequired) return null;
   if (!desk) return null;
   const failText = `We couldn't ${paused ? "turn your assistant back on" : "pause your assistant"}. Please try again.`;
   return (

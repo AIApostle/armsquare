@@ -9,7 +9,13 @@ from armsquare.core.config import Settings, get_settings
 from supabase import create_async_client
 
 from .schemas import AuthActionResponse, AuthUserResponse, SignInRequest, SignUpRequest
-from .service import AuthIdentity, AuthProfileMissing, AuthProfileUnavailable, AuthService
+from .service import (
+    AuthIdentity,
+    AuthProfileMissing,
+    AuthProfileUnavailable,
+    AuthProviderUnavailable,
+    AuthService,
+)
 
 router = APIRouter(prefix="/v1/auth", tags=["authentication"])
 ACCESS_COOKIE = "armsquare_access_token"
@@ -25,7 +31,7 @@ async def get_auth_service(
     if not supabase_url or not supabase_key:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-            detail="Supabase authentication is not configured.",
+            detail="The authentication provider is not configured.",
         )
 
     client = await create_async_client(supabase_url, supabase_key)
@@ -56,7 +62,7 @@ def set_session_cookies(
     if not identity.access_token or not identity.refresh_token or not identity.expires_in:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="Supabase did not return a complete session.",
+            detail="The authentication service did not return a complete session.",
         )
     cookie_options = {
         "httponly": True,
@@ -96,7 +102,6 @@ def public_user(identity: AuthIdentity) -> AuthUserResponse:
         user_id=identity.user_id,
         email=identity.email,
         role=identity.role,
-        email_confirmed=identity.email_confirmed,
     )
 
 
@@ -140,6 +145,11 @@ async def sign_up(
         raise handle_auth_error(exc) from exc
     except AuthApiError as exc:
         raise handle_auth_error(exc) from exc
+    except AuthProviderUnavailable as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="The authentication service is temporarily unavailable. Check your connection and try again.",
+        ) from exc
     except AuthError as exc:
         raise HTTPException(
             status_code=status.HTTP_502_BAD_GATEWAY,
@@ -147,17 +157,14 @@ async def sign_up(
         ) from exc
     except AuthProfileUnavailable as exc:
         raise HTTPException(
-            status_code=status.HTTP_502_BAD_GATEWAY,
-            detail="The account provider did not complete sign-up.",
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Sign-up could not start a session. Check that email confirmation is disabled in the authentication settings.",
         ) from exc
 
-    authenticated = identity.access_token is not None
-    if authenticated:
-        set_session_cookies(response, identity, settings)
+    set_session_cookies(response, identity, settings)
     return AuthActionResponse(
         **public_user(identity).model_dump(),
-        authenticated=authenticated,
-        email_confirmation_required=not authenticated,
+        authenticated=True,
     )
 
 
@@ -178,6 +185,11 @@ async def sign_in(
         raise handle_auth_error(exc, signing_in=True) from exc
     except AuthApiError as exc:
         raise handle_auth_error(exc, signing_in=True) from exc
+    except AuthProviderUnavailable as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="The authentication service is temporarily unavailable. Check your connection and try again.",
+        ) from exc
     except PermissionError as exc:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=str(exc)) from exc
     except AuthProfileUnavailable as exc:
@@ -200,7 +212,6 @@ async def sign_in(
     return AuthActionResponse(
         **public_user(identity).model_dump(),
         authenticated=True,
-        email_confirmation_required=False,
     )
 
 
@@ -229,7 +240,7 @@ async def current_user(
             detail="Your session is invalid or your account is unavailable.",
             headers={"WWW-Authenticate": "Bearer"},
         ) from exc
-    except (AuthError, AuthProfileUnavailable) as exc:
+    except (AuthError, AuthProfileUnavailable, AuthProviderUnavailable) as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Your account could not be verified. Try again shortly.",
@@ -273,7 +284,7 @@ async def refresh_session(
         )
         clear_session_cookies(expired_response, settings)
         return expired_response
-    except (AuthError, AuthProfileUnavailable) as exc:
+    except (AuthError, AuthProfileUnavailable, AuthProviderUnavailable) as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Your session could not be refreshed. Try again shortly.",
@@ -283,7 +294,6 @@ async def refresh_session(
     return AuthActionResponse(
         **public_user(identity).model_dump(),
         authenticated=True,
-        email_confirmation_required=False,
     )
 
 
@@ -297,7 +307,7 @@ async def sign_out(
     if access_token and refresh_token:
         try:
             await auth.sign_out(access_token, refresh_token)
-        except AuthError:
+        except (AuthError, AuthProviderUnavailable):
             error_response = JSONResponse(
                 {"detail": "The provider could not revoke this session. Try again shortly."},
                 status_code=status.HTTP_503_SERVICE_UNAVAILABLE,

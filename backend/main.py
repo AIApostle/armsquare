@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from armsquare.agents.router import router as agents_router
 from armsquare.core.config import get_settings
 from armsquare.identity.router import router as identity_router
+from armsquare.marketplace.router import router as marketplace_router
 
 settings = get_settings()
 
@@ -21,6 +22,7 @@ app.add_middleware(
 )
 app.include_router(identity_router)
 app.include_router(agents_router)
+app.include_router(marketplace_router)
 
 
 @app.get("/health", tags=["operations"])

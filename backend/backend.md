@@ -36,6 +36,7 @@ The initial rollout is a controlled prototype with seeded catalogs and simulated
 | Agent orchestration | **Strands Agents SDK** coordinates Business and Customer Agent tasks and invokes explicitly registered tools. It does not own authorization, commerce state, or financial policy. |
 | Realtime conversations | **FastAPI WebSockets** carry authenticated user/business chat and streamed agent events. Each connection is bound to the role obtained from the verified Supabase profile. |
 | Temporary model provider | **OpenRouter** is connected through Strands' OpenAI-compatible model provider and the `openrouter/free` router. It selects only free models; no paid fallback is configured. **Nebius** is the intended provider after its endpoint and credentials are supplied. |
+| Public web research | **Tavily Search API** is an optional, read-only Business Agent tool for public vendor, product, and market context. The Armsquare marketplace search remains the source for published Armsquare listings. Tavily snippets are unverified, untrusted input and never establish live price, inventory, business verification, or permission to transact. |
 | Payments | **PayPal REST Orders v2 sandbox** is isolated behind a backend adapter. Only trusted backend order services may create or capture provider orders; the browser never supplies authoritative payment amounts or credentials. |
 | Authentication and Supabase access | Use the **Supabase Python SDK** for Supabase Auth and supported Supabase services. Verify the caller's identity on the server and derive the principal from verified credentials, never from a request body or agent message. |
 | Data validation | **Pydantic** defines and validates API, domain-boundary, and integration data. Use **pydantic-settings** for typed configuration and **email-validator** for email fields that require validation. |
@@ -47,7 +48,9 @@ This table documents the intended stack. It is not evidence that all packages or
 
 The `/v1/agent/ws` WebSocket endpoint authenticates the existing HTTP-only Supabase access cookie, checks the request `Origin` against `CORS_ORIGINS`, and determines whether the principal is a shopper (`user`) or business owner (`business`) from the verified profile. A client sends `{"type":"message","content":"..."}` and receives `ready`, `message.started`, one or more `message.delta`, and `message.completed` events; invalid input and provider failures use an `error` event. Never put a bearer token in the WebSocket URL or trust a client-supplied user ID or role.
 
-OpenRouter is temporary. The backend uses Strands' OpenAI-compatible provider at `https://openrouter.ai/api/v1` and model ID `openrouter/free`, with no paid fallback. Set `OPENROUTER_API_KEY` in the backend environment to enable generation. A missing key is reported as an unavailable provider, not replaced by a different model. No consequential tools are currently attached to the chat agent. Conversation history is held only for the life of a WebSocket connection; durable conversation storage requires a reviewed schema and migration before it is promised.
+OpenRouter is temporary. The backend uses Strands' OpenAI-compatible provider at `https://openrouter.ai/api/v1` and model ID `openrouter/free`, with no paid fallback. Set `OPENROUTER_API_KEY` in the backend environment to enable generation. A missing key is reported as an unavailable provider, not replaced by a different model. Shopper sessions currently have a read-only tool for searching published Armsquare listings; this does not create errands, negotiate offers, or place orders. Business sessions have scoped catalog, marketplace search, optional Tavily research, and unpublished-draft tools. Neither agent can execute transactions. Conversation history is held only for the life of a WebSocket connection; durable conversation storage requires a reviewed schema and migration before it is promised.
+
+Business assistants may use the `web.research` tool when a business owner enables it for a shop. It calls Tavily's `POST https://api.tavily.com/search` from the backend, with a 12-second timeout, basic search depth, at most five results, and no generated answer or raw page content. Set `TAVILY_API_KEY` in the backend environment. Each invocation also checks the verified user's membership, the shop role, the saved tool permission, and the assistant's pause state. The API key is never sent to the model or browser. Tavily research is not wired into customer checkout or transaction decisions.
 
 ### PayPal sandbox
 
@@ -55,7 +58,7 @@ The PayPal adapter uses the sandbox OAuth and Orders v2 endpoints only. Set `PAY
 
 ## Local setup
 
-From `backend/`, install the locked environment with `uv sync`, copy `.env.example` to `.env`, and configure the Supabase project URL and anon key. Set `OPENROUTER_API_KEY` to enable the temporary free-model agent. Set the PayPal sandbox client ID and secret only when provided. Apply reviewed migrations from `backend/supabase/migrations/` through the project's authenticated Supabase migration workflow. Store any standalone SQL queries in the repository-root `db/queries/` directory before running them. Read current provider documentation and inspect the target schema and migration history before applying database changes. Run the API with `uv run uvicorn armsquare.main:app --reload`; the frontend's default API URL is `http://localhost:8000`.
+From `backend/`, install the locked environment with `uv sync`, copy `.env.example` to `.env`, and configure the Supabase project URL and anon key. Set `OPENROUTER_API_KEY` to enable the temporary free-model agent. Set the PayPal sandbox client ID and secret only when provided. Apply reviewed migrations from `backend/supabase/migrations/` through the project's authenticated Supabase migration workflow. Store any standalone SQL queries in the repository-root `db/queries/` directory before running them. Read current provider documentation and inspect the target schema and migration history before applying database changes. Run the API from `backend/` with `uv run uvicorn main:app --reload`; the frontend's default API URL is `http://localhost:8000`.
 
 Never commit `.env` or use the service-role key for browser authentication. Production cookie settings must use HTTPS; `SameSite=None` is accepted only with secure cookies enabled.
 
@@ -74,11 +77,11 @@ Never commit `.env` or use the service-role key for browser authentication. Prod
 backend/
 ├── backend.md
 ├── AGENTS.md
+├── main.py                   # FastAPI ASGI entry point (uvicorn main:app)
 ├── pyproject.toml
 ├── uv.lock
 └── src/
     └── armsquare/
-        ├── main.py
         ├── core/                 # settings, errors, logging, shared primitives
         ├── api/
         │   └── v1/               # routers, dependencies, request/response schemas

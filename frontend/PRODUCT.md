@@ -15,7 +15,11 @@ Two primary audiences, equal priority from the first release:
 
 Secondary: business team members, and platform admins (reports, suspensions, safety events, categories). Admin tooling comes later.
 
-The first audience for this frontend is an **investor and stakeholder demo**: a controlled Stage 1 prototype with seeded catalogs and simulated orders. It must make the agent-to-agent commerce loop clear and believable end to end.
+The first audience for this frontend is an **investor and stakeholder demo** of the working storefront slice. Demo shops and products are seeded fixtures. The UI must not imply that agent-to-agent negotiation, orders, or payments are live.
+
+The current storefront slice lets business owners create shops and products, choose what is published, and pause their shop assistant. Shoppers can discover published shops and their published catalog, or use the authenticated, read-only shopping assistant to search published listings. Assistant preferences and purchase limits are managed under the shopper account. The assistant conversation is temporary; persisted errands, negotiations, approvals, orders, payments, and transaction history are not connected. External platform connections are not implemented and must be presented as coming soon. Seeded shops and products are fictional demo fixtures; they do not imply real sellers, verification, orders, or traction.
+
+Available business surfaces include shop and catalog management, a WebSocket assistant workspace, per-shop assistant permissions, and pause controls. A business owner can optionally enable Tavily public-web research for vendor, product, or market context. Armsquare marketplace search remains the source for published shop listings; web results are unverified context and cannot establish prices, stock, seller verification, or transaction authority. Deal approvals, financial operating rules, and transaction history are not connected to backend workflows yet and must be shown as unavailable, not populated with sample activity. The assistant's tools are checked against authenticated membership; draft creation never publishes a product.
 
 ## Product Purpose
 
@@ -55,6 +59,7 @@ Protocol objects users will see: capability profile, discovery request, inquiry,
 - **Payment state** comes only from verified provider events. The UI must never imply a payment succeeded because of a redirect or optimistic state. The MVP uses sandbox payments and must label them honestly.
 - **Trust signals** must separate verified facts (transaction history, fulfillment outcomes, business verification) from claims.
 - **Non-goals for the first release:** unrestricted autonomy, universal integrations, unsupervised high-value or legally binding actions, a full ERP or logistics suite.
+- **Current prototype boundary:** store and catalog management is available, but external catalog sync, live inventory, order execution, and payments are not implemented by the storefront slice. Assistant-prepared product listings remain drafts until a business owner publishes them.
 
 Open decisions (PRD section 17), not to be invented by design work:
 

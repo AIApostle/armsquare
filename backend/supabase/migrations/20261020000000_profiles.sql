@@ -54,3 +54,29 @@ drop trigger if exists create_profile_after_auth_user_insert on auth.users;
 create trigger create_profile_after_auth_user_insert
     after insert on auth.users
     for each row execute function public.create_profile_for_auth_user();
+
+insert into public.profiles (id, display_name, role, business_name)
+select
+    users.id,
+    metadata.display_name,
+    metadata.account_role,
+    metadata.business_name
+from auth.users as users
+cross join lateral (
+    select
+        coalesce(users.raw_user_meta_data ->> 'role', 'user') as account_role,
+        nullif(trim(users.raw_user_meta_data ->> 'display_name'), '') as display_name,
+        nullif(trim(users.raw_user_meta_data ->> 'business_name'), '') as business_name
+) as metadata
+where metadata.account_role in ('user', 'business')
+  and metadata.display_name is not null
+  and char_length(metadata.display_name) <= 120
+  and (
+      metadata.account_role = 'user'
+      or (
+          metadata.account_role = 'business'
+          and metadata.business_name is not null
+          and char_length(metadata.business_name) <= 160
+      )
+  )
+on conflict (id) do nothing;

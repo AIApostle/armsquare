@@ -64,7 +64,11 @@ async function BusinessDetail({ params }: { params: PageProps<"/market/business/
             <h1 className="text-2xl font-bold text-ink">{b.name}</h1>
             <p className="mt-1 text-lg text-ink-2">{b.tagline}</p>
             <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
-              <Verified verified={verified} />
+              {b.isDemo ? (
+                <span className="text-sm font-medium text-ink-2">Fictional demo shop</span>
+              ) : (
+                <Verified verified={verified} />
+              )}
               <span className="text-sm text-ink-3">{b.region}</span>
             </p>
           </div>
@@ -121,7 +125,11 @@ async function BusinessDetail({ params }: { params: PageProps<"/market/business/
             <h2 id="record-heading" className="text-lg font-bold text-ink">
               Their track record
             </h2>
-            {verified && b.trust.ordersFulfilled > 0 ? (
+            {b.isDemo ? (
+              <p className="mt-2 text-base text-ink-2">
+                This fictional demo shop has sample products and no real orders or verified history.
+              </p>
+            ) : verified && b.trust.ordersFulfilled > 0 ? (
               <>
                 <p className="mt-3 text-base text-ink-2">
                   <span className="figure text-2xl font-bold text-ink">{count(b.trust.ordersFulfilled)}</span> orders delivered

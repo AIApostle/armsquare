@@ -55,9 +55,7 @@ class AuthUserResponse(BaseModel):
     user_id: str
     email: EmailStr | None
     role: AccountRole
-    email_confirmed: bool
 
 
 class AuthActionResponse(AuthUserResponse):
     authenticated: bool
-    email_confirmation_required: bool

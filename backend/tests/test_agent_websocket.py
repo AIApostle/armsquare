@@ -5,13 +5,14 @@ from starlette.websockets import WebSocketDisconnect
 from strands import Agent
 from strands.models.openai import OpenAIModel
 
+from armsquare.agents import router as agent_router
 from armsquare.agents.router import get_agent_service
 from armsquare.agents.service import AgentService
 from armsquare.core.config import Settings, get_settings
 from armsquare.identity.router import get_auth_service
 from armsquare.identity.schemas import AccountRole
 from armsquare.identity.service import AuthIdentity
-from armsquare.main import app
+from main import app
 
 
 class FakeAuthService:
@@ -21,7 +22,6 @@ class FakeAuthService:
             user_id="user-123",
             email="shopper@example.com",
             role=AccountRole.USER,
-            email_confirmed=True,
         )
 
 
@@ -33,9 +33,43 @@ class FakeAgent:
 
 
 class FakeAgentService:
-    def create_agent(self, role: AccountRole) -> FakeAgent:
+    def create_agent(self, role: AccountRole, *, tools) -> FakeAgent:
         assert role is AccountRole.USER
+        assert len(tools) == 1
         return FakeAgent()
+
+
+class FakeSupabaseClient:
+    class Auth:
+        async def close(self) -> None:
+            pass
+
+    class Postgrest:
+        def auth(self, access_token: str) -> None:
+            assert access_token == "valid-session"
+
+        async def aclose(self) -> None:
+            pass
+
+    class Realtime:
+        async def close(self) -> None:
+            pass
+
+    auth = Auth()
+    postgrest = Postgrest()
+    realtime = Realtime()
+
+
+@pytest.fixture(autouse=True)
+def mock_marketplace_client(monkeypatch: pytest.MonkeyPatch) -> None:
+    client = FakeSupabaseClient()
+
+    async def create_async_client(project_url: str, anon_key: str) -> FakeSupabaseClient:
+        assert project_url.rstrip("/") == "https://example.supabase.co"
+        assert anon_key == "test-anon-key"
+        return client
+
+    monkeypatch.setattr(agent_router, "create_async_client", create_async_client)
 
 
 def setup_function() -> None:
@@ -44,6 +78,8 @@ def setup_function() -> None:
     app.dependency_overrides[get_settings] = lambda: Settings(
         _env_file=None,
         cors_origins=["http://localhost:3000"],
+        supabase_url="https://example.supabase.co",
+        supabase_anon_key=SecretStr("test-anon-key"),
     )
 
 

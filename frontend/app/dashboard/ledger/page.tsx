@@ -10,8 +10,7 @@ export default function LedgerPage() {
     <div className="mx-auto max-w-4xl">
       <h1 className="text-2xl font-bold text-ink">History</h1>
       <p className="mt-2 max-w-[60ch] text-lg text-ink-2">
-        Everything you and your assistant did today, newest first. Nothing here can be changed or
-        deleted.
+        A record of agent and transaction activity will be available when those workflows are connected.
       </p>
       <LedgerView />
     </div>

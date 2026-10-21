@@ -8,8 +8,7 @@ const tabs = [
   { href: "/market", label: "Ask" },
   { href: "/market/browse", label: "Shops" },
   { href: "/market/orders", label: "Orders" },
-  { href: "/market/agent", label: "My assistant" },
-  { href: "/account", label: "Account" },
+  { href: "/market/account", label: "Account" },
 ] as const;
 
 export function MarketNav() {

@@ -20,9 +20,15 @@ export function BusinessRow({ business: b }: { business: Business }) {
         <span className="block text-lg font-bold text-ink">{b.name}</span>
         <span className="mt-0.5 block text-base text-ink-2">{b.tagline}</span>
         <span className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
-          <Verified verified={verified} />
+          {b.isDemo ? (
+            <span className="text-sm font-medium text-ink-2">Fictional demo shop</span>
+          ) : (
+            <Verified verified={verified} />
+          )}
           <span className="text-sm text-ink-3">
-            {verified && b.trust.ordersFulfilled > 0 ? (
+            {b.isDemo ? (
+              "Sample catalog"
+            ) : verified && b.trust.ordersFulfilled > 0 ? (
               <>
                 <span className="figure">{count(b.trust.ordersFulfilled)}</span> orders delivered
               </>
